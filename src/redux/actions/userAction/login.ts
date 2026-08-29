@@ -1,11 +1,12 @@
-import type { User } from "../../../types/User"
+import type { UnknownAction } from "@reduxjs/toolkit";
+import type { User } from "../../../types/User";
 
 export const LOGIN = "LOGIN";
 
-export interface LoginAction {
+export type LoginAction = UnknownAction & {
     type: typeof LOGIN;
     payload: User;
-}
+};
 
 export const loginAction = (user: User): LoginAction => {
     return {
