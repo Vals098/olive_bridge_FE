@@ -1,6 +1,8 @@
 import { useDispatch, useSelector } from "react-redux"
 import type { AppDispatch, RootState } from "../redux/store"
 import { logoutAction } from "../redux/actions/userAction/logout"
+import { Link } from "react-router-dom"
+import { Navbar as BootstrapNavbar, Container, Nav, Button } from "react-bootstrap"
 
 function Navbar() {
   const dispatch = useDispatch<AppDispatch>()
@@ -12,22 +14,44 @@ function Navbar() {
   }
 
   return (
-    <nav>
-      <p>OliveBridge</p>
+    <BootstrapNavbar className="navbar">
+      <Container>
+        <Link to="/" className="navbar-brand">
+          OliveBridge
+        </Link>
 
-      {currentUser ? (
-        <div>
-          <span>Welcome, {currentUser.name}!</span>
+        <Nav>
+          <Nav.Link as={Link} to="/products">
+            Products
+          </Nav.Link>
 
-          <button onClick={handleLogout}>Logout</button>
-        </div>
-      ) : (
-        <div>
-          <a href="/login">Login</a>
-          <a href="/register">Register</a>
-        </div>
-      )}
-    </nav>
+          {currentUser ? (
+            <>
+              <span className="navbar-welcome">
+                Welcome, {currentUser.name}!
+              </span>
+
+              <Button
+                className="navbar-button"
+                onClick={handleLogout}
+              >
+                Logout
+              </Button>
+            </>
+          ) : (
+            <>
+              <Nav.Link as={Link} to="/login">
+                Login
+              </Nav.Link>
+
+              <Nav.Link as={Link} to="/register">
+                Register
+              </Nav.Link>
+            </>
+          )}
+        </Nav>
+      </Container>
+    </BootstrapNavbar>
   )
 }
 

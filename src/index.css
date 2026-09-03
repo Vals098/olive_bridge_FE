@@ -85,6 +85,47 @@ code {
 
 /* MY CSS */
 
+/* navbar */
+.navbar {
+  padding: 20px 0;
+  background-color: var(--background);
+}
+
+.navbar-brand {
+  color: var(--primary);
+  font-family: var(--heading);
+  font-size: 28px;
+  text-decoration: none;
+}
+
+.navbar-brand:hover {
+  color: var(--secondary);
+}
+
+.navbar .nav-link {
+  color: var(--primary);
+  margin-left: 20px;
+}
+
+.navbar .nav-link:hover {
+  color: var(--accent);
+}
+
+.navbar-welcome {
+  color: var(--primary);
+  margin: 8px 20px;
+}
+
+.navbar-button {
+  background-color: var(--primary) !important;
+  border-color: var(--primary) !important;
+}
+
+.navbar-button:hover {
+  background-color: var(--secondary) !important;
+  border-color: var(--secondary) !important;
+}
+
 /* footer */
 .footer {
   margin-top: auto;
