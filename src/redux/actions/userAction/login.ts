@@ -27,6 +27,8 @@ export const loginAction = (credentials: LoginRequest) => {
 
             const token = await loginResponse.text();
 
+            localStorage.setItem("token", token);
+
             // 2. Get current user
             const userResponse = await fetch("http://localhost:8080/users/me", {
                 headers: {
