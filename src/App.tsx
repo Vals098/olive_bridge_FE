@@ -1,47 +1,55 @@
-import { Provider } from "react-redux";
-import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
-import "./App.css";
+import { useEffect } from "react"
+import { Provider, useDispatch } from "react-redux"
+import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom"
+import "./App.css"
 
-import store from "./redux/store";
+import store, { type AppDispatch } from "./redux/store"
+import { getCurrentUser } from "./redux/actions/userAction/getCurrentUser"
 
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
+import Navbar from "./components/Navbar"
+import Footer from "./components/Footer"
 
-import Home from "./pages/Home";
-import Products from "./pages/Products";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+import Home from "./pages/Home"
+import Products from "./pages/Products"
+import Login from "./pages/Login"
+import Register from "./pages/Register"
 
 const MainLayout = () => {
-    return (
-        <>
-            <Navbar />
-            <Outlet />
-            <Footer />
-        </>
-    );
-};
+  return (
+    <>
+      <Navbar />
+      <Outlet />
+      <Footer />
+    </>
+  )
+}
 
 function AppContent() {
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
+  const dispatch = useDispatch<AppDispatch>()
 
-                <Route element={<MainLayout />}>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/products" element={<Products />} />
-                </Route>
-            </Routes>
-        </BrowserRouter>
-    );
+  useEffect(() => {
+    dispatch(getCurrentUser())
+  }, [dispatch])
+
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/products" element={<Products />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  )
 }
 
 export default function App() {
-    return (
-        <Provider store={store}>
-            <AppContent />
-        </Provider>
-    );
+  return (
+    <Provider store={store}>
+      <AppContent />
+    </Provider>
+  )
 }
