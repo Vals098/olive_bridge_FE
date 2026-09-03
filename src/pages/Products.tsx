@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../redux/store";
 import { getProducts } from "../redux/actions/productAction/getProducts";
 
+import ProductCard from "../components/ProductCard";
+
 function Products() {
     const dispatch = useDispatch<AppDispatch>();
 
@@ -14,15 +16,15 @@ function Products() {
         dispatch(getProducts());
     }, [dispatch]);
 
-    return (
+return (
     <div>
         <h1>Products</h1>
 
         {products.map((product) => (
-            <div key={product.productId}>
-                <h2>{product.name}</h2>
-                <p>{product.description}</p>
-            </div>
+            <ProductCard
+                key={product.productId}
+                product={product}
+            />
         ))}
     </div>
 );
