@@ -14,9 +14,18 @@ function Products() {
         dispatch(getProducts());
     }, [dispatch]);
 
-    console.log(products);
+    return (
+    <div>
+        <h1>Products</h1>
 
-    return <h1>Products</h1>;
+        {products.map((product) => (
+            <div key={product.productId}>
+                <h2>{product.name}</h2>
+                <p>{product.description}</p>
+            </div>
+        ))}
+    </div>
+);
 }
 
 export default Products;
