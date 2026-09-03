@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Container, Row, Col } from "react-bootstrap";
 import type { AppDispatch, RootState } from "../redux/store";
 import { getProducts } from "../redux/actions/productAction/getProducts";
-
 import ProductCard from "../components/ProductCard";
 
 function Products() {
@@ -16,18 +16,23 @@ function Products() {
         dispatch(getProducts());
     }, [dispatch]);
 
-return (
-    <div>
-        <h1>Products</h1>
+    return (
+        <Container className="products-page">
+            <h1>Products</h1>
 
-        {products.map((product) => (
-            <ProductCard
-                key={product.productId}
-                product={product}
-            />
-        ))}
-    </div>
-);
+            <Row className="products-grid">
+                {products.map((product) => (
+                    <Col
+                        key={product.productId}
+                        md={4}
+                        lg={3}
+                    >
+                        <ProductCard product={product} />
+                    </Col>
+                ))}
+            </Row>
+        </Container>
+    );
 }
 
 export default Products;

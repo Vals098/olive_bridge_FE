@@ -1,16 +1,16 @@
 :root {
-  --primary: #2D423B;
-  --secondary: #7A948B;
-  --background: #EDE3DE;
-  --neutral: #C6AA96;
-  --accent: #BA7878;
+  --primary: #2d423b;
+  --secondary: #7a948b;
+  --background: #ede3de;
+  --neutral: #c6aa96;
+  --accent: #ba7878;
 
-  --text: #2D423B;
-  --text-light: #7A948B;
-  --border: #C6AA96;
+  --text: #2d423b;
+  --text-light: #7a948b;
+  --border: #c6aa96;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: Georgia, 'Times New Roman', serif;
+  --sans: system-ui, "Segoe UI", Roboto, sans-serif;
+  --heading: Georgia, "Times New Roman", serif;
   --mono: ui-monospace, Consolas, monospace;
 
   font: 18px/145% var(--sans);
@@ -27,21 +27,16 @@
   }
 }
 
-
 #root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
+  background-color: var(--background);
 }
 
 body {
   margin: 0;
+  background-color: var(--background);
 }
 
 h1,
@@ -86,4 +81,65 @@ code {
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
+}
+
+/* MY CSS */
+
+/* footer */
+.footer {
+  margin-top: auto;
+  padding: 24px;
+  text-align: center;
+  color: var(--primary);
+}
+
+/* product page */
+.products-page {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.products-grid {
+  row-gap: 30px;
+}
+
+/* product card */
+.product-card {
+  height: 100%;
+  border: 1px solid var(--neutral);
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.product-card .card-img-top {
+  height: 260px;
+  object-fit: cover;
+}
+
+.product-card .card-body {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.product-card .card-title {
+  color: var(--primary);
+  font-family: var(--heading);
+}
+
+.product-card .card-text {
+  color: var(--text-light);
+  flex-grow: 1;
+}
+
+.product-card-button {
+  background-color: var(--primary) !important;
+  border-color: var(--primary) !important;
+  margin-top: 15px;
+}
+
+.product-card-button:hover {
+  background-color: var(--secondary) !important;
+  border-color: var(--secondary) !important;
 }
