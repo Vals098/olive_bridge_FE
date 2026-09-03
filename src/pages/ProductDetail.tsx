@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import type { Product } from "../types/Product";
 
 function ProductDetail() {
@@ -32,11 +33,63 @@ function ProductDetail() {
     }
 
     return (
-        <div>
-            <h1>{product.name}</h1>
-            <img src={product.image} alt={product.name} />
-            <p>{product.description}</p>
-        </div>
+        <Container className="product-detail-page">
+            <Row className="align-items-center">
+
+                <Col md={6}>
+                    <img
+                        src={product.image}
+                        alt={product.name}
+                        className="product-detail-image"
+                    />
+                </Col>
+
+                <Col md={6} className="product-detail-info">
+                    <p className="product-detail-category">
+                        {product.category.name}
+                    </p>
+
+                    <h1>{product.name}</h1>
+
+                    <p className="product-detail-description">
+                        {product.description}
+                    </p>
+
+                    <Button className="product-detail-button">
+                        Add to cart
+                    </Button>
+                </Col>
+
+            </Row>
+
+            <Row className="product-detail-technical">
+                <Col>
+                    <h2>Technical information</h2>
+
+                    <div className="technical-info">
+                        <p>
+                            <strong>Acidity:</strong>{" "}
+                            {product.technicalInformation.acidity}
+                        </p>
+
+                        <p>
+                            <strong>Peroxide value:</strong>{" "}
+                            {product.technicalInformation.peroxideValue}
+                        </p>
+
+                        <p>
+                            <strong>Harvest date:</strong>{" "}
+                            {product.technicalInformation.harvestDate}
+                        </p>
+
+                        <p>
+                            <strong>Best before:</strong>{" "}
+                            {product.technicalInformation.bestBeforeDate}
+                        </p>
+                    </div>
+                </Col>
+            </Row>
+        </Container>
     );
 }
 

@@ -151,9 +151,11 @@ code {
   border: 1px solid var(--neutral);
   border-radius: 12px;
   overflow: hidden;
-background-color: #F5EEE9;
-box-shadow: 0 5px 14px rgba(45, 66, 59, 0.12);
-transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: #f5eee9;
+  box-shadow: 0 5px 14px rgba(45, 66, 59, 0.12);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .product-card:hover {
@@ -202,7 +204,9 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
   margin-top: 15px;
   padding: 10px 18px;
   border-radius: 8px;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
 }
 
 .product-card-button:hover {
@@ -210,4 +214,75 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
   color: white;
   text-decoration: none;
   transform: translateY(-2px);
+}
+
+/* product details page */
+.product-detail-page {
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+
+.product-detail-image {
+  width: 100%;
+  max-height: 550px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(45, 66, 59, 0.15);
+}
+
+.product-detail-category {
+  color: var(--secondary);
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.product-detail-info h1 {
+  color: var(--primary);
+  font-family: var(--heading);
+  font-size: 42px;
+  margin-bottom: 16px;
+}
+
+.product-detail-description {
+  color: var(--text-light);
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+
+.product-detail-button {
+  background-color: var(--primary) !important;
+  border-color: var(--primary) !important;
+  padding: 10px 22px;
+  border-radius: 8px;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
+}
+
+.product-detail-button:hover {
+  background-color: var(--secondary) !important;
+  border-color: var(--secondary) !important;
+  transform: translateY(-2px);
+}
+
+.product-detail-technical {
+  margin-top: 60px !important;
+  padding: 30px;
+  background-color: #f5eee9;
+  border: 1px solid var(--neutral);
+  border-radius: 12px;
+  box-shadow: 0 5px 14px rgba(45, 66, 59, 0.08);
+}
+
+.product-detail-technical h2 {
+  color: var(--primary);
+  font-family: var(--heading);
+  font-size: 30px;
+  margin-bottom: 25px;
+}
+
+.technical-info p {
+  color: var(--text);
+  margin-bottom: 12px;
 }
