@@ -5,6 +5,7 @@ import storage from "./storage"
 import userReducer from "../reducers/userReducer"
 import productReducer from "../reducers/productReducer"
 import cartReducer from "../reducers/cartReducer"
+import productVariantReducer from "../reducers/productVariantReducer"
 
 const cartPersistConfig = {
   key: "cart",
@@ -17,6 +18,7 @@ const store = configureStore({
   reducer: {
     user: userReducer,
     product: productReducer,
+    productVariant: productVariantReducer,
     cart: persistedCartReducer,
   },
 })
