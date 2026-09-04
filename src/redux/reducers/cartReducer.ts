@@ -18,14 +18,15 @@ const cartReducer = (
         const product = action.payload as CartItem;
 
         const existingItem = state.items.find(
-            (item) => item.product.productId === product.product.productId
+            (item) =>
+                item.variant.productVariantId === product.variant.productVariantId
         );
 
         if (existingItem) {
             return {
                 ...state,
                 items: state.items.map((item) =>
-                    item.product.productId === product.product.productId
+                    item.variant.productVariantId === product.variant.productVariantId
                         ? {
                               ...item,
                               quantity: item.quantity + product.quantity,

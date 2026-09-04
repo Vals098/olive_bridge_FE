@@ -20,16 +20,17 @@ function ProductDetail() {
     null,
   )
 
-  const handleAddToCart = () => {
-    if (product) {
-      dispatch(
-        addToCartAction({
-          product: product,
-          quantity: 1,
-        }),
-      )
-    }
+const handleAddToCart = () => {
+  if (product && selectedVariant) {
+    dispatch(
+      addToCartAction({
+        product: product,
+        variant: selectedVariant,
+        quantity: 1,
+      }),
+    )
   }
+}
 
   useEffect(() => {
     const getProduct = async () => {
