@@ -2,7 +2,12 @@ import { useDispatch, useSelector } from "react-redux"
 import type { AppDispatch, RootState } from "../redux/store"
 import { logoutAction } from "../redux/actions/userAction/logout"
 import { Link } from "react-router-dom"
-import { Navbar as BootstrapNavbar, Container, Nav, Button } from "react-bootstrap"
+import {
+  Navbar as BootstrapNavbar,
+  Container,
+  Nav,
+  Button,
+} from "react-bootstrap"
 
 function Navbar() {
   const dispatch = useDispatch<AppDispatch>()
@@ -24,6 +29,9 @@ function Navbar() {
           <Nav.Link as={Link} to="/products">
             Products
           </Nav.Link>
+          <Nav.Link as={Link} to="/cart">
+            Cart
+          </Nav.Link>
 
           {currentUser ? (
             <>
@@ -31,10 +39,7 @@ function Navbar() {
                 Welcome, {currentUser.name}!
               </span>
 
-              <Button
-                className="navbar-button"
-                onClick={handleLogout}
-              >
+              <Button className="navbar-button" onClick={handleLogout}>
                 Logout
               </Button>
             </>
