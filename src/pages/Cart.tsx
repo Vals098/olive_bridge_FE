@@ -1,28 +1,35 @@
-import { useSelector } from "react-redux";
-import type { RootState } from "../redux/store";
+import { useSelector } from "react-redux"
+import type { RootState } from "../redux/store"
 
 function Cart() {
-    const cartItems = useSelector(
-        (state: RootState) => state.cart.items
-    );
+  const cartItems = useSelector((state: RootState) => state.cart.items)
 
-    return (
-        <div>
-            <h1>Cart</h1>
+  const cartTotal = cartItems.reduce(
+    (total, item) => total + item.variant.price * item.quantity,
+    0,
+  )
 
-            {cartItems.length === 0 ? (
-                <p>Your cart is empty.</p>
-            ) : (
-                cartItems.map((item) => (
-                    <div key={item.product.productId}>
-                        <h2>{item.product.name}</h2>
-                        <p>{item.product.description}</p>
-                        <p>Quantity: {item.quantity}</p>
-                    </div>
-                ))
-            )}
-        </div>
-    );
+  return (
+    <div>
+      <h1>Cart</h1>
+
+      {cartItems.length === 0 ? (
+        <p>Your cart is empty.</p>
+      ) : (
+        cartItems.map((item) => (
+          <div key={item.variant.productVariantId}>
+            <h2>{item.product.name}</h2>
+            <p>{item.product.description}</p>
+            <p>Format: {item.variant.format}</p>
+            <p>Price: €{item.variant.price.toFixed(2)}</p>
+            <p>Quantity: {item.quantity}</p>
+            <p>Subtotal: €{(item.variant.price * item.quantity).toFixed(2)}</p>
+          </div>
+        ))
+      )}
+      <h2>Cart total: €{cartTotal.toFixed(2)}</h2>
+    </div>
+  )
 }
 
-export default Cart;
+export default Cart
