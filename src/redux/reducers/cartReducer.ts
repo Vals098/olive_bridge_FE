@@ -3,6 +3,7 @@ import type { CartItem } from "../../types/CartItem"
 import { ADD_TO_CART } from "../actions/cartAction/addToCart"
 import { INCREASE_QUANTITY } from "../actions/cartAction/increaseQuantity"
 import { REMOVE_FROM_CART } from "../actions/cartAction/removeFromCart"
+import { DECREASE_QUANTITY } from "../actions/cartAction/decreaseQuantity"
 
 interface CartState {
   items: CartItem[]
@@ -65,6 +66,38 @@ const cartReducer = (
       ...state,
       items: state.items.filter(
         (item) => item.variant.productVariantId !== productVariantId,
+      ),
+    }
+  }
+  if (action.type === DECREASE_QUANTITY && "payload" in action) {
+    const productVariantId = action.payload as string
+
+    const item = state.items.find(
+      (item) => item.variant.productVariantId === productVariantId,
+    )
+
+    if (!item) {
+      return state
+    }
+
+    if (item.quantity === 1) {
+      return {
+        ...state,
+        items: state.items.filter(
+          (item) => item.variant.productVariantId !== productVariantId,
+        ),
+      }
+    }
+
+    return {
+      ...state,
+      items: state.items.map((item) =>
+        item.variant.productVariantId === productVariantId
+          ? {
+              ...item,
+              quantity: item.quantity - 1,
+            }
+          : item,
       ),
     }
   }

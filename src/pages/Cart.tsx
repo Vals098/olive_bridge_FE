@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux"
 import type { AppDispatch, RootState } from "../redux/store"
 import { increaseQuantityAction } from "../redux/actions/cartAction/increaseQuantity"
 import { removeFromCartAction } from "../redux/actions/cartAction/removeFromCart"
+import { decreaseQuantityAction } from "../redux/actions/cartAction/decreaseQuantity"
 
 import { Button } from "react-bootstrap"
 
@@ -35,6 +36,13 @@ function Cart() {
               }
             >
               +
+            </Button>
+            <Button
+              onClick={() =>
+                dispatch(decreaseQuantityAction(item.variant.productVariantId))
+              }
+            >
+              −
             </Button>
             <Button
               onClick={() =>
