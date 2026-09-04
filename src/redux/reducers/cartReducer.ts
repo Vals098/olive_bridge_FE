@@ -2,6 +2,7 @@ import type { UnknownAction } from "@reduxjs/toolkit"
 import type { CartItem } from "../../types/CartItem"
 import { ADD_TO_CART } from "../actions/cartAction/addToCart"
 import { INCREASE_QUANTITY } from "../actions/cartAction/increaseQuantity"
+import { REMOVE_FROM_CART } from "../actions/cartAction/removeFromCart"
 
 interface CartState {
   items: CartItem[]
@@ -54,6 +55,16 @@ const cartReducer = (
               quantity: item.quantity + 1,
             }
           : item,
+      ),
+    }
+  }
+  if (action.type === REMOVE_FROM_CART && "payload" in action) {
+    const productVariantId = action.payload as string
+
+    return {
+      ...state,
+      items: state.items.filter(
+        (item) => item.variant.productVariantId !== productVariantId,
       ),
     }
   }
