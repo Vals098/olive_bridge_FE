@@ -1,7 +1,12 @@
-import { useSelector } from "react-redux"
-import type { RootState } from "../redux/store"
+import { useDispatch, useSelector } from "react-redux"
+import type { AppDispatch, RootState } from "../redux/store"
+import { increaseQuantityAction } from "../redux/actions/cartAction/increaseQuantity"
+
+import { Button } from "react-bootstrap"
 
 function Cart() {
+  const dispatch = useDispatch<AppDispatch>()
+
   const cartItems = useSelector((state: RootState) => state.cart.items)
 
   const cartTotal = cartItems.reduce(
@@ -23,6 +28,13 @@ function Cart() {
             <p>Format: {item.variant.format}</p>
             <p>Price: €{item.variant.price.toFixed(2)}</p>
             <p>Quantity: {item.quantity}</p>
+            <Button
+              onClick={() =>
+                dispatch(increaseQuantityAction(item.variant.productVariantId))
+              }
+            >
+              +
+            </Button>
             <p>Subtotal: €{(item.variant.price * item.quantity).toFixed(2)}</p>
           </div>
         ))
