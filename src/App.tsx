@@ -1,9 +1,10 @@
 import { useEffect } from "react"
 import { Provider, useDispatch } from "react-redux"
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom"
+import { PersistGate } from "redux-persist/integration/react"
 import "./App.css"
 
-import store, { type AppDispatch } from "./redux/store"
+import store, { persistor, type AppDispatch } from "./redux/store"
 import { getCurrentUser } from "./redux/actions/userAction/getCurrentUser"
 
 import Navbar from "./components/Navbar"
@@ -53,7 +54,9 @@ function AppContent() {
 export default function App() {
   return (
     <Provider store={store}>
-      <AppContent />
+      <PersistGate loading={null} persistor={persistor}>
+        <AppContent />
+      </PersistGate>
     </Provider>
   )
 }
