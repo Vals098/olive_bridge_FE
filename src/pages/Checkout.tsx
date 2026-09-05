@@ -39,7 +39,20 @@ function Checkout() {
       })),
     }
 
-    console.log("Order data:", orderData)
+    const response = await fetch("http://localhost:8080/orders/checkout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(orderData),
+    })
+    if (!response.ok) {
+      throw new Error("Unable to place order")
+    }
+
+    const order = await response.json()
+
+    console.log("Order created:", order)
   }
 
   return (
