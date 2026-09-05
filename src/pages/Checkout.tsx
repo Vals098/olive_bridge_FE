@@ -3,8 +3,13 @@ import { useState } from "react"
 import type { RootState } from "../redux/store"
 import { Form, Button, Container } from "react-bootstrap"
 import type { SyntheticEvent } from "react"
+import { useDispatch } from "react-redux"
+import type { AppDispatch } from "../redux/store"
+import { clearCartAction } from "../redux/actions/cartAction/clearCart"
 
 function Checkout() {
+  const dispatch = useDispatch<AppDispatch>()
+
   const [customerName, setCustomerName] = useState("")
   const [customerEmail, setCustomerEmail] = useState("")
   const [shippingPostalCode, setShippingPostalCode] = useState("")
@@ -13,6 +18,7 @@ function Checkout() {
   const [shippingArea, setShippingArea] = useState("")
   const [shippingStreet, setShippingStreet] = useState("")
   const [shippingBuilding, setShippingBuilding] = useState("")
+  const [order, setOrder] = useState<any>(null)
 
   const cartItems = useSelector((state: RootState) => state.cart.items)
 
@@ -50,9 +56,10 @@ function Checkout() {
       throw new Error("Unable to place order")
     }
 
-    const order = await response.json()
+    const createdOrder = await response.json()
 
-    console.log("Order created:", order)
+    setOrder(createdOrder)
+    dispatch(clearCartAction())
   }
 
   return (
@@ -74,6 +81,15 @@ function Checkout() {
       ))}
 
       <h3>Total: €{cartTotal.toFixed(2)}</h3>
+
+      {order && (
+        <div>
+          <h2>Order confirmed!</h2>
+          <p>Order ID: {order.orderId}</p>
+          <p>Total: €{Number(order.total).toFixed(2)}</p>
+          <p>Thank you for your order!</p>
+        </div>
+      )}
 
       <Form onSubmit={handleSubmit}>
         <h2>Customer information</h2>

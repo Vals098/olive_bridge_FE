@@ -4,6 +4,7 @@ import { ADD_TO_CART } from "../actions/cartAction/addToCart"
 import { INCREASE_QUANTITY } from "../actions/cartAction/increaseQuantity"
 import { REMOVE_FROM_CART } from "../actions/cartAction/removeFromCart"
 import { DECREASE_QUANTITY } from "../actions/cartAction/decreaseQuantity"
+import { CLEAR_CART } from "../actions/cartAction/clearCart"
 
 interface CartState {
   items: CartItem[]
@@ -99,6 +100,13 @@ const cartReducer = (
             }
           : item,
       ),
+    }
+  }
+
+  if (action.type === CLEAR_CART) {
+    return {
+      ...state,
+      items: [],
     }
   }
 
