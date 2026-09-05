@@ -10,6 +10,11 @@ import {
   type CreateAddressAction,
 } from "../actions/addressAction/createAddress"
 
+import {
+  DELETE_ADDRESS,
+  type DeleteAddressAction,
+} from "../actions/addressAction/deleteAddress"
+
 interface AddressState {
   addresses: Address[]
 }
@@ -30,6 +35,12 @@ const isCreateAddressAction = (
   return action.type === CREATE_ADDRESS && "payload" in action
 }
 
+const isDeleteAddressAction = (
+  action: UnknownAction,
+): action is DeleteAddressAction => {
+  return action.type === DELETE_ADDRESS && "payload" in action
+}
+
 const addressReducer = (
   state = initialState,
   action: UnknownAction,
@@ -45,6 +56,15 @@ const addressReducer = (
     return {
       ...state,
       addresses: [...state.addresses, action.payload],
+    }
+  }
+
+  if (isDeleteAddressAction(action)) {
+    return {
+      ...state,
+      addresses: state.addresses.filter(
+        (address) => address.addressId !== action.payload,
+      ),
     }
   }
 

@@ -5,14 +5,13 @@ import { useDispatch, useSelector } from "react-redux"
 import type { AppDispatch, RootState } from "../redux/store"
 import { getAddresses } from "../redux/actions/addressAction/getAddresses"
 import { createAddress } from "../redux/actions/addressAction/createAddress"
+import { deleteAddress } from "../redux/actions/addressAction/deleteAddress"
 import type { AddressRequest } from "../types/AddressRequest"
 
 function Addresses() {
   const dispatch = useDispatch<AppDispatch>()
 
-  const addresses = useSelector(
-    (state: RootState) => state.address.addresses
-  )
+  const addresses = useSelector((state: RootState) => state.address.addresses)
 
   const [showForm, setShowForm] = useState(false)
 
@@ -81,6 +80,13 @@ function Addresses() {
             <p>{address.street}</p>
 
             {address.building && <p>{address.building}</p>}
+
+            <Button
+              variant="danger"
+              onClick={() => dispatch(deleteAddress(address.addressId))}
+            >
+              Delete
+            </Button>
           </div>
         ))
       )}
@@ -91,7 +97,6 @@ function Addresses() {
 
       {showForm && (
         <Form onSubmit={handleSubmit} className="mt-4">
-
           <Form.Group className="mb-3">
             <Form.Label>Label</Form.Label>
             <Form.Control
@@ -171,10 +176,7 @@ function Addresses() {
             />
           </Form.Group>
 
-          <Button type="submit">
-            Save Address
-          </Button>
-
+          <Button type="submit">Save Address</Button>
         </Form>
       )}
     </Container>
