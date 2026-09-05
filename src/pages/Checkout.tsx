@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import type { RootState } from "../redux/store"
 import { Form, Button, Container } from "react-bootstrap"
 import type { SyntheticEvent } from "react"
@@ -9,6 +10,8 @@ import { clearCartAction } from "../redux/actions/cartAction/clearCart"
 
 function Checkout() {
   const dispatch = useDispatch<AppDispatch>()
+
+  const navigate = useNavigate()
 
   const [customerName, setCustomerName] = useState("")
   const [customerEmail, setCustomerEmail] = useState("")
@@ -21,6 +24,16 @@ function Checkout() {
   const [order, setOrder] = useState<any>(null)
 
   const cartItems = useSelector((state: RootState) => state.cart.items)
+
+  if (cartItems.length === 0) {
+    return (
+      <Container className="py-5">
+        <h1>Your cart is empty.</h1>
+
+        <Button onClick={() => navigate("/products")}>Continue Shopping</Button>
+      </Container>
+    )
+  }
 
   const cartTotal = cartItems.reduce(
     (total, item) => total + item.variant.price * item.quantity,
@@ -82,85 +95,85 @@ function Checkout() {
 
       <h3>Total: €{cartTotal.toFixed(2)}</h3>
 
-      {order && (
+      {order ? (
         <div>
           <h2>Order confirmed!</h2>
           <p>Order ID: {order.orderId}</p>
           <p>Total: €{Number(order.total).toFixed(2)}</p>
           <p>Thank you for your order!</p>
         </div>
+      ) : (
+        <Form onSubmit={handleSubmit}>
+          <h2>Customer information</h2>
+
+          <Form.Control
+            type="text"
+            placeholder="Enter your name"
+            value={customerName}
+            onChange={(e) => setCustomerName(e.target.value)}
+            required
+          />
+
+          <Form.Control
+            type="email"
+            placeholder="Enter your email"
+            value={customerEmail}
+            onChange={(e) => setCustomerEmail(e.target.value)}
+            required
+          />
+
+          <h2>Shipping address</h2>
+
+          <Form.Control
+            type="text"
+            placeholder="Enter your postal code"
+            value={shippingPostalCode}
+            onChange={(e) => setShippingPostalCode(e.target.value)}
+            required
+          />
+
+          <Form.Control
+            type="text"
+            placeholder="Enter your prefecture"
+            value={shippingPrefecture}
+            onChange={(e) => setShippingPrefecture(e.target.value)}
+            required
+          />
+
+          <Form.Control
+            type="text"
+            placeholder="Enter your city"
+            value={shippingCity}
+            onChange={(e) => setShippingCity(e.target.value)}
+            required
+          />
+
+          <Form.Control
+            type="text"
+            placeholder="Enter your area"
+            value={shippingArea}
+            onChange={(e) => setShippingArea(e.target.value)}
+            required
+          />
+
+          <Form.Control
+            type="text"
+            placeholder="Enter your street"
+            value={shippingStreet}
+            onChange={(e) => setShippingStreet(e.target.value)}
+            required
+          />
+
+          <Form.Control
+            type="text"
+            placeholder="Enter your building (optional)"
+            value={shippingBuilding}
+            onChange={(e) => setShippingBuilding(e.target.value)}
+          />
+
+          <Button type="submit">Place Order</Button>
+        </Form>
       )}
-
-      <Form onSubmit={handleSubmit}>
-        <h2>Customer information</h2>
-
-        <Form.Control
-          type="text"
-          placeholder="Enter your name"
-          value={customerName}
-          onChange={(e) => setCustomerName(e.target.value)}
-          required
-        />
-
-        <Form.Control
-          type="email"
-          placeholder="Enter your email"
-          value={customerEmail}
-          onChange={(e) => setCustomerEmail(e.target.value)}
-          required
-        />
-
-        <h2>Shipping address</h2>
-
-        <Form.Control
-          type="text"
-          placeholder="Enter your postal code"
-          value={shippingPostalCode}
-          onChange={(e) => setShippingPostalCode(e.target.value)}
-          required
-        />
-
-        <Form.Control
-          type="text"
-          placeholder="Enter your prefecture"
-          value={shippingPrefecture}
-          onChange={(e) => setShippingPrefecture(e.target.value)}
-          required
-        />
-
-        <Form.Control
-          type="text"
-          placeholder="Enter your city"
-          value={shippingCity}
-          onChange={(e) => setShippingCity(e.target.value)}
-          required
-        />
-
-        <Form.Control
-          type="text"
-          placeholder="Enter your area"
-          value={shippingArea}
-          onChange={(e) => setShippingArea(e.target.value)}
-          required
-        />
-
-        <Form.Control
-          type="text"
-          placeholder="Enter your street"
-          value={shippingStreet}
-          onChange={(e) => setShippingStreet(e.target.value)}
-          required
-        />
-
-        <Form.Control
-          type="text"
-          placeholder="Enter your building (optional)"
-          value={shippingBuilding}
-          onChange={(e) => setShippingBuilding(e.target.value)}
-        />
-
-        <Button type="submit">Place Order</Button>
-      </Form>
     </Container>
   )
 }

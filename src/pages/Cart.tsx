@@ -24,43 +24,62 @@ function Cart() {
       <h1>Cart</h1>
 
       {cartItems.length === 0 ? (
-        <p>Your cart is empty.</p>
+        <>
+          <p>Your cart is empty.</p>
+
+          <Button onClick={() => navigate("/products")}>
+            Continue Shopping
+          </Button>
+        </>
       ) : (
-        cartItems.map((item) => (
-          <div key={item.variant.productVariantId}>
-            <h2>{item.product.name}</h2>
-            <p>{item.product.description}</p>
-            <p>Format: {item.variant.format}</p>
-            <p>Price: €{item.variant.price.toFixed(2)}</p>
-            <p>Quantity: {item.quantity}</p>
-            <Button
-              onClick={() =>
-                dispatch(increaseQuantityAction(item.variant.productVariantId))
-              }
-            >
-              +
-            </Button>
-            <Button
-              onClick={() =>
-                dispatch(decreaseQuantityAction(item.variant.productVariantId))
-              }
-            >
-              −
-            </Button>
-            <Button
-              onClick={() =>
-                dispatch(removeFromCartAction(item.variant.productVariantId))
-              }
-            >
-              🗑
-            </Button>
-            <p>Subtotal: €{(item.variant.price * item.quantity).toFixed(2)}</p>
-          </div>
-        ))
+        <>
+          {cartItems.map((item) => (
+            <div key={item.variant.productVariantId}>
+              <h2>{item.product.name}</h2>
+              <p>{item.product.description}</p>
+              <p>Format: {item.variant.format}</p>
+              <p>Price: €{item.variant.price.toFixed(2)}</p>
+              <p>Quantity: {item.quantity}</p>
+
+              <Button
+                onClick={() =>
+                  dispatch(
+                    increaseQuantityAction(item.variant.productVariantId),
+                  )
+                }
+              >
+                +
+              </Button>
+
+              <Button
+                onClick={() =>
+                  dispatch(
+                    decreaseQuantityAction(item.variant.productVariantId),
+                  )
+                }
+              >
+                −
+              </Button>
+
+              <Button
+                onClick={() =>
+                  dispatch(removeFromCartAction(item.variant.productVariantId))
+                }
+              >
+                🗑
+              </Button>
+
+              <p>
+                Subtotal: €{(item.variant.price * item.quantity).toFixed(2)}
+              </p>
+            </div>
+          ))}
+
+          <h2>Cart total: €{cartTotal.toFixed(2)}</h2>
+
+          <Button onClick={() => navigate("/checkout")}>Checkout</Button>
+        </>
       )}
-      <h2>Cart total: €{cartTotal.toFixed(2)}</h2>
-      
-      <Button onClick={() => navigate("/checkout")}>Checkout</Button>
     </div>
   )
 }
