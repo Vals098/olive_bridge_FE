@@ -15,11 +15,30 @@ export const getSavedCart = (userId: string | null): CartItem[] => {
   return JSON.parse(savedCart)
 }
 
-export const saveCart = (
-  userId: string | null,
-  items: CartItem[],
-) => {
+export const saveCart = (userId: string | null, items: CartItem[]) => {
   const key = getCartKey(userId)
 
   localStorage.setItem(key, JSON.stringify(items))
+}
+
+export const mergeCarts = (
+  userCart: CartItem[],
+  guestCart: CartItem[],
+): CartItem[] => {
+  const mergedCart = [...userCart]
+
+  guestCart.forEach((guestItem) => {
+    const existingItem = mergedCart.find(
+      (item) =>
+        item.variant.productVariantId === guestItem.variant.productVariantId,
+    )
+
+    if (existingItem) {
+      existingItem.quantity += guestItem.quantity
+    } else {
+      mergedCart.push(guestItem)
+    }
+  })
+
+  return mergedCart
 }

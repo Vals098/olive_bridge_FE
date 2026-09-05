@@ -2,7 +2,7 @@ import type { AppDispatch } from "../../store"
 import type { User } from "../../../types/User"
 import type { LoginRequest } from "../../../types/LoginRequest"
 import { loadCartAction } from "../cartAction/loadCart"
-import { getSavedCart } from "../../cartStorage"
+import { getSavedCart, mergeCarts, saveCart } from "../../cartStorage"
 
 export const LOGIN = "LOGIN"
 
@@ -50,10 +50,21 @@ export const loginAction = (credentials: LoginRequest) => {
         payload: user,
       })
 
-      // 4. Load user's cart
-      const savedCart = getSavedCart(user.userId)
+      // 4. Get user's cart and guest cart
+      const userCart = getSavedCart(user.userId)
+      const guestCart = getSavedCart(null)
 
-      dispatch(loadCartAction(savedCart))
+      // 5. Merge guest cart into user's cart
+      const mergedCart = mergeCarts(userCart, guestCart)
+
+      // 6. Save merged cart as user's cart
+      saveCart(user.userId, mergedCart)
+
+      // 7. Remove guest cart
+      localStorage.removeItem("cart_guest")
+
+      // 8. Load merged cart into Redux
+      dispatch(loadCartAction(mergedCart))
     } catch (error) {
       console.error("Login error:", error)
     }
