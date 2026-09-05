@@ -6,6 +6,7 @@ import userReducer from "../reducers/userReducer"
 import productReducer from "../reducers/productReducer"
 import cartReducer from "../reducers/cartReducer"
 import productVariantReducer from "../reducers/productVariantReducer"
+import addressReducer from "../reducers/addressReducer"
 
 const cartPersistConfig = {
   key: "cart",
@@ -20,6 +21,7 @@ const store = configureStore({
     product: productReducer,
     productVariant: productVariantReducer,
     cart: persistedCartReducer,
+    address: addressReducer,
   },
 })
 

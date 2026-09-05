@@ -18,6 +18,7 @@ import ProductDetail from "./pages/ProductDetail"
 import Cart from "./pages/Cart"
 import Checkout from "./pages/Checkout"
 import Profile from "./pages/Profile"
+import Addresses from "./pages/Addresses"
 
 const MainLayout = () => {
   return (
@@ -49,6 +50,7 @@ function AppContent() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/addresses" element={<Addresses />} />
         </Route>
       </Routes>
     </BrowserRouter>
