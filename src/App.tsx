@@ -9,6 +9,7 @@ import { getCurrentUser } from "./redux/actions/userAction/getCurrentUser"
 
 import Navbar from "./components/Navbar"
 import Footer from "./components/Footer"
+import PrivateRoute from "./components/PrivateRoute"
 
 import Home from "./pages/Home"
 import Products from "./pages/Products"
@@ -49,8 +50,11 @@ function AppContent() {
           <Route path="/products/:productId" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/addresses" element={<Addresses />} />
+
+          <Route element={<PrivateRoute />}>
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/addresses" element={<Addresses />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

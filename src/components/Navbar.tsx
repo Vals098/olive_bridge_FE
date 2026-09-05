@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux"
 import type { AppDispatch, RootState } from "../redux/store"
 import { logoutAction } from "../redux/actions/userAction/logout"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import {
   Navbar as BootstrapNavbar,
   Container,
@@ -11,11 +11,13 @@ import {
 
 function Navbar() {
   const dispatch = useDispatch<AppDispatch>()
+  const navigate = useNavigate()
 
   const currentUser = useSelector((state: RootState) => state.user.currentUser)
 
   const handleLogout = () => {
     dispatch(logoutAction())
+    navigate("/login", { replace: true })
   }
 
   return (
