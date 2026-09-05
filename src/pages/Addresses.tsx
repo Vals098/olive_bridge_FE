@@ -6,7 +6,9 @@ import type { AppDispatch, RootState } from "../redux/store"
 import { getAddresses } from "../redux/actions/addressAction/getAddresses"
 import { createAddress } from "../redux/actions/addressAction/createAddress"
 import { deleteAddress } from "../redux/actions/addressAction/deleteAddress"
+import { updateAddress } from "../redux/actions/addressAction/updateAddress"
 import type { AddressRequest } from "../types/AddressRequest"
+import type { Address } from "../types/Address"
 
 function Addresses() {
   const dispatch = useDispatch<AppDispatch>()
@@ -14,6 +16,7 @@ function Addresses() {
   const addresses = useSelector((state: RootState) => state.address.addresses)
 
   const [showForm, setShowForm] = useState(false)
+  const [editingAddressId, setEditingAddressId] = useState<string | null>(null)
 
   const [label, setLabel] = useState("")
   const [recipientName, setRecipientName] = useState("")
@@ -42,7 +45,11 @@ function Addresses() {
       building,
     }
 
-    await dispatch(createAddress(addressData))
+    if (editingAddressId) {
+      await dispatch(updateAddress(editingAddressId, addressData))
+    } else {
+      await dispatch(createAddress(addressData))
+    }
 
     setLabel("")
     setRecipientName("")
@@ -53,7 +60,23 @@ function Addresses() {
     setStreet("")
     setBuilding("")
 
+    setEditingAddressId(null)
     setShowForm(false)
+  }
+
+  const handleEdit = (address: Address) => {
+    setEditingAddressId(address.addressId)
+
+    setLabel(address.label)
+    setRecipientName(address.recipientName)
+    setPostalCode(address.postalCode)
+    setPrefecture(address.prefecture)
+    setCity(address.city)
+    setArea(address.area)
+    setStreet(address.street)
+    setBuilding(address.building ?? "")
+
+    setShowForm(true)
   }
 
   return (
@@ -80,6 +103,10 @@ function Addresses() {
             <p>{address.street}</p>
 
             {address.building && <p>{address.building}</p>}
+
+            <Button variant="secondary" onClick={() => handleEdit(address)}>
+              Edit
+            </Button>
 
             <Button
               variant="danger"
@@ -176,7 +203,9 @@ function Addresses() {
             />
           </Form.Group>
 
-          <Button type="submit">Save Address</Button>
+          <Button type="submit">
+            {editingAddressId ? "Save Changes" : "Save Address"}
+          </Button>
         </Form>
       )}
     </Container>

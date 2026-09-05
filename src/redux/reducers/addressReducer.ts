@@ -15,6 +15,11 @@ import {
   type DeleteAddressAction,
 } from "../actions/addressAction/deleteAddress"
 
+import {
+  UPDATE_ADDRESS,
+  type UpdateAddressAction,
+} from "../actions/addressAction/updateAddress"
+
 interface AddressState {
   addresses: Address[]
 }
@@ -41,6 +46,12 @@ const isDeleteAddressAction = (
   return action.type === DELETE_ADDRESS && "payload" in action
 }
 
+const isUpdateAddressAction = (
+  action: UnknownAction,
+): action is UpdateAddressAction => {
+  return action.type === UPDATE_ADDRESS && "payload" in action
+}
+
 const addressReducer = (
   state = initialState,
   action: UnknownAction,
@@ -64,6 +75,17 @@ const addressReducer = (
       ...state,
       addresses: state.addresses.filter(
         (address) => address.addressId !== action.payload,
+      ),
+    }
+  }
+
+  if (isUpdateAddressAction(action)) {
+    return {
+      ...state,
+      addresses: state.addresses.map((address) =>
+        address.addressId === action.payload.addressId
+          ? action.payload
+          : address,
       ),
     }
   }
