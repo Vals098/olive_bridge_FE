@@ -1,0 +1,139 @@
+import { useSelector } from "react-redux"
+import { useState } from "react"
+import type { RootState } from "../redux/store"
+import { Form, Button, Container } from "react-bootstrap"
+import type { SyntheticEvent } from "react"
+
+function Checkout() {
+  const [customerName, setCustomerName] = useState("")
+  const [customerEmail, setCustomerEmail] = useState("")
+  const [shippingPostalCode, setShippingPostalCode] = useState("")
+  const [shippingPrefecture, setShippingPrefecture] = useState("")
+  const [shippingCity, setShippingCity] = useState("")
+  const [shippingArea, setShippingArea] = useState("")
+  const [shippingStreet, setShippingStreet] = useState("")
+  const [shippingBuilding, setShippingBuilding] = useState("")
+
+  const cartItems = useSelector((state: RootState) => state.cart.items)
+
+  const cartTotal = cartItems.reduce(
+    (total, item) => total + item.variant.price * item.quantity,
+    0,
+  )
+
+  const handleSubmit = async (e: SyntheticEvent) => {
+    e.preventDefault()
+
+    const orderData = {
+      customerName,
+      customerEmail,
+      shippingPostalCode,
+      shippingPrefecture,
+      shippingCity,
+      shippingArea,
+      shippingStreet,
+      shippingBuilding,
+      items: cartItems.map((item) => ({
+        productVariantId: item.variant.productVariantId,
+        quantity: item.quantity,
+      })),
+    }
+
+    console.log("Order data:", orderData)
+  }
+
+  return (
+    <Container className="py-5">
+      <h1>Checkout</h1>
+
+      <h2>Order summary</h2>
+
+      {cartItems.map((item) => (
+        <div key={item.variant.productVariantId}>
+          <h3>{item.product.name}</h3>
+
+          <p>Format: {item.variant.format}</p>
+
+          <p>Quantity: {item.quantity}</p>
+
+          <p>Subtotal: €{(item.variant.price * item.quantity).toFixed(2)}</p>
+        </div>
+      ))}
+
+      <h3>Total: €{cartTotal.toFixed(2)}</h3>
+
+      <Form onSubmit={handleSubmit}>
+        <h2>Customer information</h2>
+
+        <Form.Control
+          type="text"
+          placeholder="Enter your name"
+          value={customerName}
+          onChange={(e) => setCustomerName(e.target.value)}
+          required
+        />
+
+        <Form.Control
+          type="email"
+          placeholder="Enter your email"
+          value={customerEmail}
+          onChange={(e) => setCustomerEmail(e.target.value)}
+          required
+        />
+
+        <h2>Shipping address</h2>
+
+        <Form.Control
+          type="text"
+          placeholder="Enter your postal code"
+          value={shippingPostalCode}
+          onChange={(e) => setShippingPostalCode(e.target.value)}
+          required
+        />
+
+        <Form.Control
+          type="text"
+          placeholder="Enter your prefecture"
+          value={shippingPrefecture}
+          onChange={(e) => setShippingPrefecture(e.target.value)}
+          required
+        />
+
+        <Form.Control
+          type="text"
+          placeholder="Enter your city"
+          value={shippingCity}
+          onChange={(e) => setShippingCity(e.target.value)}
+          required
+        />
+
+        <Form.Control
+          type="text"
+          placeholder="Enter your area"
+          value={shippingArea}
+          onChange={(e) => setShippingArea(e.target.value)}
+          required
+        />
+
+        <Form.Control
+          type="text"
+          placeholder="Enter your street"
+          value={shippingStreet}
+          onChange={(e) => setShippingStreet(e.target.value)}
+          required
+        />
+
+        <Form.Control
+          type="text"
+          placeholder="Enter your building (optional)"
+          value={shippingBuilding}
+          onChange={(e) => setShippingBuilding(e.target.value)}
+        />
+
+        <Button type="submit">Place Order</Button>
+      </Form>
+    </Container>
+  )
+}
+
+export default Checkout

@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
 import type { AppDispatch, RootState } from "../redux/store"
 import { increaseQuantityAction } from "../redux/actions/cartAction/increaseQuantity"
 import { removeFromCartAction } from "../redux/actions/cartAction/removeFromCart"
@@ -8,6 +9,8 @@ import { Button } from "react-bootstrap"
 
 function Cart() {
   const dispatch = useDispatch<AppDispatch>()
+
+  const navigate = useNavigate()
 
   const cartItems = useSelector((state: RootState) => state.cart.items)
 
@@ -56,6 +59,8 @@ function Cart() {
         ))
       )}
       <h2>Cart total: €{cartTotal.toFixed(2)}</h2>
+      
+      <Button onClick={() => navigate("/checkout")}>Checkout</Button>
     </div>
   )
 }
