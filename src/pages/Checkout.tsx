@@ -23,6 +23,7 @@ function Checkout() {
   const [shippingStreet, setShippingStreet] = useState("")
   const [shippingBuilding, setShippingBuilding] = useState("")
   const [order, setOrder] = useState<OrderResponse | null>(null)
+  const [error, setError] = useState("")
 
   const cartItems = useSelector((state: RootState) => state.cart.items)
 
@@ -30,8 +31,11 @@ function Checkout() {
     return (
       <Container className="py-5">
         <h1>Order confirmed!</h1>
+
         <p>Order ID: {order.orderId}</p>
+
         <p>Total: €{Number(order.total).toFixed(2)}</p>
+
         <p>Thank you for your order!</p>
       </Container>
     )
@@ -55,6 +59,8 @@ function Checkout() {
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault()
 
+    setError("")
+
     const orderData = {
       customerName,
       customerEmail,
@@ -70,21 +76,27 @@ function Checkout() {
       })),
     }
 
-    const response = await fetch("http://localhost:8080/orders/checkout", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(orderData),
-    })
-    if (!response.ok) {
-      throw new Error("Unable to place order")
+    try {
+      const response = await fetch("http://localhost:8080/orders/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+      })
+
+      if (!response.ok) {
+        throw new Error("Unable to place order")
+      }
+
+      const createdOrder: OrderResponse = await response.json()
+
+      setOrder(createdOrder)
+
+      dispatch(clearCartAction())
+    } catch {
+      setError("Unable to place order. Please try again.")
     }
-
-    const createdOrder = await response.json()
-
-    setOrder(createdOrder)
-    dispatch(clearCartAction())
   }
 
   return (
@@ -107,85 +119,78 @@ function Checkout() {
 
       <h3>Total: €{cartTotal.toFixed(2)}</h3>
 
-      {order ? (
-        <div>
-          <h2>Order confirmed!</h2>
-          <p>Order ID: {order.orderId}</p>
-          <p>Total: €{Number(order.total).toFixed(2)}</p>
-          <p>Thank you for your order!</p>
-        </div>
-      ) : (
-        <Form onSubmit={handleSubmit}>
-          <h2>Customer information</h2>
+      {error && <p>{error}</p>}
 
-          <Form.Control
-            type="text"
-            placeholder="Enter your name"
-            value={customerName}
-            onChange={(e) => setCustomerName(e.target.value)}
-            required
-          />
+      <Form onSubmit={handleSubmit}>
+        <h2>Customer information</h2>
 
-          <Form.Control
-            type="email"
-            placeholder="Enter your email"
-            value={customerEmail}
-            onChange={(e) => setCustomerEmail(e.target.value)}
-            required
-          />
+        <Form.Control
+          type="text"
+          placeholder="Enter your name"
+          value={customerName}
+          onChange={(e) => setCustomerName(e.target.value)}
+          required
+        />
 
-          <h2>Shipping address</h2>
+        <Form.Control
+          type="email"
+          placeholder="Enter your email"
+          value={customerEmail}
+          onChange={(e) => setCustomerEmail(e.target.value)}
+          required
+        />
 
-          <Form.Control
-            type="text"
-            placeholder="Enter your postal code"
-            value={shippingPostalCode}
-            onChange={(e) => setShippingPostalCode(e.target.value)}
-            required
-          />
+        <h2>Shipping address</h2>
 
-          <Form.Control
-            type="text"
-            placeholder="Enter your prefecture"
-            value={shippingPrefecture}
-            onChange={(e) => setShippingPrefecture(e.target.value)}
-            required
-          />
+        <Form.Control
+          type="text"
+          placeholder="Enter your postal code"
+          value={shippingPostalCode}
+          onChange={(e) => setShippingPostalCode(e.target.value)}
+          required
+        />
 
-          <Form.Control
-            type="text"
-            placeholder="Enter your city"
-            value={shippingCity}
-            onChange={(e) => setShippingCity(e.target.value)}
-            required
-          />
+        <Form.Control
+          type="text"
+          placeholder="Enter your prefecture"
+          value={shippingPrefecture}
+          onChange={(e) => setShippingPrefecture(e.target.value)}
+          required
+        />
 
-          <Form.Control
-            type="text"
-            placeholder="Enter your area"
-            value={shippingArea}
-            onChange={(e) => setShippingArea(e.target.value)}
-            required
-          />
+        <Form.Control
+          type="text"
+          placeholder="Enter your city"
+          value={shippingCity}
+          onChange={(e) => setShippingCity(e.target.value)}
+          required
+        />
 
-          <Form.Control
-            type="text"
-            placeholder="Enter your street"
-            value={shippingStreet}
-            onChange={(e) => setShippingStreet(e.target.value)}
-            required
-          />
+        <Form.Control
+          type="text"
+          placeholder="Enter your area"
+          value={shippingArea}
+          onChange={(e) => setShippingArea(e.target.value)}
+          required
+        />
 
-          <Form.Control
-            type="text"
-            placeholder="Enter your building (optional)"
-            value={shippingBuilding}
-            onChange={(e) => setShippingBuilding(e.target.value)}
-          />
+        <Form.Control
+          type="text"
+          placeholder="Enter your street"
+          value={shippingStreet}
+          onChange={(e) => setShippingStreet(e.target.value)}
+          required
+        />
 
-          <Button type="submit">Place Order</Button>
-        </Form>
-      )}
+        <Form.Control
+          type="text"
+          placeholder="Enter your building (optional)"
+          value={shippingBuilding}
+          onChange={(e) => setShippingBuilding(e.target.value)}
+        />
+
+        <Button type="submit">Place Order</Button>
+      </Form>
     </Container>
   )
 }
