@@ -7,6 +7,7 @@ import type { SyntheticEvent } from "react"
 import { useDispatch } from "react-redux"
 import type { AppDispatch } from "../redux/store"
 import { clearCartAction } from "../redux/actions/cartAction/clearCart"
+import type { OrderResponse } from "../types/OrderResponse"
 
 function Checkout() {
   const dispatch = useDispatch<AppDispatch>()
@@ -21,7 +22,7 @@ function Checkout() {
   const [shippingArea, setShippingArea] = useState("")
   const [shippingStreet, setShippingStreet] = useState("")
   const [shippingBuilding, setShippingBuilding] = useState("")
-  const [order, setOrder] = useState<any>(null)
+  const [order, setOrder] = useState<OrderResponse | null>(null)
 
   const cartItems = useSelector((state: RootState) => state.cart.items)
 
