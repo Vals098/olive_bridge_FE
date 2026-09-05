@@ -26,6 +26,17 @@ function Checkout() {
 
   const cartItems = useSelector((state: RootState) => state.cart.items)
 
+  if (order) {
+    return (
+      <Container className="py-5">
+        <h1>Order confirmed!</h1>
+        <p>Order ID: {order.orderId}</p>
+        <p>Total: €{Number(order.total).toFixed(2)}</p>
+        <p>Thank you for your order!</p>
+      </Container>
+    )
+  }
+
   if (cartItems.length === 0) {
     return (
       <Container className="py-5">

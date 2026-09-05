@@ -44,21 +44,21 @@ function Cart() {
               <Button
                 onClick={() =>
                   dispatch(
-                    increaseQuantityAction(item.variant.productVariantId),
-                  )
-                }
-              >
-                +
-              </Button>
-
-              <Button
-                onClick={() =>
-                  dispatch(
                     decreaseQuantityAction(item.variant.productVariantId),
                   )
                 }
               >
                 −
+              </Button>
+
+              <Button
+                onClick={() =>
+                  dispatch(
+                    increaseQuantityAction(item.variant.productVariantId),
+                  )
+                }
+              >
+                +
               </Button>
 
               <Button
