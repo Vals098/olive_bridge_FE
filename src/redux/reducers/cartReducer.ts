@@ -5,6 +5,7 @@ import { INCREASE_QUANTITY } from "../actions/cartAction/increaseQuantity"
 import { REMOVE_FROM_CART } from "../actions/cartAction/removeFromCart"
 import { DECREASE_QUANTITY } from "../actions/cartAction/decreaseQuantity"
 import { CLEAR_CART } from "../actions/cartAction/clearCart"
+import { LOAD_CART } from "../actions/cartAction/loadCart"
 
 interface CartState {
   items: CartItem[]
@@ -18,6 +19,13 @@ const cartReducer = (
   state = initialState,
   action: UnknownAction,
 ): CartState => {
+  if (action.type === LOAD_CART && "payload" in action) {
+    return {
+      ...state,
+      items: action.payload as CartItem[],
+    }
+  }
+
   if (action.type === ADD_TO_CART && "payload" in action) {
     const product = action.payload as CartItem
 

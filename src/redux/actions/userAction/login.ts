@@ -1,54 +1,61 @@
-import type { AppDispatch } from "../../store";
-import type { User } from "../../../types/User";
-import type { LoginRequest } from "../../../types/LoginRequest";
+import type { AppDispatch } from "../../store"
+import type { User } from "../../../types/User"
+import type { LoginRequest } from "../../../types/LoginRequest"
+import { loadCartAction } from "../cartAction/loadCart"
+import { getSavedCart } from "../../cartStorage"
 
-export const LOGIN = "LOGIN";
+export const LOGIN = "LOGIN"
 
 export type LoginAction = {
-    type: typeof LOGIN;
-    payload: User;
-};
+  type: typeof LOGIN
+  payload: User
+}
 
 export const loginAction = (credentials: LoginRequest) => {
-    return async (dispatch: AppDispatch) => {
-        try {
-            // 1. Login
-            const loginResponse = await fetch("http://localhost:8080/auth/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(credentials),
-            });
+  return async (dispatch: AppDispatch) => {
+    try {
+      // 1. Login
+      const loginResponse = await fetch("http://localhost:8080/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(credentials),
+      })
 
-            if (!loginResponse.ok) {
-                throw new Error("Invalid credentials");
-            }
+      if (!loginResponse.ok) {
+        throw new Error("Invalid credentials")
+      }
 
-            const token = await loginResponse.text();
+      const token = await loginResponse.text()
 
-            localStorage.setItem("token", token);
+      localStorage.setItem("token", token)
 
-            // 2. Get current user
-            const userResponse = await fetch("http://localhost:8080/users/me", {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
+      // 2. Get current user
+      const userResponse = await fetch("http://localhost:8080/users/me", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
 
-            if (!userResponse.ok) {
-                throw new Error("Unable to retrieve user");
-            }
+      if (!userResponse.ok) {
+        throw new Error("Unable to retrieve user")
+      }
 
-            const user: User = await userResponse.json();
+      const user: User = await userResponse.json()
 
-            // 3. Save user in Redux
-            dispatch({
-                type: LOGIN,
-                payload: user,
-            });
-        } catch (error) {
-            console.error("Login error:", error);
-        }
-    };
-};
+      // 3. Save user in Redux
+      dispatch({
+        type: LOGIN,
+        payload: user,
+      })
+
+      // 4. Load user's cart
+      const savedCart = getSavedCart(user.userId)
+
+      dispatch(loadCartAction(savedCart))
+    } catch (error) {
+      console.error("Login error:", error)
+    }
+  }
+}
