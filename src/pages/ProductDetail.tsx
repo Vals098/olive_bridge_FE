@@ -1,4 +1,4 @@
-import { SyntheticEvent, useEffect, useState } from "react"
+import { type SyntheticEvent, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { Container, Row, Col, Button } from "react-bootstrap"
 import type { Product } from "../types/Product"

@@ -29,6 +29,7 @@ import Addresses from "./pages/Addresses"
 import Favourites from "./pages/Favourites"
 import Business from "./pages/Business"
 import SampleRequests from "./pages/SampleRequests"
+import BusinessInquiries from "./pages/BusinessInquiries"
 
 const MainLayout = () => {
   return (
@@ -77,6 +78,10 @@ function AppContent() {
               <Route path="/favourites" element={<Favourites />} />
               <Route path="/business" element={<Business />} />
               <Route path="/sample-requests" element={<SampleRequests />} />
+              <Route
+                path="/business-inquiries"
+                element={<BusinessInquiries />}
+              />
             </Route>
           </Route>
         </Routes>
