@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react"
+import { SyntheticEvent, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { Container, Row, Col, Button } from "react-bootstrap"
 import type { Product } from "../types/Product"
 import { useDispatch } from "react-redux"
 import { getProductVariants } from "../redux/actions/productAction/getProductVariants"
+import { createSampleRequest } from "../redux/actions/sampleRequestAction/createSampleRequest"
 import type { RootState, AppDispatch } from "../redux/store"
 import { addToCartAction } from "../redux/actions/cartAction/addToCart"
 import { useSelector } from "react-redux"
@@ -12,6 +13,9 @@ import type { ProductVariant } from "../types/ProductVariant"
 function ProductDetail() {
   const { productId } = useParams()
   const dispatch = useDispatch<AppDispatch>()
+
+  const currentUser = useSelector((state: RootState) => state.user.currentUser)
+
   const variants = useSelector(
     (state: RootState) => state.productVariant.variants,
   )
@@ -20,17 +24,36 @@ function ProductDetail() {
     null,
   )
 
-const handleAddToCart = () => {
-  if (product && selectedVariant) {
+  const [showSampleForm, setShowSampleForm] = useState(false)
+  const [sampleMessage, setSampleMessage] = useState("")
+
+  const handleAddToCart = () => {
+    if (product && selectedVariant) {
+      dispatch(
+        addToCartAction({
+          product: product,
+          variant: selectedVariant,
+          quantity: 1,
+        }),
+      )
+    }
+  }
+
+  const handleSampleRequest = (event: SyntheticEvent) => {
+    event.preventDefault()
+
+    if (!product) return
+
     dispatch(
-      addToCartAction({
-        product: product,
-        variant: selectedVariant,
-        quantity: 1,
+      createSampleRequest({
+        productId: product.productId,
+        message: sampleMessage,
       }),
     )
+
+    setSampleMessage("")
+    setShowSampleForm(false)
   }
-}
 
   useEffect(() => {
     const getProduct = async () => {
@@ -107,6 +130,43 @@ const handleAddToCart = () => {
           <Button className="product-detail-button" onClick={handleAddToCart}>
             Add to cart
           </Button>
+
+          {currentUser && (
+            <>
+              <Button
+                variant="outline-dark"
+                className="product-detail-button"
+                onClick={() => setShowSampleForm(true)}
+              >
+                Request a Sample
+              </Button>
+
+              {showSampleForm && (
+                <form onSubmit={handleSampleRequest}>
+                  <label htmlFor="sampleMessage">
+                    Tell us why you are interested in this product
+                  </label>
+
+                  <textarea
+                    id="sampleMessage"
+                    value={sampleMessage}
+                    onChange={(event) => setSampleMessage(event.target.value)}
+                    required
+                  />
+
+                  <Button type="submit">Send Request</Button>
+
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={() => setShowSampleForm(false)}
+                  >
+                    Cancel
+                  </Button>
+                </form>
+              )}
+            </>
+          )}
         </Col>
       </Row>
 

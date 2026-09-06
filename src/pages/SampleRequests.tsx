@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { Container } from "react-bootstrap"
 import type { AppDispatch, RootState } from "../redux/store"
 import { getSampleRequests } from "../redux/actions/sampleRequestAction/getSampleRequests"
+import { getProducts } from "../redux/actions/productAction/getProducts"
 
 function SampleRequests() {
   const dispatch = useDispatch<AppDispatch>()
@@ -11,9 +12,17 @@ function SampleRequests() {
     (state: RootState) => state.sampleRequest.sampleRequests,
   )
 
+  const products = useSelector((state: RootState) => state.product.products)
+
   useEffect(() => {
     dispatch(getSampleRequests())
   }, [dispatch])
+
+  useEffect(() => {
+    if (products.length === 0) {
+      dispatch(getProducts())
+    }
+  }, [dispatch, products.length])
 
   return (
     <Container className="products-page">
@@ -25,7 +34,10 @@ function SampleRequests() {
         sampleRequests.map((sampleRequest) => (
           <div key={sampleRequest.sampleRequestId}>
             <p>
-              <strong>Product:</strong> {sampleRequest.productId}
+              <strong>Product:</strong>{" "}
+              {products.find(
+                (product) => product.productId === sampleRequest.productId,
+              )?.name ?? "Product"}
             </p>
             <p>
               <strong>Message:</strong> {sampleRequest.message}
