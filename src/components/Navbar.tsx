@@ -17,7 +17,7 @@ function Navbar() {
 
   const handleLogout = () => {
     dispatch(logoutAction())
-    navigate("/login", { replace: true })
+    navigate("/", { replace: true })
   }
 
   return (
