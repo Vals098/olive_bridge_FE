@@ -31,12 +31,17 @@ function Navbar() {
           <Nav.Link as={Link} to="/products">
             Products
           </Nav.Link>
+
           <Nav.Link as={Link} to="/cart">
             Cart
           </Nav.Link>
 
           {currentUser ? (
             <>
+              <Nav.Link as={Link} to="/favourites">
+                ♥ Favourites
+              </Nav.Link>
+
               <span className="navbar-welcome">
                 Welcome, {currentUser.name}!
               </span>

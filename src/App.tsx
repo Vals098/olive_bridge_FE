@@ -26,6 +26,7 @@ import Cart from "./pages/Cart"
 import Checkout from "./pages/Checkout"
 import Profile from "./pages/Profile"
 import Addresses from "./pages/Addresses"
+import Favourites from "./pages/Favourites"
 
 const MainLayout = () => {
   return (
@@ -71,6 +72,7 @@ function AppContent() {
             <Route element={<PrivateRoute />}>
               <Route path="/profile" element={<Profile />} />
               <Route path="/addresses" element={<Addresses />} />
+              <Route path="/favourites" element={<Favourites />} />
             </Route>
           </Route>
         </Routes>

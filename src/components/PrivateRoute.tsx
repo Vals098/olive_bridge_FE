@@ -4,11 +4,17 @@ import type { RootState } from "../redux/store"
 
 function PrivateRoute() {
   const currentUser = useSelector(
-    (state: RootState) => state.user.currentUser
+    (state: RootState) => state.user.currentUser,
   )
 
-  if (!currentUser) {
+  const token = localStorage.getItem("token")
+
+  if (!token) {
     return <Navigate to="/login" replace />
+  }
+
+  if (!currentUser) {
+    return <p>Loading...</p>
   }
 
   return <Outlet />
