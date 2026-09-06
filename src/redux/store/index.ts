@@ -8,6 +8,7 @@ import cartReducer from "../reducers/cartReducer"
 import productVariantReducer from "../reducers/productVariantReducer"
 import addressReducer from "../reducers/addressReducer"
 import favouriteReducer from "../reducers/favouriteReducer"
+import sampleRequestReducer from "../reducers/sampleRequestReducer"
 
 const cartPersistConfig = {
   key: "cart",
@@ -24,6 +25,7 @@ const store = configureStore({
     cart: persistedCartReducer,
     address: addressReducer,
     favourite: favouriteReducer,
+    sampleRequest: sampleRequestReducer,
   },
 })
 
