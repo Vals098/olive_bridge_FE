@@ -12,25 +12,26 @@ function CartPersistence() {
 
   const previousUserId = useRef<string | null | undefined>(undefined)
 
-  useEffect(() => {
-    const currentUserId = currentUser?.userId ?? null
+useEffect(() => {
+  const currentUserId = currentUser?.userId ?? null
 
-    // Primo caricamento dell'app:
-    // non salviamo ancora nulla.
-    if (previousUserId.current === undefined) {
-      previousUserId.current = currentUserId
-      return
-    }
-
-    // Se l'utente non è cambiato, salviamo normalmente.
-    if (previousUserId.current === currentUserId) {
-      saveCart(currentUserId, cartItems)
-      return
-    }
-
-    // L'utente è cambiato.
+  // Primo caricamento dell'app:
+  // non salviamo ancora nulla.
+  if (previousUserId.current === undefined) {
     previousUserId.current = currentUserId
-  }, [cartItems, currentUser])
+    return
+  }
+
+  // L'utente è cambiato:
+  // aggiorniamo il riferimento ma non salviamo il carrello.
+  if (previousUserId.current !== currentUserId) {
+    previousUserId.current = currentUserId
+    return
+  }
+
+  // L'utente non è cambiato: salviamo normalmente.
+  saveCart(currentUserId, cartItems)
+}, [cartItems, currentUser])
 
   return null
 }
