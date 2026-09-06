@@ -1,11 +1,16 @@
 import { useEffect } from "react"
-import { Provider, useDispatch } from "react-redux"
+import { Provider, useDispatch, useSelector } from "react-redux"
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom"
 import { PersistGate } from "redux-persist/integration/react"
 import "./App.css"
 
-import store, { persistor, type AppDispatch } from "./redux/store"
+import store, {
+  persistor,
+  type AppDispatch,
+  type RootState,
+} from "./redux/store"
 import { getCurrentUser } from "./redux/actions/userAction/getCurrentUser"
+import { getFavourites } from "./redux/actions/favouriteAction/getFavourites"
 
 import Navbar from "./components/Navbar"
 import Footer from "./components/Footer"
@@ -39,9 +44,18 @@ function AppContent() {
     dispatch(getCurrentUser())
   }, [dispatch])
 
+  const currentUser = useSelector((state: RootState) => state.user.currentUser)
+
+  useEffect(() => {
+    if (currentUser) {
+      dispatch(getFavourites())
+    }
+  }, [currentUser, dispatch])
+
   return (
     <>
       <CartPersistence />
+
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
