@@ -1,12 +1,14 @@
 import { useState } from "react"
 import { useDispatch } from "react-redux"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import type { AppDispatch } from "../redux/store"
 import { loginAction } from "../redux/actions/userAction/login"
 
 function Login() {
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
+
+  const [searchParams] = useSearchParams()
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -21,7 +23,9 @@ function Login() {
       }),
     )
 
-    navigate("/")
+    const redirect = searchParams.get("redirect")
+
+    navigate(redirect || "/")
   }
 
   return (

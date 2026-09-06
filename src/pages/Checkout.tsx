@@ -27,6 +27,8 @@ function Checkout() {
 
   const cartItems = useSelector((state: RootState) => state.cart.items)
 
+  const currentUser = useSelector((state: RootState) => state.user.currentUser)
+
   if (order) {
     return (
       <Container className="py-5">
@@ -102,6 +104,30 @@ function Checkout() {
   return (
     <Container className="py-5">
       <h1>Checkout</h1>
+
+      {!currentUser && (
+        <div className="checkout-account-options">
+          <h2>Already have an account?</h2>
+
+          <p>
+            Log in or register to save your information and access your account
+            features.
+          </p>
+
+          <Button
+            variant="dark"
+            onClick={() => navigate("/login?redirect=/checkout")}
+          >
+            Login
+          </Button>
+
+          <Button variant="outline-dark" onClick={() => navigate("/register")}>
+            Register
+          </Button>
+
+          <p>Or continue as a guest and complete your order below.</p>
+        </div>
+      )}
 
       <h2>Order summary</h2>
 
