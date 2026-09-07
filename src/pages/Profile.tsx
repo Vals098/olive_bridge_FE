@@ -1,8 +1,11 @@
-import { Container, Card, Row, Col } from "react-bootstrap"
+import { Container, Card, Row, Col, Button } from "react-bootstrap"
 import { useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
 import type { RootState } from "../redux/store"
 
 function Profile() {
+  const navigate = useNavigate()
+
   const currentUser = useSelector(
     (state: RootState) => state.user.currentUser,
   )
@@ -90,6 +93,30 @@ function Profile() {
                 </div>
               </Col>
             </Row>
+          </Card.Body>
+        </Card>
+
+        <Card className="profile-card profile-address-card">
+          <Card.Body>
+            <div className="profile-address-content">
+              <div>
+                <span className="profile-section-label">MY ADDRESSES</span>
+
+                <h2>Saved addresses</h2>
+
+                <p>
+                  Manage your shipping addresses and add new ones for your
+                  orders.
+                </p>
+              </div>
+
+              <Button
+                className="profile-address-button"
+                onClick={() => navigate("/addresses")}
+              >
+                Manage Addresses
+              </Button>
+            </div>
           </Card.Body>
         </Card>
       </Container>

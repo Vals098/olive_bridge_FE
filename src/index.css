@@ -1502,6 +1502,109 @@ code {
   }
 }
 
+/* address card */
+.address-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background-color: #fff;
+  box-shadow: 0 4px 14px rgba(45, 66, 59, 0.06);
+}
+
+.address-card-header {
+  margin-bottom: 1.25rem;
+}
+
+.address-card-label {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  background-color: var(--background);
+  color: var(--primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.address-card-content strong {
+  display: block;
+  margin-bottom: 0.75rem;
+  color: var(--text);
+  font-size: 1rem;
+}
+
+.address-card-content p {
+  margin-bottom: 0.35rem;
+  color: var(--text-light);
+}
+
+.address-card-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.address-card-actions .btn {
+  flex: 1;
+}
+
+/* profile address */
+.profile-address-card {
+  margin-top: 1.5rem;
+}
+
+.profile-address-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.profile-section-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: #7a6a52;
+}
+
+.profile-address-content h2 {
+  margin-bottom: 0.5rem;
+  font-size: 1.35rem;
+}
+
+.profile-address-content p {
+  margin-bottom: 0;
+  color: #6c6c6c;
+}
+
+.profile-address-button {
+  flex-shrink: 0;
+  background-color: var(--primary) !important;
+  border-color: var(--primary) !important;
+  color: #fff !important;
+}
+
+.profile-address-button:hover {
+  background-color: var(--text) !important;
+  border-color: var(--text) !important;
+  color: #fff !important;
+}
+
+@media (max-width: 768px) {
+  .profile-address-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .profile-address-button {
+    width: 100%;
+  }
+}
+
 /* NOTIFICATIONS PAGE */
 .notifications-page {
   padding: 60px 0 80px;
@@ -2029,7 +2132,6 @@ code {
 }
 
 /* List */
-
 .sample-requests-list {
   max-width: 900px;
   margin: 0 auto;
@@ -2689,4 +2791,208 @@ code {
 
 .checkout-new-address-option p {
   margin-bottom: 0;
+}
+
+/* ADDRESS PAGE */
+.addresses-page {
+  min-height: 70vh;
+  padding: 5rem 0;
+  background-color: var(--background);
+}
+
+.addresses-header {
+  margin-bottom: 3rem;
+}
+
+.addresses-label {
+  margin-bottom: 0.5rem;
+  color: var(--text-light);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+}
+
+.addresses-header h1 {
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+}
+
+.addresses-header > p:last-child {
+  margin: 0;
+  color: var(--text-light);
+}
+
+.addresses-empty {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+  text-align: center;
+  background-color: #fff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(45, 66, 59, 0.06);
+}
+
+.addresses-empty-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 1.5rem;
+  border-radius: 50%;
+  background-color: var(--background);
+  color: var(--primary);
+  font-size: 1.8rem;
+}
+
+.addresses-empty h2 {
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  font-size: 1.5rem;
+}
+
+.addresses-empty p {
+  max-width: 420px;
+  margin: 0 auto 1.75rem;
+  color: var(--text-light);
+}
+
+.addresses-primary-button {
+  background-color: var(--primary) !important;
+  border-color: var(--primary) !important;
+  color: #fff !important;
+}
+
+.addresses-primary-button:hover {
+  background-color: var(--text) !important;
+  border-color: var(--text) !important;
+}
+
+.addresses-add-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 2.5rem;
+}
+
+.address-form-card {
+  max-width: 850px;
+  margin: 3rem auto 0;
+  padding: 2rem;
+  background-color: #fff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(45, 66, 59, 0.06);
+}
+
+.address-form-header {
+  margin-bottom: 1.5rem;
+}
+
+.address-form-header h2 {
+  margin-bottom: 0.5rem;
+  color: var(--primary);
+}
+
+.address-form-header p:last-child {
+  margin-bottom: 0;
+  color: var(--text-light);
+}
+
+.address-form-card .form-label {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.address-form-card .form-control {
+  border-color: var(--border);
+}
+
+.address-form-card .form-control:focus {
+  border-color: var(--secondary);
+  box-shadow: 0 0 0 0.2rem rgba(122, 148, 139, 0.15);
+}
+
+.address-form-cancel {
+  margin-top: 0.75rem;
+}
+
+@media (max-width: 768px) {
+  .addresses-page {
+    padding: 3rem 0;
+  }
+
+  .addresses-header {
+    margin-bottom: 2rem;
+  }
+
+  .address-form-card {
+    padding: 1.5rem;
+  }
+
+  .addresses-add-wrapper {
+    margin-top: 2rem;
+  }
+}
+
+/* checkout saved addresses */
+.checkout-saved-addresses {
+  margin-bottom: 1.5rem;
+}
+
+.checkout-address-label {
+  margin-bottom: 1rem;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.checkout-address-card {
+  height: 100%;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.checkout-address-card:hover {
+  border-color: var(--secondary);
+  box-shadow: 0 4px 14px rgba(45, 66, 59, 0.08);
+  transform: translateY(-2px);
+}
+
+.checkout-address-card.selected {
+  border: 2px solid var(--primary);
+  box-shadow: 0 4px 14px rgba(45, 66, 59, 0.1);
+}
+
+.checkout-address-card-label {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: 20px;
+  background-color: var(--background);
+  color: var(--primary);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.checkout-address-card strong {
+  display: block;
+  margin-bottom: 0.75rem;
+  color: var(--text);
+}
+
+.checkout-address-card p {
+  margin-bottom: 0.3rem;
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+
+.checkout-new-address-button {
+  margin-top: 1rem;
 }
