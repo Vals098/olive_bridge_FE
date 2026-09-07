@@ -351,15 +351,27 @@ code {
 /* HOME PAGE */
 /* hero */
 .home-hero {
-  min-height: 70vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 80px 20px;
-  background-image: url("/images/hero.jpg");
-  background-size: cover;
-  background-position: center;
+    position: relative;
+    height: 70vh;
+    overflow: hidden;
+}
+
+.home-hero-image {
+  width: 100%;
+  height: 70vh;
+  object-fit: cover;
+}
+
+.home-hero .carousel {
+    height: 100%;
+}
+
+.home-hero .carousel-inner {
+    height: 100%;
+}
+
+.home-hero .carousel-item {
+    height: 100%;
 }
 
 .home-hero-content {
@@ -426,4 +438,91 @@ code {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+/* our story */
+
+.our-story {
+  padding: 100px 0;
+}
+
+.our-story-image {
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.our-story-image img {
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+}
+
+.our-story-content {
+  padding: 20px;
+}
+
+.our-story-label {
+  color: var(--secondary);
+  font-size: 14px;
+  letter-spacing: 2px;
+  margin-bottom: 15px;
+}
+
+.our-story-content h2 {
+  color: var(--primary);
+  font-family: var(--heading);
+  font-size: 38px;
+  margin-bottom: 25px;
+}
+
+.our-story-content p {
+  color: var(--text-light);
+  font-size: 17px;
+  line-height: 1.7;
+  margin-bottom: 18px;
+}
+
+.our-story-content .btn {
+  margin-top: 10px;
+  padding: 10px 24px;
+  border-radius: 8px;
+}
+
+/* business section */
+
+.business-section {
+  padding: 100px 0;
+  background-color: var(--primary);
+  color: white;
+}
+
+.business-section-content {
+  max-width: 750px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.business-section-label {
+  font-size: 14px;
+  letter-spacing: 2px;
+  margin-bottom: 15px;
+}
+
+.business-section-content h2 {
+  color: white;
+  font-family: var(--heading);
+  font-size: 38px;
+  margin-bottom: 25px;
+}
+
+.business-section-content > p:not(.business-section-label) {
+  color: #e8dfda;
+  font-size: 17px;
+  line-height: 1.7;
+  margin-bottom: 30px;
+}
+
+.business-section-content .btn {
+  padding: 11px 28px;
+  border-radius: 8px;
 }
