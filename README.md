@@ -120,12 +120,16 @@ src/
 ├── App.tsx
 ├── App.css
 └── index.css
-
+```
 ---
 
 ## Backend Integration
 
 OliveBridge Frontend communicates with the OliveBridge Backend through REST API requests.
+
+The backend repository is available here:
+
+[OliveBridge Backend](https://github.com/Vals098/olive_bridge_BE.git)
 
 The frontend consumes the backend APIs for:
 
@@ -233,7 +237,7 @@ Clone the repository:
 
 ```bash
 git clone https://github.com/Vals098/olive_bridge_FE.git
-
+```
 ---
 
 ## Future Improvements
