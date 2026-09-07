@@ -121,6 +121,8 @@ src/
 ├── App.css
 └── index.css
 
+---
+
 ## Backend Integration
 
 OliveBridge Frontend communicates with the OliveBridge Backend through REST API requests.
@@ -140,6 +142,8 @@ The frontend consumes the backend APIs for:
 
 API requests are handled through Redux actions and React components.
 
+---
+
 ## Authentication
 
 The application uses JWT authentication provided by the backend.
@@ -154,6 +158,8 @@ The application supports different user experiences:
 - Administrators
 
 Protected frontend routes are handled through dedicated route components, while the backend performs the final authentication and authorization checks.
+
+---
 
 ## Guest Checkout
 
@@ -171,6 +177,8 @@ Users can also choose to log in or register before completing checkout.
 
 The shopping cart is preserved when a guest logs in, allowing the user to continue the checkout process without losing the selected products.
 
+---
+
 ## Business Features
 
 OliveBridge provides dedicated features for business users.
@@ -183,6 +191,8 @@ Business users can:
 - View their submitted inquiries
 
 The frontend provides the dedicated Business area and forms, while the backend verifies the user's account type before allowing business-only operations.
+
+---
 
 ## Admin Features
 
@@ -203,6 +213,8 @@ Administrators can:
 
 The frontend protects the admin routes through an `AdminRoute` component, while the backend performs the final authorization check.
 
+---
+
 ## Images and Credits
 
 The project uses a combination of AI-generated images and photographs from Pexels.
@@ -213,13 +225,16 @@ External images and their sources are documented in:
 
 [IMAGE-CREDITS.md](IMAGE-CREDITS.md)
 
+---
+
 ## Installation
 
 Clone the repository:
 
 ```bash
-git clone 
+git clone https://github.com/Vals098/olive_bridge_FE.git
 
+---
 
 ## Future Improvements
 
@@ -232,6 +247,8 @@ Possible future developments include:
 - Payment integration
 - Production deployment
 - Additional product types
+
+---
 
 ## Project
 
