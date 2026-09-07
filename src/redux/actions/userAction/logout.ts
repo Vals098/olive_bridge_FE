@@ -1,18 +1,21 @@
-import type { UnknownAction } from "@reduxjs/toolkit";
-import type { AppDispatch } from "../../store";
+import type { UnknownAction } from "@reduxjs/toolkit"
+import type { AppDispatch } from "../../store"
+import { clearCartAction } from "../cartAction/clearCart"
 
-export const LOGOUT = "LOGOUT";
+export const LOGOUT = "LOGOUT"
 
 export type LogoutAction = UnknownAction & {
-    type: typeof LOGOUT;
-};
+  type: typeof LOGOUT
+}
 
 export const logoutAction = () => {
-    return (dispatch: AppDispatch) => {
-        localStorage.removeItem("token");
+  return (dispatch: AppDispatch) => {
+    localStorage.removeItem("token")
 
-        dispatch({
-            type: LOGOUT,
-        });
-    };
-};
+    dispatch(clearCartAction())
+
+    dispatch({
+      type: LOGOUT,
+    })
+  }
+}
