@@ -11,7 +11,7 @@ function OurStory() {
                     <Col md={6}>
                         <div className="our-story-image">
                             <img
-                                src="/images/our-story.jpg"
+                                src="/public/images/our-story.jpg"
                                 alt="Apulian olive grove"
                             />
                         </div>
