@@ -36,6 +36,7 @@ import AdminProducts from "./pages/AdminProducts"
 import AdminCategoryCreate from "./pages/AdminCategoryCreate"
 import AdminTechnicalInformationCreate from "./pages/AdminTechnicalInformationCreate"
 import AdminProductForm from "./pages/AdminProductForm"
+import Notifications from "./pages/Notifications"
 
 const MainLayout = () => {
   return (
@@ -88,6 +89,7 @@ function AppContent() {
                 path="/business-inquiries"
                 element={<BusinessInquiries />}
               />
+              <Route path="/notifications" element={<Notifications />} />
 
               <Route element={<AdminRoute />}>
                 <Route path="/admin" element={<AdminDashboard />} />
