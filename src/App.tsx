@@ -35,6 +35,7 @@ import AdminDashboard from "./pages/AdminDashboard"
 import AdminProducts from "./pages/AdminProducts"
 import AdminCategoryCreate from "./pages/AdminCategoryCreate"
 import AdminTechnicalInformationCreate from "./pages/AdminTechnicalInformationCreate"
+import AdminProductForm from "./pages/AdminProductForm"
 
 const MainLayout = () => {
   return (
@@ -90,12 +91,24 @@ function AppContent() {
 
               <Route element={<AdminRoute />}>
                 <Route path="/admin" element={<AdminDashboard />} />
-                <Route path="/admin" element={<AdminDashboard />} />
+
                 <Route path="/admin/products" element={<AdminProducts />} />
+
+                <Route
+                  path="/admin/products/new"
+                  element={<AdminProductForm />}
+                />
+
+                <Route
+                  path="/admin/products/edit/:productId"
+                  element={<AdminProductForm />}
+                />
+
                 <Route
                   path="/admin/categories/new"
                   element={<AdminCategoryCreate />}
                 />
+
                 <Route
                   path="/admin/technical-information/new"
                   element={<AdminTechnicalInformationCreate />}
