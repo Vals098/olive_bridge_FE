@@ -261,3 +261,9 @@ Possible future developments include:
 Full Stack Web Development Capstone Project
 
 Frontend developed with React, TypeScript, Redux Toolkit and React Bootstrap.
+
+---
+
+## Author
+
+Valeria Farinosi
