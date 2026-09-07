@@ -31,6 +31,7 @@ import Business from "./pages/Business"
 import SampleRequests from "./pages/SampleRequests"
 import BusinessInquiries from "./pages/BusinessInquiries"
 import AdminRoute from "./components/AdminRoute"
+import AdminDashboard from "./pages/AdminDashboard"
 
 const MainLayout = () => {
   return (
@@ -85,7 +86,7 @@ function AppContent() {
               />
 
               <Route element={<AdminRoute />}>
-    
+                <Route path="/admin" element={<AdminDashboard />} />
               </Route>
             </Route>
           </Route>
