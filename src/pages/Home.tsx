@@ -1,5 +1,7 @@
 import HomeHero from "../components/HomeHero"
 import FeaturedProducts from "../components/FeaturedProducts"
+import OurStory from "../components/OurStory"
+import BusinessSection from "../components/BusinessSection"
 
 function Home() {
   return (
@@ -8,13 +10,9 @@ function Home() {
 
       <FeaturedProducts />
 
-      <section>
-        <h2>Our Story</h2>
-      </section>
+      <OurStory />
 
-      <section>
-        <h2>Business</h2>
-      </section>
+      <BusinessSection />
     </>
   )
 }
