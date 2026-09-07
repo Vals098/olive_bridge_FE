@@ -11,6 +11,8 @@ import favouriteReducer from "../reducers/favouriteReducer"
 import sampleRequestReducer from "../reducers/sampleRequestReducer"
 import businessInquiryReducer from "../reducers/businessInquiryReducer"
 import adminReducer from "../reducers/adminReducer"
+import categoryReducer from "../reducers/categoryReducer"
+import technicalInformationReducer from "../reducers/technicalInformationReducer"
 
 const cartPersistConfig = {
   key: "cart",
@@ -30,6 +32,8 @@ const store = configureStore({
     sampleRequest: sampleRequestReducer,
     businessInquiry: businessInquiryReducer,
     admin: adminReducer,
+    category: categoryReducer,
+    technicalInformation: technicalInformationReducer,
   },
 })
 
