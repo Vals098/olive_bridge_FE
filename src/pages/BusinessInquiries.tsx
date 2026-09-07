@@ -2,7 +2,7 @@ import { type SyntheticEvent, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import type { AppDispatch, RootState } from "../redux/store"
 
-import { Container, Button } from "react-bootstrap"
+import { Container, Button, Card, Form } from "react-bootstrap"
 
 import { getBusinessInquiries } from "../redux/actions/businessInquiryAction/getBusinessInquiries"
 import { createBusinessInquiry } from "../redux/actions/businessInquiryAction/createBusinessInquiry"
@@ -23,8 +23,8 @@ function BusinessInquiries() {
 
     dispatch(
       createBusinessInquiry({
-        subject: subject,
-        message: message,
+        subject,
+        message,
       }),
     )
 
@@ -38,78 +38,130 @@ function BusinessInquiries() {
   }, [dispatch])
 
   return (
-    <Container className="products-page">
-      <h1>My Business Inquiries</h1>
+    <main className="business-inquiries-page">
+      <Container>
+        <div className="business-inquiries-header">
+          <p className="business-inquiries-label">OLIVEBRIDGE</p>
 
-      <Button variant="dark" onClick={() => setShowForm(true)}>
-        New Business Inquiry
-      </Button>
+          <h1>My Business Inquiries</h1>
 
-      {showForm && (
-        <form onSubmit={handleCreateInquiry}>
-          <div>
-            <label htmlFor="subject">Subject</label>
+          <p>
+            Keep track of your conversations and business opportunities with
+            OliveBridge.
+          </p>
 
-            <input
-              id="subject"
-              type="text"
-              value={subject}
-              onChange={(event) => setSubject(event.target.value)}
-              required
-            />
-          </div>
+          <p className="business-inquiries-notice">
+            Please note: OliveBridge currently works exclusively with businesses
+            based in Japan.
+          </p>
+        </div>
 
-          <div>
-            <label htmlFor="message">Message</label>
-
-            <textarea
-              id="message"
-              value={message}
-              onChange={(event) => setMessage(event.target.value)}
-              required
-            />
-          </div>
-
-          <Button type="submit" variant="dark">
-            Send Inquiry
-          </Button>
-
+        <div className="business-inquiries-action">
           <Button
-            type="button"
-            variant="secondary"
-            onClick={() => setShowForm(false)}
+            className="business-inquiries-button"
+            onClick={() => setShowForm(!showForm)}
           >
-            Cancel
+            {showForm ? "− Close Inquiry Form" : "+ New Business Inquiry"}
           </Button>
-        </form>
-      )}
+        </div>
 
-      {businessInquiries.length === 0 ? (
-        <p>You haven't sent any business inquiries yet.</p>
-      ) : (
-        businessInquiries.map((inquiry) => (
-          <div key={inquiry.businessInquiryId}>
-            <p>
-              <strong>Subject:</strong> {inquiry.subject}
-            </p>
+        {showForm && (
+          <Card className="business-inquiry-form-card">
+            <Card.Body>
+              <div className="business-inquiry-form-header">
+                <h2>New Business Inquiry</h2>
 
-            <p>
-              <strong>Message:</strong> {inquiry.message}
-            </p>
+                <p>Tell us how we can help with your business needs.</p>
+              </div>
 
-            <p>
-              <strong>Status:</strong> {inquiry.status}
-            </p>
+              <Form onSubmit={handleCreateInquiry}>
+                <Form.Group className="mb-4" controlId="businessInquirySubject">
+                  <Form.Label>Subject</Form.Label>
 
-            <p>
-              <strong>Date:</strong> {inquiry.createdAt}
-            </p>
+                  <Form.Control
+                    type="text"
+                    value={subject}
+                    onChange={(event) => setSubject(event.target.value)}
+                    placeholder="What would you like to discuss?"
+                    required
+                  />
+                </Form.Group>
 
-            <hr />
-          </div>
-        ))
-      )}
-    </Container>
+                <Form.Group className="mb-4" controlId="businessInquiryMessage">
+                  <Form.Label>Message</Form.Label>
+
+                  <Form.Control
+                    as="textarea"
+                    rows={5}
+                    value={message}
+                    onChange={(event) => setMessage(event.target.value)}
+                    placeholder="Tell us more about your inquiry..."
+                    required
+                  />
+                </Form.Group>
+
+                <div className="business-inquiry-form-actions">
+                  <Button type="submit" className="business-inquiries-button">
+                    Send Inquiry
+                  </Button>
+
+                  <Button
+                    type="button"
+                    variant="outline-dark"
+                    onClick={() => setShowForm(false)}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </Form>
+            </Card.Body>
+          </Card>
+        )}
+
+        <div className="business-inquiries-list">
+          {businessInquiries.length === 0 ? (
+            <div className="business-inquiries-empty">
+              <div className="business-inquiries-empty-icon">✉</div>
+
+              <h2>No inquiries yet</h2>
+
+              <p>You haven't sent any business inquiries yet.</p>
+            </div>
+          ) : (
+            businessInquiries.map((inquiry) => (
+              <Card
+                className="business-inquiry-card"
+                key={inquiry.businessInquiryId}
+              >
+                <Card.Body>
+                  <div className="business-inquiry-top">
+                    <div>
+                      <p className="business-inquiry-label">Business Inquiry</p>
+
+                      <h2>{inquiry.subject}</h2>
+                    </div>
+
+                    <span
+                      className={`business-inquiry-status business-inquiry-status-${inquiry.status.toLowerCase()}`}
+                    >
+                      {inquiry.status}
+                    </span>
+                  </div>
+
+                  <div className="business-inquiry-content">
+                    <p>{inquiry.message}</p>
+                  </div>
+
+                  <div className="business-inquiry-date">
+                    Sent on {new Date(inquiry.createdAt).toLocaleDateString()}
+                  </div>
+                </Card.Body>
+              </Card>
+            ))
+          )}
+        </div>
+      </Container>
+    </main>
   )
 }
 

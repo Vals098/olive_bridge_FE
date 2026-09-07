@@ -1,49 +1,68 @@
-import { Container, Row, Col, Card } from "react-bootstrap"
+import { Card, Col, Container, Row } from "react-bootstrap"
 import { Link } from "react-router-dom"
 
 function Business() {
   return (
-    <Container className="products-page">
-      <h1>Business</h1>
+    <main className="business-page">
+      <Container>
+        <div className="business-header">
+          <p className="business-label">OLIVEBRIDGE</p>
 
-      <p>
-        Connect with Italian producers and discover opportunities for your
-        business.
-      </p>
+          <h1>Business</h1>
 
-      <Row>
-        <Col md={6}>
-          <Card className="h-100">
-            <Card.Body>
-              <Card.Title>Sample Requests</Card.Title>
-              <Card.Text>
-                Request samples of our Italian extra virgin olive oils.
-              </Card.Text>
+          <p>
+            Connect with Italian producers and discover opportunities
+            for your business.
+          </p>
+        </div>
 
-              <Link to="/sample-requests">
-                View my sample requests
-              </Link>
-            </Card.Body>
-          </Card>
-        </Col>
+        <Row className="g-4 justify-content-center">
+          <Col md={6} lg={5}>
+            <Card className="business-card h-100">
+              <Card.Body>
+                <div className="business-card-icon">🫒</div>
 
-        <Col md={6}>
-          <Card className="h-100">
-            <Card.Body>
-              <Card.Title>Business Inquiries</Card.Title>
-              <Card.Text>
-                Contact OliveBridge for business opportunities and
-                information.
-              </Card.Text>
+                <Card.Title>Sample Requests</Card.Title>
 
-              <Link to="/business-inquiries">
-                View my inquiries
-              </Link>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+                <Card.Text>
+                  Request samples of our Italian extra virgin olive oils
+                  and discover the products that best suit your business.
+                </Card.Text>
+
+                <Link
+                  to="/sample-requests"
+                  className="business-card-link"
+                >
+                  View my sample requests →
+                </Link>
+              </Card.Body>
+            </Card>
+          </Col>
+
+          <Col md={6} lg={5}>
+            <Card className="business-card h-100">
+              <Card.Body>
+                <div className="business-card-icon">✉</div>
+
+                <Card.Title>Business Inquiries</Card.Title>
+
+                <Card.Text>
+                  Contact OliveBridge for business opportunities,
+                  partnerships and additional information.
+                </Card.Text>
+
+                <Link
+                  to="/business-inquiries"
+                  className="business-card-link"
+                >
+                  View my inquiries →
+                </Link>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    </main>
   )
 }
 
