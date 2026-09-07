@@ -1,30 +1,35 @@
 import { type SyntheticEvent, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { Container, Row, Col, Button } from "react-bootstrap"
+import { useDispatch, useSelector } from "react-redux"
+
 import type { Product } from "../types/Product"
-import { useDispatch } from "react-redux"
+import type { ProductVariant } from "../types/ProductVariant"
+import type { RootState, AppDispatch } from "../redux/store"
+
 import { getProductVariants } from "../redux/actions/productAction/getProductVariants"
 import { createSampleRequest } from "../redux/actions/sampleRequestAction/createSampleRequest"
-import type { RootState, AppDispatch } from "../redux/store"
 import { addToCartAction } from "../redux/actions/cartAction/addToCart"
-import { useSelector } from "react-redux"
-import type { ProductVariant } from "../types/ProductVariant"
 
 function ProductDetail() {
   const { productId } = useParams()
   const dispatch = useDispatch<AppDispatch>()
 
-  const currentUser = useSelector((state: RootState) => state.user.currentUser)
+  const currentUser = useSelector(
+    (state: RootState) => state.user.currentUser,
+  )
 
   const variants = useSelector(
     (state: RootState) => state.productVariant.variants,
   )
+
   const [product, setProduct] = useState<Product | null>(null)
-  const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(
-    null,
-  )
+
+  const [selectedVariant, setSelectedVariant] =
+    useState<ProductVariant | null>(null)
 
   const [showSampleForm, setShowSampleForm] = useState(false)
+
   const [sampleMessage, setSampleMessage] = useState("")
 
   const handleAddToCart = () => {
@@ -67,6 +72,7 @@ function ProductDetail() {
         }
 
         const product: Product = await response.json()
+
         setProduct(product)
       } catch (error) {
         console.error("Product retrieval error:", error)
@@ -91,18 +97,22 @@ function ProductDetail() {
       <Row className="align-items-center">
         <Col md={6}>
           <img
-            src={product.image}
+            src="/public/images/product-default.png"
             alt={product.name}
             className="product-detail-image"
           />
         </Col>
 
         <Col md={6} className="product-detail-info">
-          <p className="product-detail-category">{product.category.name}</p>
+          <p className="product-detail-category">
+            {product.category.name}
+          </p>
 
           <h1>{product.name}</h1>
 
-          <p className="product-detail-description">{product.description}</p>
+          <p className="product-detail-description">
+            {product.description}
+          </p>
 
           <div className="product-variants">
             <p>
@@ -127,14 +137,16 @@ function ProductDetail() {
             </div>
           </div>
 
-          <Button className="product-detail-button" onClick={handleAddToCart}>
+          <Button
+            className="product-detail-button"
+            onClick={handleAddToCart}
+          >
             Add to cart
           </Button>
 
           {currentUser && (
             <>
               <Button
-                variant="outline-dark"
                 className="product-detail-button"
                 onClick={() => setShowSampleForm(true)}
               >
@@ -150,11 +162,15 @@ function ProductDetail() {
                   <textarea
                     id="sampleMessage"
                     value={sampleMessage}
-                    onChange={(event) => setSampleMessage(event.target.value)}
+                    onChange={(event) =>
+                      setSampleMessage(event.target.value)
+                    }
                     required
                   />
 
-                  <Button type="submit">Send Request</Button>
+                  <Button type="submit">
+                    Send Request
+                  </Button>
 
                   <Button
                     type="button"
@@ -176,7 +192,8 @@ function ProductDetail() {
 
           <div className="technical-info">
             <p>
-              <strong>Acidity:</strong> {product.technicalInformation.acidity}
+              <strong>Acidity:</strong>{" "}
+              {product.technicalInformation.acidity}
             </p>
 
             <p>

@@ -32,7 +32,11 @@ function ProductCard({ product }: ProductCardProps) {
   return (
     <Card className="product-card">
       <div className="product-card-image-wrapper">
-        <Card.Img variant="top" src={product.image} alt={product.name} />
+        <Card.Img
+          variant="top"
+          src="/public/images/product-default.png"
+          alt={product.name}
+        />
 
         <button
           type="button"
