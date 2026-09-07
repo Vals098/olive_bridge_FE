@@ -10,6 +10,7 @@ import addressReducer from "../reducers/addressReducer"
 import favouriteReducer from "../reducers/favouriteReducer"
 import sampleRequestReducer from "../reducers/sampleRequestReducer"
 import businessInquiryReducer from "../reducers/businessInquiryReducer"
+import adminReducer from "../reducers/adminReducer"
 
 const cartPersistConfig = {
   key: "cart",
@@ -28,6 +29,7 @@ const store = configureStore({
     favourite: favouriteReducer,
     sampleRequest: sampleRequestReducer,
     businessInquiry: businessInquiryReducer,
+    admin: adminReducer,
   },
 })
 

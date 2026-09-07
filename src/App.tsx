@@ -30,6 +30,7 @@ import Favourites from "./pages/Favourites"
 import Business from "./pages/Business"
 import SampleRequests from "./pages/SampleRequests"
 import BusinessInquiries from "./pages/BusinessInquiries"
+import AdminRoute from "./components/AdminRoute"
 
 const MainLayout = () => {
   return (
@@ -82,6 +83,10 @@ function AppContent() {
                 path="/business-inquiries"
                 element={<BusinessInquiries />}
               />
+
+              <Route element={<AdminRoute />}>
+    
+              </Route>
             </Route>
           </Route>
         </Routes>
