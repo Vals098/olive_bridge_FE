@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
@@ -9,6 +9,9 @@ import type { CartItem } from "../types/CartItem"
 
 import { clearCartAction } from "../redux/actions/cartAction/clearCart"
 import type { OrderResponse } from "../types/OrderResponse"
+
+import type { Address } from "../types/Address"
+import { getAddresses } from "../redux/actions/addressAction/getAddresses"
 
 function Checkout() {
   const dispatch = useDispatch<AppDispatch>()
@@ -26,11 +29,23 @@ function Checkout() {
   const [order, setOrder] = useState<OrderResponse | null>(null)
   const [error, setError] = useState("")
 
+  const [selectedAddressId, setSelectedAddressId] = useState<string | null>(
+    null,
+  )
+
+  const addresses = useSelector((state: RootState) => state.address.addresses)
+
   const cartItems: CartItem[] = useSelector(
     (state: RootState) => state.cart.items,
   )
 
   const currentUser = useSelector((state: RootState) => state.user.currentUser)
+
+  useEffect(() => {
+    if (currentUser) {
+      dispatch(getAddresses())
+    }
+  }, [currentUser, dispatch])
 
   if (order) {
     return (
@@ -99,6 +114,29 @@ function Checkout() {
     (total, item) => total + item.variant.price * item.quantity,
     0,
   )
+
+  const handleSelectAddress = (address: Address) => {
+    setSelectedAddressId(address.addressId)
+
+    setCustomerName(address.recipientName)
+    setShippingPostalCode(address.postalCode)
+    setShippingPrefecture(address.prefecture)
+    setShippingCity(address.city)
+    setShippingArea(address.area)
+    setShippingStreet(address.street)
+    setShippingBuilding(address.building ?? "")
+  }
+
+  const handleNewAddress = () => {
+    setSelectedAddressId(null)
+
+    setShippingPostalCode("")
+    setShippingPrefecture("")
+    setShippingCity("")
+    setShippingArea("")
+    setShippingStreet("")
+    setShippingBuilding("")
+  }
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault()
@@ -228,6 +266,70 @@ function Checkout() {
                   </Row>
 
                   <h2 className="checkout-section-title">Shipping address</h2>
+
+                  {(!currentUser ||
+                    addresses.length === 0 ||
+                    selectedAddressId === null) && (
+                    <div className="checkout-saved-addresses">
+                      <p className="checkout-address-intro">
+                        Choose a saved address or enter a new one.
+                      </p>
+
+                      {addresses.map((address) => (
+                        <button
+                          type="button"
+                          key={address.addressId}
+                          className={`checkout-address-option ${
+                            selectedAddressId === address.addressId
+                              ? "checkout-address-option-selected"
+                              : ""
+                          }`}
+                          onClick={() => handleSelectAddress(address)}
+                        >
+                          <div className="checkout-address-radio">
+                            {selectedAddressId === address.addressId
+                              ? "●"
+                              : "○"}
+                          </div>
+
+                          <div>
+                            <strong>{address.label}</strong>
+
+                            <p>
+                              {address.recipientName}
+                              <br />
+                              {address.postalCode} {address.city}
+                              <br />
+                              {address.prefecture}, {address.area}
+                              <br />
+                              {address.street}
+                              {address.building && `, ${address.building}`}
+                            </p>
+                          </div>
+                        </button>
+                      ))}
+
+                      <button
+                        type="button"
+                        className={`checkout-address-option checkout-new-address-option ${
+                          selectedAddressId === null
+                            ? "checkout-address-option-selected"
+                            : ""
+                        }`}
+                        onClick={handleNewAddress}
+                      >
+                        <div className="checkout-address-radio">
+                          {selectedAddressId === null ? "●" : "○"}
+                        </div>
+
+                        <div>
+                          <strong>Enter a new address</strong>
+
+                          <p>Use a different shipping address.</p>
+                        </div>
+                      </button>
+                    </div>
+                  )}
 
                   <Row>
                     <Col md={6}>
