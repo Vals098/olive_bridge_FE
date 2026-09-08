@@ -15,13 +15,16 @@ export const loginAction = (credentials: LoginRequest) => {
   return async (dispatch: AppDispatch) => {
     try {
       // 1. Login
-      const loginResponse = await fetch("http://localhost:8080/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const loginResponse = await fetch(
+        "http://localhost:8080/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(credentials),
         },
-        body: JSON.stringify(credentials),
-      })
+      )
 
       if (!loginResponse.ok) {
         throw new Error("Invalid credentials")
@@ -32,11 +35,14 @@ export const loginAction = (credentials: LoginRequest) => {
       localStorage.setItem("token", token)
 
       // 2. Get current user
-      const userResponse = await fetch("http://localhost:8080/users/me", {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const userResponse = await fetch(
+        "http://localhost:8080/users/me",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      })
+      )
 
       if (!userResponse.ok) {
         throw new Error("Unable to retrieve user")
@@ -67,6 +73,7 @@ export const loginAction = (credentials: LoginRequest) => {
       dispatch(loadCartAction(mergedCart))
     } catch (error) {
       console.error("Login error:", error)
+      throw error
     }
   }
 }

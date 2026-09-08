@@ -1,5 +1,16 @@
-import { type SyntheticEvent, useState } from "react"
-import { Button, Card, Col, Container, Form, Row } from "react-bootstrap"
+import {
+  type KeyboardEvent,
+  type SyntheticEvent,
+  useState,
+} from "react"
+import {
+  Button,
+  Card,
+  Col,
+  Container,
+  Form,
+  Row,
+} from "react-bootstrap"
 import { useDispatch } from "react-redux"
 import { useNavigate, useSearchParams } from "react-router-dom"
 
@@ -17,19 +28,51 @@ function Login() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
+  const [passwordError, setPasswordError] = useState("")
+  const [loginError, setLoginError] = useState("")
+
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault()
 
-    await dispatch(
-      loginAction({
-        email,
-        password,
-      }),
-    )
+    setPasswordError("")
+    setLoginError("")
 
-    const redirect = searchParams.get("redirect")
+    // Custom password validation
+    if (!password.trim()) {
+      setPasswordError("Please enter your password.")
+      return
+    }
 
-    navigate(redirect || "/")
+    try {
+      await dispatch(
+        loginAction({
+          email,
+          password,
+        }),
+      )
+
+      // Login successful
+      const redirect = searchParams.get("redirect")
+
+      navigate(redirect || "/")
+    } catch {
+      // Login failed
+      setLoginError("Email or password is incorrect.")
+    }
+  }
+
+  const handleKeyDown = (
+    e: KeyboardEvent<HTMLInputElement>,
+  ) => {
+    if (e.key === "Enter") {
+      e.preventDefault()
+
+      const form = e.currentTarget.form
+
+      if (form) {
+        form.requestSubmit()
+      }
+    }
   }
 
   return (
@@ -43,39 +86,73 @@ function Login() {
               <Card className="auth-card">
                 <Card.Body>
                   <div className="auth-header">
-                    <p className="auth-label">OLIVEBRIDGE</p>
+                    <p className="auth-label">
+                      OLIVEBRIDGE
+                    </p>
 
                     <h1>Welcome back</h1>
 
-                    <p>Sign in to your account to continue.</p>
+                    <p>
+                      Sign in to your account to continue.
+                    </p>
                   </div>
 
+                  {loginError && (
+                    <div className="auth-error">
+                      {loginError}
+                    </div>
+                  )}
+
                   <Form onSubmit={handleSubmit}>
-                    <Form.Group className="mb-4" controlId="loginEmail">
+                    <Form.Group
+                      className="mb-4"
+                      controlId="loginEmail"
+                    >
                       <Form.Label>Email</Form.Label>
 
                       <Form.Control
                         type="email"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) => {
+                          setEmail(e.target.value)
+                          setLoginError("")
+                        }}
+                        onKeyDown={handleKeyDown}
                         placeholder="Enter your email"
                         required
                       />
                     </Form.Group>
 
-                    <Form.Group className="mb-4" controlId="loginPassword">
+                    <Form.Group
+                      className="mb-4"
+                      controlId="loginPassword"
+                    >
                       <Form.Label>Password</Form.Label>
 
                       <Form.Control
                         type="password"
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={(e) => {
+                          setPassword(e.target.value)
+                          setPasswordError("")
+                          setLoginError("")
+                        }}
+                        onKeyDown={handleKeyDown}
                         placeholder="Enter your password"
-                        required
+                        isInvalid={!!passwordError}
                       />
+
+                      {passwordError && (
+                        <Form.Control.Feedback type="invalid">
+                          {passwordError}
+                        </Form.Control.Feedback>
+                      )}
                     </Form.Group>
 
-                    <Button type="submit" className="auth-button">
+                    <Button
+                      type="submit"
+                      className="auth-button"
+                    >
                       Login
                     </Button>
                   </Form>
@@ -86,7 +163,9 @@ function Login() {
                     <Button
                       variant="link"
                       className="auth-link"
-                      onClick={() => navigate("/register")}
+                      onClick={() =>
+                        navigate("/register")
+                      }
                     >
                       Create an account
                     </Button>
