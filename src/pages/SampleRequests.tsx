@@ -1,7 +1,18 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Button, Card, Col, Container, Form, Row } from "react-bootstrap"
-import { Link, useNavigate, useSearchParams } from "react-router-dom"
+import {
+  Button,
+  Card,
+  Col,
+  Container,
+  Form,
+  Row,
+} from "react-bootstrap"
+import {
+  Link,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom"
 
 import type { AppDispatch, RootState } from "../redux/store"
 import type { SampleRequestRequest } from "../types/SampleRequestRequest"
@@ -43,13 +54,9 @@ function SampleRequests() {
   )
 
   const [selectedAddressId, setSelectedAddressId] = useState("")
-
   const [message, setMessage] = useState("")
-
   const [error, setError] = useState("")
-
   const [success, setSuccess] = useState("")
-
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
@@ -144,8 +151,8 @@ function SampleRequests() {
           </p>
 
           <p className="sample-requests-notice">
-            Please note: OliveBridge currently works exclusively with
-            businesses based in Japan.
+            Please note: OliveBridge currently works exclusively
+            with businesses based in Japan.
           </p>
         </div>
 
@@ -156,13 +163,14 @@ function SampleRequests() {
             <h2>Interested in receiving product samples?</h2>
 
             <p>
-              Sample requests are available exclusively to registered
-              business accounts.
+              Sample requests are available exclusively to
+              registered business accounts.
             </p>
 
             <p>
               Create a Business account to request samples from our
-              producers and discover our olive oils for your business.
+              producers and discover our olive oils for your
+              business.
             </p>
 
             <button
@@ -197,7 +205,7 @@ function SampleRequests() {
                     <Row className="align-items-center">
                       <Col md={3}>
                         <img
-                          src="/images/product-default.png"
+                          src={selectedProduct.image}
                           alt={selectedProduct.name}
                           className="sample-request-product-image"
                         />
@@ -242,7 +250,9 @@ function SampleRequests() {
                         <Form.Select
                           value={selectedAddressId}
                           onChange={(event) =>
-                            setSelectedAddressId(event.target.value)
+                            setSelectedAddressId(
+                              event.target.value,
+                            )
                           }
                         >
                           <option value="">
@@ -353,8 +363,8 @@ function SampleRequests() {
                 <h2>Looking for a product to sample?</h2>
 
                 <p>
-                  Explore our olive oils and choose the product you'd
-                  like to try.
+                  Explore our olive oils and choose the product
+                  you'd like to try.
                 </p>
               </div>
 
@@ -390,7 +400,8 @@ function SampleRequests() {
                   {sampleRequests.map((sampleRequest) => {
                     const product = products.find(
                       (product) =>
-                        product.productId === sampleRequest.productId,
+                        product.productId ===
+                        sampleRequest.productId,
                     )
 
                     return (
