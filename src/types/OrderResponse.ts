@@ -1,5 +1,16 @@
 import type { OrderStatus } from "./OrderStatus"
 
+export type PaymentMethod =
+  | "CREDIT_CARD"
+  | "PAYPAL"
+  | "BANK_TRANSFER"
+
+export type PaymentStatus =
+  | "PENDING"
+  | "PAID"
+  | "FAILED"
+  | "REFUNDED"
+
 export interface OrderResponse {
   orderId: string
   customerEmail: string
@@ -7,6 +18,11 @@ export interface OrderResponse {
   total: number
   status: OrderStatus
 
+  // PAYMENT
+  paymentMethod: PaymentMethod
+  paymentStatus: PaymentStatus
+
+  // SHIPPING
   shippingRecipientName: string
   shippingPostalCode: string
   shippingPrefecture: string
@@ -15,6 +31,7 @@ export interface OrderResponse {
   shippingStreet: string
   shippingBuilding: string | null
 
+  // BILLING
   billingPostalCode: string
   billingPrefecture: string
   billingCity: string

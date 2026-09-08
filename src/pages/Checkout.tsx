@@ -31,6 +31,9 @@ function Checkout() {
     null,
   )
 
+  // SAVE ADDRESS
+  const [saveAddress, setSaveAddress] = useState(false)
+
   // BILLING ADDRESS
   const [billingSameAsShipping, setBillingSameAsShipping] = useState(false)
 
@@ -73,10 +76,14 @@ function Checkout() {
     setShippingArea(address.area)
     setShippingStreet(address.street)
     setShippingBuilding(address.building ?? "")
+
+    // Existing address is already saved
+    setSaveAddress(false)
   }
 
   const handleNewAddress = () => {
     setSelectedAddressId(null)
+    setSaveAddress(false)
 
     setShippingPostalCode("")
     setShippingPrefecture("")
@@ -173,6 +180,12 @@ function Checkout() {
     e.preventDefault()
     setError("")
 
+    // PAYMENT VALIDATION
+    if (!paymentMethod) {
+      setError("Please select a payment method.")
+      return
+    }
+
     const orderData = {
       customerName: currentUser
         ? `${currentUser.name} ${currentUser.surname}`
@@ -218,6 +231,36 @@ function Checkout() {
 
     try {
       const token = localStorage.getItem("token")
+
+      // Save shipping address for logged-in users
+      if (currentUser && saveAddress && selectedAddressId === null) {
+        const addressData = {
+          label: "Checkout address",
+          recipientName: `${currentUser.name} ${currentUser.surname}`,
+          postalCode: shippingPostalCode,
+          prefecture: shippingPrefecture,
+          city: shippingCity,
+          area: shippingArea,
+          street: shippingStreet,
+          building: shippingBuilding,
+        }
+
+        const addressResponse = await fetch(
+          "http://localhost:8080/users/addresses",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            },
+            body: JSON.stringify(addressData),
+          },
+        )
+
+        if (!addressResponse.ok) {
+          throw new Error("Unable to save address")
+        }
+      }
 
       const response = await fetch("http://localhost:8080/orders/checkout", {
         method: "POST",
@@ -528,6 +571,19 @@ function Checkout() {
                           onChange={(e) => setShippingBuilding(e.target.value)}
                         />
                       </Form.Group>
+
+                      {currentUser && (
+                        <Form.Check
+                          type="checkbox"
+                          id="saveAddress"
+                          label="Save this address for future orders"
+                          checked={saveAddress}
+                          onChange={(e) =>
+                            setSaveAddress(e.target.checked)
+                          }
+                          className="mb-4"
+                        />
+                      )}
                     </>
                   )}
 
@@ -647,7 +703,6 @@ function Checkout() {
                         value="CREDIT_CARD"
                         checked={paymentMethod === "CREDIT_CARD"}
                         onChange={(e) => setPaymentMethod(e.target.value)}
-                        required
                       />
 
                       <Form.Check
