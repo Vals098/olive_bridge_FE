@@ -1,6 +1,6 @@
-import { type SyntheticEvent, useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
-import { Container, Row, Col, Button } from "react-bootstrap"
+import { useEffect, useState } from "react"
+import { useNavigate, useParams } from "react-router-dom"
+import { Container, Row, Col, Button, Modal } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 
 import type { Product } from "../types/Product"
@@ -8,11 +8,11 @@ import type { ProductVariant } from "../types/ProductVariant"
 import type { RootState, AppDispatch } from "../redux/store"
 
 import { getProductVariants } from "../redux/actions/productAction/getProductVariants"
-import { createSampleRequest } from "../redux/actions/sampleRequestAction/createSampleRequest"
 import { addToCartAction } from "../redux/actions/cartAction/addToCart"
 
 function ProductDetail() {
   const { productId } = useParams()
+  const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>()
 
   const currentUser = useSelector(
@@ -28,36 +28,41 @@ function ProductDetail() {
   const [selectedVariant, setSelectedVariant] =
     useState<ProductVariant | null>(null)
 
-  const [showSampleForm, setShowSampleForm] = useState(false)
+  const [variantError, setVariantError] = useState("")
 
-  const [sampleMessage, setSampleMessage] = useState("")
+  const [showCartModal, setShowCartModal] = useState(false)
 
   const handleAddToCart = () => {
-    if (product && selectedVariant) {
-      dispatch(
-        addToCartAction({
-          product: product,
-          variant: selectedVariant,
-          quantity: 1,
-        }),
-      )
+    if (!product || !selectedVariant) {
+      setVariantError("Please select a format first.")
+      return
     }
-  }
 
-  const handleSampleRequest = (event: SyntheticEvent) => {
-    event.preventDefault()
-
-    if (!product) return
+    setVariantError("")
 
     dispatch(
-      createSampleRequest({
-        productId: product.productId,
-        message: sampleMessage,
+      addToCartAction({
+        product: product,
+        variant: selectedVariant,
+        quantity: 1,
       }),
     )
 
-    setSampleMessage("")
-    setShowSampleForm(false)
+    setSelectedVariant(null)
+    setShowCartModal(true)
+  }
+
+  const handleSampleRequest = () => {
+    navigate("/sample-requests")
+  }
+
+  const handleContinueShopping = () => {
+    setShowCartModal(false)
+  }
+
+  const handleGoToCart = () => {
+    setShowCartModal(false)
+    navigate("/cart")
   }
 
   useEffect(() => {
@@ -93,127 +98,179 @@ function ProductDetail() {
   }
 
   return (
-    <Container className="product-detail-page">
-      <Row className="align-items-center">
-        <Col md={6}>
-          <img
-            src="/public/images/product-default.png"
-            alt={product.name}
-            className="product-detail-image"
-          />
-        </Col>
+    <>
+      <Container className="product-detail-page">
+        <Row className="align-items-center">
+          <Col md={6}>
+            <img
+              src="/public/images/product-default.png"
+              alt={product.name}
+              className="product-detail-image"
+            />
+          </Col>
 
-        <Col md={6} className="product-detail-info">
-          <p className="product-detail-category">
-            {product.category.name}
-          </p>
-
-          <h1>{product.name}</h1>
-
-          <p className="product-detail-description">
-            {product.description}
-          </p>
-
-          <div className="product-variants">
-            <p>
-              <strong>Format:</strong>
+          <Col md={6} className="product-detail-info">
+            <p className="product-detail-category">
+              {product.category.name}
             </p>
 
-            <div>
-              {variants.map((variant) => (
-                <Button
-                  key={variant.productVariantId}
-                  variant={
-                    selectedVariant?.productVariantId ===
-                    variant.productVariantId
-                      ? "dark"
-                      : "outline-dark"
-                  }
-                  onClick={() => setSelectedVariant(variant)}
-                >
-                  {variant.format} — €{variant.price.toFixed(2)}
-                </Button>
-              ))}
+            <h1>{product.name}</h1>
+
+            <p className="product-detail-description">
+              {product.description}
+            </p>
+
+            <div className="product-variants">
+              <p>
+                <strong>Format:</strong>
+              </p>
+
+              <div className="product-variant-options">
+                {variants.map((variant) => (
+                  <Button
+                    key={variant.productVariantId}
+                    className="product-variant-button"
+                    variant={
+                      selectedVariant?.productVariantId ===
+                      variant.productVariantId
+                        ? "dark"
+                        : "outline-dark"
+                    }
+                    onClick={() => {
+                      setSelectedVariant(variant)
+                      setVariantError("")
+                    }}
+                  >
+                    {variant.format} — €{variant.price.toFixed(2)}
+                  </Button>
+                ))}
+              </div>
+
+              {variantError && (
+                <p className="product-detail-variant-error">
+                  {variantError}
+                </p>
+              )}
             </div>
-          </div>
 
-          <Button
-            className="product-detail-button"
-            onClick={handleAddToCart}
-          >
-            Add to cart
-          </Button>
-
-          {currentUser && (
-            <>
+            <div className="product-detail-actions">
               <Button
                 className="product-detail-button"
-                onClick={() => setShowSampleForm(true)}
+                onClick={handleAddToCart}
               >
-                Request a Sample
+                Add to cart
               </Button>
 
-              {showSampleForm && (
-                <form onSubmit={handleSampleRequest}>
-                  <label htmlFor="sampleMessage">
-                    Tell us why you are interested in this product
-                  </label>
-
-                  <textarea
-                    id="sampleMessage"
-                    value={sampleMessage}
-                    onChange={(event) =>
-                      setSampleMessage(event.target.value)
-                    }
-                    required
-                  />
-
-                  <Button type="submit">
-                    Send Request
-                  </Button>
-
-                  <Button
-                    type="button"
-                    variant="secondary"
-                    onClick={() => setShowSampleForm(false)}
-                  >
-                    Cancel
-                  </Button>
-                </form>
+              {currentUser?.accountType === "BUSINESS" && (
+                <Button
+                  className="product-detail-button product-detail-sample-button"
+                  onClick={handleSampleRequest}
+                >
+                  Request a sample
+                </Button>
               )}
-            </>
-          )}
-        </Col>
-      </Row>
+            </div>
+          </Col>
+        </Row>
 
-      <Row className="product-detail-technical">
-        <Col>
-          <h2>Technical information</h2>
+        <Row className="product-detail-technical">
+          <Col>
+            <h2>Technical information</h2>
 
-          <div className="technical-info">
-            <p>
-              <strong>Acidity:</strong>{" "}
-              {product.technicalInformation.acidity}
-            </p>
+            <div className="technical-info">
+              <p>
+                <strong>Acidity:</strong>{" "}
+                {product.technicalInformation.acidity}
+              </p>
 
-            <p>
-              <strong>Peroxide value:</strong>{" "}
-              {product.technicalInformation.peroxideValue}
-            </p>
+              <p>
+                <strong>Peroxide value:</strong>{" "}
+                {product.technicalInformation.peroxideValue}
+              </p>
 
-            <p>
-              <strong>Harvest date:</strong>{" "}
-              {product.technicalInformation.harvestDate}
-            </p>
+              <p>
+                <strong>Harvest date:</strong>{" "}
+                {product.technicalInformation.harvestDate}
+              </p>
 
-            <p>
-              <strong>Best before:</strong>{" "}
-              {product.technicalInformation.bestBeforeDate}
-            </p>
+              <p>
+                <strong>Best before:</strong>{" "}
+                {product.technicalInformation.bestBeforeDate}
+              </p>
+            </div>
+          </Col>
+        </Row>
+
+        {currentUser?.accountType === "INDIVIDUAL" && (
+          <Row className="product-detail-business-cta">
+            <Col>
+              <div className="business-cta-content">
+                <p className="business-cta-label">FOR BUSINESS</p>
+
+                <h2>
+                  Are you a business interested in this product?
+                </h2>
+
+                <p>
+                  Request a sample and discover this olive oil for your
+                  business.
+                </p>
+
+                <Button
+                  className="product-detail-business-button"
+                  onClick={handleSampleRequest}
+                >
+                  Request a sample →
+                </Button>
+              </div>
+            </Col>
+          </Row>
+        )}
+      </Container>
+
+      <Modal
+        show={showCartModal}
+        onHide={() => setShowCartModal(false)}
+        centered
+        className="cart-added-modal"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Product added to cart!</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <div className="cart-added-product">
+            <img
+              src="/public/images/product-default.png"
+              alt={product.name}
+              className="cart-added-product-image"
+            />
+
+            <div>
+              <h3>{product.name}</h3>
+
+              <p>{product.description}</p>
+            </div>
           </div>
-        </Col>
-      </Row>
-    </Container>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button
+            className="cart-modal-shopping-button"
+            onClick={handleContinueShopping}
+          >
+            Continue shopping
+          </Button>
+
+          <Button
+            className="cart-modal-cart-button"
+            onClick={handleGoToCart}
+          >
+            Go to cart →
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
   )
 }
 
