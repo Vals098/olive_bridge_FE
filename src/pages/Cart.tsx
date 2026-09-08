@@ -57,7 +57,7 @@ function Cart() {
                     <Row className="g-0 align-items-center">
                       <Col xs={4} md={3}>
                         <img
-                          src="/public/images/product-default.png"
+                          src="/images/product-default.png"
                           alt={item.product.name}
                           className="cart-item-image"
                         />

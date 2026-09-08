@@ -19,7 +19,7 @@ function OurStory({ language }: OurStoryProps) {
           <Col md={6}>
             <div className="our-story-image">
               <img
-                src="/public/images/our-story.jpg"
+                src="/images/our-story.jpg"
                 alt="Apulian olive grove"
               />
             </div>

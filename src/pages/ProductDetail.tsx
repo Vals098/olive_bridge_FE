@@ -104,7 +104,7 @@ function ProductDetail() {
         <Row className="align-items-center">
           <Col md={6}>
             <img
-              src="/public/images/product-default.png"
+              src="/images/product-default.png"
               alt={product.name}
               className="product-detail-image"
             />
@@ -238,7 +238,7 @@ function ProductDetail() {
         <Modal.Body>
           <div className="cart-added-product">
             <img
-              src="/public/images/product-default.png"
+              src="/images/product-default.png"
               alt={product.name}
               className="cart-added-product-image"
             />
