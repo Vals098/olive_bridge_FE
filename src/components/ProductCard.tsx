@@ -34,7 +34,7 @@ function ProductCard({ product }: ProductCardProps) {
       <div className="product-card-image-wrapper">
         <Card.Img
           variant="top"
-          src="/public/images/product-default.png"
+          src={product.image}
           alt={product.name}
         />
 

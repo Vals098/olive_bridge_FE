@@ -17,7 +17,7 @@ function HomeHero({ language }: HomeHeroProps) {
         <Carousel.Item>
           <img
             className="home-hero-image"
-            src="/public/images/hero-intro.png"
+            src="/images/hero-intro.png"
             alt="OliveBridge - Italy and Japan"
           />
         </Carousel.Item>
@@ -25,7 +25,7 @@ function HomeHero({ language }: HomeHeroProps) {
         <Carousel.Item>
           <img
             className="home-hero-image"
-            src="/public/images/pexels-hero1.jpg"
+            src="/images/pexels-hero1.jpg"
             alt="Olive groves in Puglia"
           />
 
@@ -48,7 +48,7 @@ function HomeHero({ language }: HomeHeroProps) {
         <Carousel.Item>
           <img
             className="home-hero-image"
-            src="/public/images/pexels-roman-odintsov-hero25320080.jpg"
+            src="/images/pexels-roman-odintsov-hero25320080.jpg"
             alt="Italian olives on a branch"
           />
 
