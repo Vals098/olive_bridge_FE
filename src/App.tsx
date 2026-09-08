@@ -32,6 +32,9 @@ import SampleRequests from "./pages/SampleRequests"
 import BusinessInquiries from "./pages/BusinessInquiries"
 import AdminRoute from "./components/AdminRoute"
 import AdminDashboard from "./pages/AdminDashboard"
+import AdminOrders from "./pages/AdminOrders"
+import AdminSampleRequests from "./pages/AdminSampleRequests"
+import AdminBusinessInquiries from "./pages/AdminBusinessInquiries"
 import AdminProducts from "./pages/AdminProducts"
 import AdminCategoryCreate from "./pages/AdminCategoryCreate"
 import AdminTechnicalInformationCreate from "./pages/AdminTechnicalInformationCreate"
@@ -94,7 +97,19 @@ function AppContent() {
               <Route element={<AdminRoute />}>
                 <Route path="/admin" element={<AdminDashboard />} />
 
+                <Route path="/admin/orders" element={<AdminOrders />} />
+
                 <Route path="/admin/products" element={<AdminProducts />} />
+
+                <Route
+                  path="/admin/sample-requests"
+                  element={<AdminSampleRequests />}
+                />
+
+                <Route
+                  path="/admin/business-inquiries"
+                  element={<AdminBusinessInquiries />}
+                />
 
                 <Route
                   path="/admin/products/new"
