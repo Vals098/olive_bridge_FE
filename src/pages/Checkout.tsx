@@ -19,6 +19,7 @@ function Checkout() {
   const [customerName, setCustomerName] = useState("")
   const [customerEmail, setCustomerEmail] = useState("")
 
+  // SHIPPING ADDRESS
   const [shippingPostalCode, setShippingPostalCode] = useState("")
   const [shippingPrefecture, setShippingPrefecture] = useState("")
   const [shippingCity, setShippingCity] = useState("")
@@ -30,6 +31,16 @@ function Checkout() {
     null,
   )
 
+  // BILLING ADDRESS
+  const [billingSameAsShipping, setBillingSameAsShipping] = useState(false)
+
+  const [billingPostalCode, setBillingPostalCode] = useState("")
+  const [billingPrefecture, setBillingPrefecture] = useState("")
+  const [billingCity, setBillingCity] = useState("")
+  const [billingArea, setBillingArea] = useState("")
+  const [billingStreet, setBillingStreet] = useState("")
+  const [billingBuilding, setBillingBuilding] = useState("")
+
   const [order, setOrder] = useState<OrderResponse | null>(null)
   const [error, setError] = useState("")
 
@@ -37,9 +48,13 @@ function Checkout() {
     (state: RootState) => state.cart.items,
   )
 
-  const currentUser = useSelector((state: RootState) => state.user.currentUser)
+  const currentUser = useSelector(
+    (state: RootState) => state.user.currentUser,
+  )
 
-  const addresses = useSelector((state: RootState) => state.address.addresses)
+  const addresses = useSelector(
+    (state: RootState) => state.address.addresses,
+  )
 
   // Load saved addresses for logged-in users
   useEffect(() => {
@@ -70,6 +85,21 @@ function Checkout() {
     setShippingArea("")
     setShippingStreet("")
     setShippingBuilding("")
+  }
+
+  const handleBillingSameAsShipping = () => {
+    const newValue = !billingSameAsShipping
+
+    setBillingSameAsShipping(newValue)
+
+    if (newValue) {
+      setBillingPostalCode(shippingPostalCode)
+      setBillingPrefecture(shippingPrefecture)
+      setBillingCity(shippingCity)
+      setBillingArea(shippingArea)
+      setBillingStreet(shippingStreet)
+      setBillingBuilding(shippingBuilding)
+    }
   }
 
   if (order) {
@@ -121,7 +151,9 @@ function Checkout() {
 
             <h1>Your cart is empty</h1>
 
-            <p>Add some products to your cart before proceeding to checkout.</p>
+            <p>
+              Add some products to your cart before proceeding to checkout.
+            </p>
 
             <Button
               className="checkout-button"
@@ -148,13 +180,44 @@ function Checkout() {
       customerName: currentUser
         ? `${currentUser.name} ${currentUser.surname}`
         : customerName,
-      customerEmail: currentUser ? currentUser.email : customerEmail,
+
+      customerEmail: currentUser
+        ? currentUser.email
+        : customerEmail,
+
+      // SHIPPING
       shippingPostalCode,
       shippingPrefecture,
       shippingCity,
       shippingArea,
       shippingStreet,
       shippingBuilding,
+
+      // BILLING
+      billingPostalCode: billingSameAsShipping
+        ? shippingPostalCode
+        : billingPostalCode,
+
+      billingPrefecture: billingSameAsShipping
+        ? shippingPrefecture
+        : billingPrefecture,
+
+      billingCity: billingSameAsShipping
+        ? shippingCity
+        : billingCity,
+
+      billingArea: billingSameAsShipping
+        ? shippingArea
+        : billingArea,
+
+      billingStreet: billingSameAsShipping
+        ? shippingStreet
+        : billingStreet,
+
+      billingBuilding: billingSameAsShipping
+        ? shippingBuilding
+        : billingBuilding,
+
       items: cartItems.map((item) => ({
         productVariantId: item.variant.productVariantId,
         quantity: item.quantity,
@@ -162,13 +225,16 @@ function Checkout() {
     }
 
     try {
-      const response = await fetch("http://localhost:8080/orders/checkout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        "http://localhost:8080/orders/checkout",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(orderData),
         },
-        body: JSON.stringify(orderData),
-      })
+      )
 
       if (!response.ok) {
         throw new Error("Unable to place order")
@@ -442,43 +508,61 @@ function Checkout() {
                         </Col>
                       </Row>
 
-                      <Form.Group className="mb-4" controlId="shippingCity">
+                      <Form.Group
+                        className="mb-4"
+                        controlId="shippingCity"
+                      >
                         <Form.Label>City</Form.Label>
 
                         <Form.Control
                           type="text"
                           placeholder="Enter your city"
                           value={shippingCity}
-                          onChange={(e) => setShippingCity(e.target.value)}
+                          onChange={(e) =>
+                            setShippingCity(e.target.value)
+                          }
                           required
                         />
                       </Form.Group>
 
-                      <Form.Group className="mb-4" controlId="shippingArea">
+                      <Form.Group
+                        className="mb-4"
+                        controlId="shippingArea"
+                      >
                         <Form.Label>Area</Form.Label>
 
                         <Form.Control
                           type="text"
                           placeholder="Enter your area"
                           value={shippingArea}
-                          onChange={(e) => setShippingArea(e.target.value)}
+                          onChange={(e) =>
+                            setShippingArea(e.target.value)
+                          }
                           required
                         />
                       </Form.Group>
 
-                      <Form.Group className="mb-4" controlId="shippingStreet">
+                      <Form.Group
+                        className="mb-4"
+                        controlId="shippingStreet"
+                      >
                         <Form.Label>Street</Form.Label>
 
                         <Form.Control
                           type="text"
                           placeholder="Enter your street"
                           value={shippingStreet}
-                          onChange={(e) => setShippingStreet(e.target.value)}
+                          onChange={(e) =>
+                            setShippingStreet(e.target.value)
+                          }
                           required
                         />
                       </Form.Group>
 
-                      <Form.Group className="mb-4" controlId="shippingBuilding">
+                      <Form.Group
+                        className="mb-4"
+                        controlId="shippingBuilding"
+                      >
                         <Form.Label>Building</Form.Label>
 
                         <Form.Control
@@ -493,7 +577,135 @@ function Checkout() {
                     </>
                   )}
 
-                  {error && <div className="checkout-error">{error}</div>}
+                  <h2 className="checkout-section-title">
+                    Billing address
+                  </h2>
+
+                  <Form.Check
+                    type="checkbox"
+                    id="billingSameAsShipping"
+                    label="Billing address is the same as shipping address"
+                    checked={billingSameAsShipping}
+                    onChange={handleBillingSameAsShipping}
+                    className="mb-4"
+                  />
+
+                  {!billingSameAsShipping && (
+                    <>
+                      <Row>
+                        <Col md={6}>
+                          <Form.Group
+                            className="mb-4"
+                            controlId="billingPostalCode"
+                          >
+                            <Form.Label>Postal code</Form.Label>
+
+                            <Form.Control
+                              type="text"
+                              placeholder="Enter your postal code"
+                              value={billingPostalCode}
+                              onChange={(e) =>
+                                setBillingPostalCode(e.target.value)
+                              }
+                              required
+                            />
+                          </Form.Group>
+                        </Col>
+
+                        <Col md={6}>
+                          <Form.Group
+                            className="mb-4"
+                            controlId="billingPrefecture"
+                          >
+                            <Form.Label>Prefecture</Form.Label>
+
+                            <Form.Control
+                              type="text"
+                              placeholder="Enter your prefecture"
+                              value={billingPrefecture}
+                              onChange={(e) =>
+                                setBillingPrefecture(e.target.value)
+                              }
+                              required
+                            />
+                          </Form.Group>
+                        </Col>
+                      </Row>
+
+                      <Form.Group
+                        className="mb-4"
+                        controlId="billingCity"
+                      >
+                        <Form.Label>City</Form.Label>
+
+                        <Form.Control
+                          type="text"
+                          placeholder="Enter your city"
+                          value={billingCity}
+                          onChange={(e) =>
+                            setBillingCity(e.target.value)
+                          }
+                          required
+                        />
+                      </Form.Group>
+
+                      <Form.Group
+                        className="mb-4"
+                        controlId="billingArea"
+                      >
+                        <Form.Label>Area</Form.Label>
+
+                        <Form.Control
+                          type="text"
+                          placeholder="Enter your area"
+                          value={billingArea}
+                          onChange={(e) =>
+                            setBillingArea(e.target.value)
+                          }
+                          required
+                        />
+                      </Form.Group>
+
+                      <Form.Group
+                        className="mb-4"
+                        controlId="billingStreet"
+                      >
+                        <Form.Label>Street</Form.Label>
+
+                        <Form.Control
+                          type="text"
+                          placeholder="Enter your street"
+                          value={billingStreet}
+                          onChange={(e) =>
+                            setBillingStreet(e.target.value)
+                          }
+                          required
+                        />
+                      </Form.Group>
+
+                      <Form.Group
+                        className="mb-4"
+                        controlId="billingBuilding"
+                      >
+                        <Form.Label>Building</Form.Label>
+
+                        <Form.Control
+                          type="text"
+                          placeholder="Enter your building (optional)"
+                          value={billingBuilding}
+                          onChange={(e) =>
+                            setBillingBuilding(e.target.value)
+                          }
+                        />
+                      </Form.Group>
+                    </>
+                  )}
+
+                  {error && (
+                    <div className="checkout-error">
+                      {error}
+                    </div>
+                  )}
 
                   <Button
                     type="submit"
