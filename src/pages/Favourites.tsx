@@ -29,24 +29,52 @@ function Favourites() {
   )
 
   return (
-    <Container className="products-page">
-      <h1>My Favourites</h1>
+    <Container className="favourites-page">
+      <div className="favourites-header">
+        <span className="favourites-eyebrow">
+          YOUR SELECTION
+        </span>
+
+        <h1>My Favourites</h1>
+
+        <p>
+          A collection of the oils you have chosen to keep close.
+        </p>
+      </div>
 
       {favouriteProducts.length === 0 ? (
-        <p>You don't have any favourite products yet.</p>
+        <div className="favourites-empty">
+          <div className="favourites-empty-icon">♥</div>
+
+          <h2>No favourites yet</h2>
+
+          <p>
+            Explore our selection and save the products
+            you would like to discover again.
+          </p>
+        </div>
       ) : (
-        <Row className="products-grid">
-          {favouriteProducts.map((product) => (
-            <Col
-              key={product.productId}
-              md={4}
-              lg={3}
-              className="d-flex"
-            >
-              <ProductCard product={product} />
-            </Col>
-          ))}
-        </Row>
+        <>
+          <div className="favourites-count">
+            {favouriteProducts.length}{" "}
+            {favouriteProducts.length === 1
+              ? "product"
+              : "products"}
+          </div>
+
+          <Row className="products-grid">
+            {favouriteProducts.map((product) => (
+              <Col
+                key={product.productId}
+                md={4}
+                lg={3}
+                className="d-flex"
+              >
+                <ProductCard product={product} />
+              </Col>
+            ))}
+          </Row>
+        </>
       )}
     </Container>
   )

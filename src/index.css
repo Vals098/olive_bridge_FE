@@ -92,8 +92,10 @@ code {
 
 /* NAVBAR */
 .navbar {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 1030;
 
   padding: 20px 0;
@@ -2770,6 +2772,130 @@ code {
   .profile-business-inquiry-footer {
     grid-template-columns: 1fr;
     gap: 1rem;
+  }
+}
+
+/* FAVOURITES PAGE */
+.favourites-page {
+  padding-top: 3rem;
+  padding-bottom: 5rem;
+}
+
+.favourites-header {
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.favourites-eyebrow {
+  display: block;
+  margin-bottom: 0.7rem;
+
+  color: var(--accent);
+
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.favourites-header h1 {
+  margin-bottom: 0.7rem;
+
+  color: var(--primary);
+
+  font-family: var(--heading);
+  font-size: 2.4rem;
+  font-weight: 500;
+}
+
+.favourites-header p {
+  max-width: 500px;
+  margin: 0 auto;
+
+  color: #7b827e;
+
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.favourites-count {
+  margin-bottom: 1.25rem;
+
+  color: #858b87;
+
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.favourites-empty {
+  max-width: 500px;
+  margin: 4rem auto 2rem;
+  padding: 3rem 2rem;
+
+  border: 1px solid #eeeae5;
+  border-radius: 8px;
+
+  background: #faf9f7;
+
+  text-align: center;
+}
+
+.favourites-empty-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 46px;
+  height: 46px;
+  margin: 0 auto 1.25rem;
+
+  border: 1px solid #ddd8d1;
+  border-radius: 50%;
+
+  color: var(--primary);
+
+  font-size: 1.1rem;
+}
+
+.favourites-empty h2 {
+  margin-bottom: 0.75rem;
+
+  color: var(--primary);
+
+  font-family: var(--heading);
+  font-size: 1.35rem;
+  font-weight: 500;
+}
+
+.favourites-empty p {
+  max-width: 350px;
+  margin: 0 auto;
+
+  color: #7b827e;
+
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+
+@media (max-width: 767px) {
+  .favourites-page {
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+  }
+
+  .favourites-header {
+    margin-bottom: 2rem;
+  }
+
+  .favourites-header h1 {
+    font-size: 2rem;
+  }
+
+  .favourites-empty {
+    margin-top: 2.5rem;
+    padding: 2.5rem 1.5rem;
   }
 }
 

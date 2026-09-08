@@ -37,29 +37,27 @@ function Navbar() {
     const handleScroll = () => {
       const currentScrollY = window.scrollY
 
-      // Always show navbar at the top of the page
+      // Sempre visibile in cima
       if (currentScrollY <= 10) {
         setNavbarVisible(true)
         lastScrollY = currentScrollY
         return
       }
 
-      // Scrolling down → hide
-      if (currentScrollY > lastScrollY + 5) {
+      // Scorrimento verso il basso
+      if (currentScrollY > lastScrollY) {
         setNavbarVisible(false)
       }
 
-      // Scrolling up → show
-      if (currentScrollY < lastScrollY - 5) {
+      // Scorrimento verso l'alto
+      else if (currentScrollY < lastScrollY) {
         setNavbarVisible(true)
       }
 
       lastScrollY = currentScrollY
     }
 
-    window.addEventListener("scroll", handleScroll, {
-      passive: true,
-    })
+    window.addEventListener("scroll", handleScroll, { passive: true })
 
     return () => {
       window.removeEventListener("scroll", handleScroll)

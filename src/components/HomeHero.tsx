@@ -6,7 +6,7 @@ function HomeHero() {
 
   return (
     <section className="home-hero">
-      <Carousel fade interval={5000} wrap>
+      <Carousel fade interval={4000} wrap>
         <Carousel.Item>
           <img
             className="home-hero-image"
