@@ -48,13 +48,9 @@ function Checkout() {
     (state: RootState) => state.cart.items,
   )
 
-  const currentUser = useSelector(
-    (state: RootState) => state.user.currentUser,
-  )
+  const currentUser = useSelector((state: RootState) => state.user.currentUser)
 
-  const addresses = useSelector(
-    (state: RootState) => state.address.addresses,
-  )
+  const addresses = useSelector((state: RootState) => state.address.addresses)
 
   // Load saved addresses for logged-in users
   useEffect(() => {
@@ -151,9 +147,7 @@ function Checkout() {
 
             <h1>Your cart is empty</h1>
 
-            <p>
-              Add some products to your cart before proceeding to checkout.
-            </p>
+            <p>Add some products to your cart before proceeding to checkout.</p>
 
             <Button
               className="checkout-button"
@@ -181,9 +175,7 @@ function Checkout() {
         ? `${currentUser.name} ${currentUser.surname}`
         : customerName,
 
-      customerEmail: currentUser
-        ? currentUser.email
-        : customerEmail,
+      customerEmail: currentUser ? currentUser.email : customerEmail,
 
       // SHIPPING
       shippingPostalCode,
@@ -202,17 +194,11 @@ function Checkout() {
         ? shippingPrefecture
         : billingPrefecture,
 
-      billingCity: billingSameAsShipping
-        ? shippingCity
-        : billingCity,
+      billingCity: billingSameAsShipping ? shippingCity : billingCity,
 
-      billingArea: billingSameAsShipping
-        ? shippingArea
-        : billingArea,
+      billingArea: billingSameAsShipping ? shippingArea : billingArea,
 
-      billingStreet: billingSameAsShipping
-        ? shippingStreet
-        : billingStreet,
+      billingStreet: billingSameAsShipping ? shippingStreet : billingStreet,
 
       billingBuilding: billingSameAsShipping
         ? shippingBuilding
@@ -225,16 +211,16 @@ function Checkout() {
     }
 
     try {
-      const response = await fetch(
-        "http://localhost:8080/orders/checkout",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(orderData),
+      const token = localStorage.getItem("token")
+
+      const response = await fetch("http://localhost:8080/orders/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
-      )
+        body: JSON.stringify(orderData),
+      })
 
       if (!response.ok) {
         throw new Error("Unable to place order")
@@ -334,9 +320,7 @@ function Checkout() {
                               <div className="checkout-account-info">
                                 <span>Business name</span>
 
-                                <strong>
-                                  {currentUser.businessName}
-                                </strong>
+                                <strong>{currentUser.businessName}</strong>
                               </div>
                             </Col>
 
@@ -344,9 +328,7 @@ function Checkout() {
                               <div className="checkout-account-info">
                                 <span>Business Tax ID</span>
 
-                                <strong>
-                                  {currentUser.businessTaxId}
-                                </strong>
+                                <strong>{currentUser.businessTaxId}</strong>
                               </div>
                             </Col>
                           </Row>
@@ -367,38 +349,28 @@ function Checkout() {
                   ) : (
                     <Row>
                       <Col md={6}>
-                        <Form.Group
-                          className="mb-4"
-                          controlId="customerName"
-                        >
+                        <Form.Group className="mb-4" controlId="customerName">
                           <Form.Label>Name</Form.Label>
 
                           <Form.Control
                             type="text"
                             placeholder="Enter your name"
                             value={customerName}
-                            onChange={(e) =>
-                              setCustomerName(e.target.value)
-                            }
+                            onChange={(e) => setCustomerName(e.target.value)}
                             required
                           />
                         </Form.Group>
                       </Col>
 
                       <Col md={6}>
-                        <Form.Group
-                          className="mb-4"
-                          controlId="customerEmail"
-                        >
+                        <Form.Group className="mb-4" controlId="customerEmail">
                           <Form.Label>Email</Form.Label>
 
                           <Form.Control
                             type="email"
                             placeholder="Enter your email"
                             value={customerEmail}
-                            onChange={(e) =>
-                              setCustomerEmail(e.target.value)
-                            }
+                            onChange={(e) => setCustomerEmail(e.target.value)}
                             required
                           />
                         </Form.Group>
@@ -406,9 +378,7 @@ function Checkout() {
                     </Row>
                   )}
 
-                  <h2 className="checkout-section-title">
-                    Shipping address
-                  </h2>
+                  <h2 className="checkout-section-title">Shipping address</h2>
 
                   {currentUser && addresses.length > 0 && (
                     <div className="checkout-saved-addresses">
@@ -444,9 +414,7 @@ function Checkout() {
 
                                 <p>{address.street}</p>
 
-                                {address.building && (
-                                  <p>{address.building}</p>
-                                )}
+                                {address.building && <p>{address.building}</p>}
                               </Card.Body>
                             </Card>
                           </Col>
@@ -508,78 +476,56 @@ function Checkout() {
                         </Col>
                       </Row>
 
-                      <Form.Group
-                        className="mb-4"
-                        controlId="shippingCity"
-                      >
+                      <Form.Group className="mb-4" controlId="shippingCity">
                         <Form.Label>City</Form.Label>
 
                         <Form.Control
                           type="text"
                           placeholder="Enter your city"
                           value={shippingCity}
-                          onChange={(e) =>
-                            setShippingCity(e.target.value)
-                          }
+                          onChange={(e) => setShippingCity(e.target.value)}
                           required
                         />
                       </Form.Group>
 
-                      <Form.Group
-                        className="mb-4"
-                        controlId="shippingArea"
-                      >
+                      <Form.Group className="mb-4" controlId="shippingArea">
                         <Form.Label>Area</Form.Label>
 
                         <Form.Control
                           type="text"
                           placeholder="Enter your area"
                           value={shippingArea}
-                          onChange={(e) =>
-                            setShippingArea(e.target.value)
-                          }
+                          onChange={(e) => setShippingArea(e.target.value)}
                           required
                         />
                       </Form.Group>
 
-                      <Form.Group
-                        className="mb-4"
-                        controlId="shippingStreet"
-                      >
+                      <Form.Group className="mb-4" controlId="shippingStreet">
                         <Form.Label>Street</Form.Label>
 
                         <Form.Control
                           type="text"
                           placeholder="Enter your street"
                           value={shippingStreet}
-                          onChange={(e) =>
-                            setShippingStreet(e.target.value)
-                          }
+                          onChange={(e) => setShippingStreet(e.target.value)}
                           required
                         />
                       </Form.Group>
 
-                      <Form.Group
-                        className="mb-4"
-                        controlId="shippingBuilding"
-                      >
+                      <Form.Group className="mb-4" controlId="shippingBuilding">
                         <Form.Label>Building</Form.Label>
 
                         <Form.Control
                           type="text"
                           placeholder="Enter your building (optional)"
                           value={shippingBuilding}
-                          onChange={(e) =>
-                            setShippingBuilding(e.target.value)
-                          }
+                          onChange={(e) => setShippingBuilding(e.target.value)}
                         />
                       </Form.Group>
                     </>
                   )}
 
-                  <h2 className="checkout-section-title">
-                    Billing address
-                  </h2>
+                  <h2 className="checkout-section-title">Billing address</h2>
 
                   <Form.Check
                     type="checkbox"
@@ -632,80 +578,56 @@ function Checkout() {
                         </Col>
                       </Row>
 
-                      <Form.Group
-                        className="mb-4"
-                        controlId="billingCity"
-                      >
+                      <Form.Group className="mb-4" controlId="billingCity">
                         <Form.Label>City</Form.Label>
 
                         <Form.Control
                           type="text"
                           placeholder="Enter your city"
                           value={billingCity}
-                          onChange={(e) =>
-                            setBillingCity(e.target.value)
-                          }
+                          onChange={(e) => setBillingCity(e.target.value)}
                           required
                         />
                       </Form.Group>
 
-                      <Form.Group
-                        className="mb-4"
-                        controlId="billingArea"
-                      >
+                      <Form.Group className="mb-4" controlId="billingArea">
                         <Form.Label>Area</Form.Label>
 
                         <Form.Control
                           type="text"
                           placeholder="Enter your area"
                           value={billingArea}
-                          onChange={(e) =>
-                            setBillingArea(e.target.value)
-                          }
+                          onChange={(e) => setBillingArea(e.target.value)}
                           required
                         />
                       </Form.Group>
 
-                      <Form.Group
-                        className="mb-4"
-                        controlId="billingStreet"
-                      >
+                      <Form.Group className="mb-4" controlId="billingStreet">
                         <Form.Label>Street</Form.Label>
 
                         <Form.Control
                           type="text"
                           placeholder="Enter your street"
                           value={billingStreet}
-                          onChange={(e) =>
-                            setBillingStreet(e.target.value)
-                          }
+                          onChange={(e) => setBillingStreet(e.target.value)}
                           required
                         />
                       </Form.Group>
 
-                      <Form.Group
-                        className="mb-4"
-                        controlId="billingBuilding"
-                      >
+                      <Form.Group className="mb-4" controlId="billingBuilding">
                         <Form.Label>Building</Form.Label>
 
                         <Form.Control
                           type="text"
                           placeholder="Enter your building (optional)"
                           value={billingBuilding}
-                          onChange={(e) =>
-                            setBillingBuilding(e.target.value)
-                          }
+                          onChange={(e) => setBillingBuilding(e.target.value)}
                         />
                       </Form.Group>
                     </>
                   )}
 
-                  {error && (
-                    <div className="checkout-error">
-                      {error}
-                    </div>
-                  )}
+                  {error && <div className="checkout-error">{error}</div>}
 
                   <Button
                     type="submit"
