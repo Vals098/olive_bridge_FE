@@ -4597,7 +4597,7 @@ code {
 }
 
 
-/* REPLY MODAL */
+/* ADMIN MAIL REPLY MODAL */
 
 .admin-reply-context {
   display: flex;
@@ -4672,4 +4672,19 @@ code {
   .admin-reply-button {
     width: 100%;
   }
+}
+
+/* CHECKOUT AUTOMATED MAIL */
+.checkout-confirmation-email {
+  margin-top: 0.75rem;
+  color: #7b827e;
+  font-size: 0.8rem;
+}
+
+
+.checkout-confirmation-email strong {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--primary);
+  font-weight: 500;
 }
