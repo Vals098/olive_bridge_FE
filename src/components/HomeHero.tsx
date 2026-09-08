@@ -1,8 +1,15 @@
 import { Button, Carousel } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
+import { homeContent } from "../data/homeContent"
+import type { HomeLanguage } from "../context/LanguageContext"
 
-function HomeHero() {
+interface HomeHeroProps {
+  language: HomeLanguage
+}
+
+function HomeHero({ language }: HomeHeroProps) {
   const navigate = useNavigate()
+  const content = homeContent[language]
 
   return (
     <section className="home-hero">
@@ -11,9 +18,10 @@ function HomeHero() {
           <img
             className="home-hero-image"
             src="/public/images/hero-intro.png"
-            alt="Olive Bridge - Italy and Japan"
+            alt="OliveBridge - Italy and Japan"
           />
         </Carousel.Item>
+
         <Carousel.Item>
           <img
             className="home-hero-image"
@@ -22,17 +30,17 @@ function HomeHero() {
           />
 
           <Carousel.Caption>
-            <p>Italian Extra Virgin Olive Oil</p>
+            <p>{content.hero.slide2.label}</p>
 
-            <h1>Discover the taste of Italy</h1>
+            <h1>{content.hero.slide2.title}</h1>
 
-            <p>
-              Discover authentic Italian olive oil and the stories behind every
-              bottle.
-            </p>
+            <p>{content.hero.slide2.text}</p>
 
-            <Button variant="light" onClick={() => navigate("/products")}>
-              Shop
+            <Button
+              className="olivebridge-button"
+              onClick={() => navigate("/products")}
+            >
+              {content.hero.slide2.button}
             </Button>
           </Carousel.Caption>
         </Carousel.Item>
@@ -45,17 +53,17 @@ function HomeHero() {
           />
 
           <Carousel.Caption>
-            <p>From Puglia to Japan</p>
+            <p>{content.hero.slide3.label}</p>
 
-            <h1>Tradition in every bottle</h1>
+            <h1>{content.hero.slide3.title}</h1>
 
-            <p>
-              Discover the flavours, people and traditions behind authentic
-              Italian olive oil.
-            </p>
+            <p>{content.hero.slide3.text}</p>
 
-            <Button variant="light" onClick={() => navigate("/products")}>
-              Discover
+            <Button
+              className="olivebridge-button"
+              onClick={() => navigate("/products")}
+            >
+              {content.hero.slide3.button}
             </Button>
           </Carousel.Caption>
         </Carousel.Item>

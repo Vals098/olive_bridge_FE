@@ -1,57 +1,52 @@
 import { Button, Col, Container, Row } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
 
-function OurStory() {
-    const navigate = useNavigate()
+import { homeContent } from "../data/homeContent"
+import type { HomeLanguage } from "../context/LanguageContext"
 
-    return (
-        <section className="our-story">
-            <Container>
-                <Row className="align-items-center g-5">
-                    <Col md={6}>
-                        <div className="our-story-image">
-                            <img
-                                src="/public/images/our-story.jpg"
-                                alt="Apulian olive grove"
-                            />
-                        </div>
-                    </Col>
+interface OurStoryProps {
+  language: HomeLanguage
+}
 
-                    <Col md={6}>
-                        <div className="our-story-content">
-                            <p className="our-story-label">
-                                OUR STORY
-                            </p>
+function OurStory({ language }: OurStoryProps) {
+  const navigate = useNavigate()
+  const content = homeContent[language]
 
-                            <h2>
-                                From the heart of Puglia to Japan
-                            </h2>
+  return (
+    <section className="our-story">
+      <Container>
+        <Row className="align-items-center g-5">
+          <Col md={6}>
+            <div className="our-story-image">
+              <img
+                src="/public/images/our-story.jpg"
+                alt="Apulian olive grove"
+              />
+            </div>
+          </Col>
 
-                            <p>
-                                OliveBridge was born from a passion for
-                                Italian extra virgin olive oil and a
-                                connection between Italy and Japan.
-                            </p>
+          <Col md={6}>
+            <div className="our-story-content">
+              <p className="our-story-label">{content.story.label}</p>
 
-                            <p>
-                                We work with small Italian producers to
-                                bring authentic Apulian olive oil to
-                                people who appreciate quality, tradition
-                                and the story behind every bottle.
-                            </p>
+              <h2>{content.story.title}</h2>
 
-                            <Button
-                                variant="dark"
-                                onClick={() => navigate("/about")}
-                            >
-                                Discover our story
-                            </Button>
-                        </div>
-                    </Col>
-                </Row>
-            </Container>
-        </section>
-    )
+              <p>{content.story.text1}</p>
+
+              <p>{content.story.text2}</p>
+
+              <Button
+                className="olivebridge-button"
+                onClick={() => navigate("/about")}
+              >
+                {content.story.button}
+              </Button>
+            </div>
+          </Col>
+        </Row>
+      </Container>
+    </section>
+  )
 }
 
 export default OurStory

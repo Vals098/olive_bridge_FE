@@ -728,6 +728,40 @@ code {
   cursor: pointer;
 }
 
+.olivebridge-button {
+  border: 1px solid var(--primary) !important;
+  border-radius: 6px !important;
+
+  background-color: var(--primary) !important;
+  border-color: var(--primary) !important;
+
+  color: white !important;
+
+  padding: 0.65rem 1.25rem !important;
+
+  font-size: 0.75rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.02em;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.olivebridge-button:hover {
+  background-color: var(--secondary) !important;
+  border-color: var(--secondary) !important;
+
+  color: white !important;
+
+  transform: translateY(-1px);
+}
+
+.olivebridge-button:active {
+  transform: translateY(0);
+}
+
 /* hero text */
 
 .home-hero .carousel-caption {

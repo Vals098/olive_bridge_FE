@@ -5,11 +5,17 @@ import { useNavigate } from "react-router-dom"
 import useEmblaCarousel from "embla-carousel-react"
 
 import type { AppDispatch, RootState } from "../redux/store"
-
 import { getProducts } from "../redux/actions/productAction/getProducts"
 import ProductCard from "./ProductCard"
 
-function FeaturedProducts() {
+import { homeContent } from "../data/homeContent"
+import type { HomeLanguage } from "../context/LanguageContext"
+
+interface FeaturedProductsProps {
+  language: HomeLanguage
+}
+
+function FeaturedProducts({ language }: FeaturedProductsProps) {
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
 
@@ -24,21 +30,22 @@ function FeaturedProducts() {
     dispatch(getProducts())
   }, [dispatch])
 
-  const featuredProducts = products
+  const content = homeContent[language]
 
   return (
     <section className="featured-products">
       <Container>
         <div className="text-center mb-5">
-          <h2>Featured Products</h2>
-          <p>Discover our selection of Italian extra virgin olive oils.</p>
+          <h2>{content.featured.title}</h2>
+
+          <p>{content.featured.text}</p>
         </div>
       </Container>
 
       <div className="embla">
         <div className="embla__viewport" ref={emblaRef}>
           <div className="embla__container">
-            {featuredProducts.map((product) => (
+            {products.map((product) => (
               <div className="embla__slide" key={product.productId}>
                 <ProductCard product={product} />
               </div>
@@ -49,8 +56,11 @@ function FeaturedProducts() {
 
       <Container>
         <div className="text-center mt-5">
-          <Button variant="dark" onClick={() => navigate("/products")}>
-            View all products
+          <Button
+            className="olivebridge-button"
+            onClick={() => navigate("/products")}
+          >
+            {content.featured.button}
           </Button>
         </div>
       </Container>

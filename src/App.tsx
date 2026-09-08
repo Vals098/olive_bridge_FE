@@ -9,6 +9,7 @@ import store, {
   type AppDispatch,
   type RootState,
 } from "./redux/store"
+
 import { getCurrentUser } from "./redux/actions/userAction/getCurrentUser"
 import { getFavourites } from "./redux/actions/favouriteAction/getFavourites"
 
@@ -41,6 +42,8 @@ import AdminTechnicalInformationCreate from "./pages/AdminTechnicalInformationCr
 import AdminProductForm from "./pages/AdminProductForm"
 import Notifications from "./pages/Notifications"
 
+import { LanguageProvider } from "./context/LanguageContext"
+
 const MainLayout = () => {
   return (
     <>
@@ -58,7 +61,9 @@ function AppContent() {
     dispatch(getCurrentUser())
   }, [dispatch])
 
-  const currentUser = useSelector((state: RootState) => state.user.currentUser)
+  const currentUser = useSelector(
+    (state: RootState) => state.user.currentUser,
+  )
 
   useEffect(() => {
     if (currentUser) {
@@ -78,7 +83,10 @@ function AppContent() {
           <Route element={<MainLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/products" element={<Products />} />
-            <Route path="/products/:productId" element={<ProductDetail />} />
+            <Route
+              path="/products/:productId"
+              element={<ProductDetail />}
+            />
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<Checkout />} />
 
@@ -87,19 +95,34 @@ function AppContent() {
               <Route path="/addresses" element={<Addresses />} />
               <Route path="/favourites" element={<Favourites />} />
               <Route path="/business" element={<Business />} />
-              <Route path="/sample-requests" element={<SampleRequests />} />
+              <Route
+                path="/sample-requests"
+                element={<SampleRequests />}
+              />
               <Route
                 path="/business-inquiries"
                 element={<BusinessInquiries />}
               />
-              <Route path="/notifications" element={<Notifications />} />
+              <Route
+                path="/notifications"
+                element={<Notifications />}
+              />
 
               <Route element={<AdminRoute />}>
-                <Route path="/admin" element={<AdminDashboard />} />
+                <Route
+                  path="/admin"
+                  element={<AdminDashboard />}
+                />
 
-                <Route path="/admin/orders" element={<AdminOrders />} />
+                <Route
+                  path="/admin/orders"
+                  element={<AdminOrders />}
+                />
 
-                <Route path="/admin/products" element={<AdminProducts />} />
+                <Route
+                  path="/admin/products"
+                  element={<AdminProducts />}
+                />
 
                 <Route
                   path="/admin/sample-requests"
@@ -143,7 +166,9 @@ export default function App() {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <AppContent />
+        <LanguageProvider>
+          <AppContent />
+        </LanguageProvider>
       </PersistGate>
     </Provider>
   )
