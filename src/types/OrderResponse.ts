@@ -6,6 +6,7 @@ export interface OrderResponse {
   orderDate: string
   total: number
   status: OrderStatus
+
   shippingRecipientName: string
   shippingPostalCode: string
   shippingPrefecture: string
@@ -13,4 +14,11 @@ export interface OrderResponse {
   shippingArea: string
   shippingStreet: string
   shippingBuilding: string | null
+
+  billingPostalCode: string
+  billingPrefecture: string
+  billingCity: string
+  billingArea: string
+  billingStreet: string
+  billingBuilding: string | null
 }

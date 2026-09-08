@@ -13,6 +13,7 @@ import businessInquiryReducer from "../reducers/businessInquiryReducer"
 import adminReducer from "../reducers/adminReducer"
 import categoryReducer from "../reducers/categoryReducer"
 import technicalInformationReducer from "../reducers/technicalInformationReducer"
+import orderReducer from "../reducers/orderReducer"
 
 const cartPersistConfig = {
   key: "cart",
@@ -34,6 +35,7 @@ const store = configureStore({
     admin: adminReducer,
     category: categoryReducer,
     technicalInformation: technicalInformationReducer,
+    order: orderReducer,
   },
 })
 
