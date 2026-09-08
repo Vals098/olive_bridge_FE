@@ -41,6 +41,9 @@ function Checkout() {
   const [billingStreet, setBillingStreet] = useState("")
   const [billingBuilding, setBillingBuilding] = useState("")
 
+  // PAYMENT
+  const [paymentMethod, setPaymentMethod] = useState("")
+
   const [order, setOrder] = useState<OrderResponse | null>(null)
   const [error, setError] = useState("")
 
@@ -203,6 +206,9 @@ function Checkout() {
       billingBuilding: billingSameAsShipping
         ? shippingBuilding
         : billingBuilding,
+
+      // PAYMENT
+      paymentMethod,
 
       items: cartItems.map((item) => ({
         productVariantId: item.variant.productVariantId,
@@ -626,6 +632,45 @@ function Checkout() {
                       </Form.Group>
                     </>
                   )}
+
+                  <h2 className="checkout-section-title">Payment method</h2>
+
+                  <Form.Group className="mb-4" controlId="paymentMethod">
+                    <Form.Label>Choose your payment method</Form.Label>
+
+                    <div>
+                      <Form.Check
+                        type="radio"
+                        name="paymentMethod"
+                        id="creditCard"
+                        label="Credit Card"
+                        value="CREDIT_CARD"
+                        checked={paymentMethod === "CREDIT_CARD"}
+                        onChange={(e) => setPaymentMethod(e.target.value)}
+                        required
+                      />
+
+                      <Form.Check
+                        type="radio"
+                        name="paymentMethod"
+                        id="paypal"
+                        label="PayPal"
+                        value="PAYPAL"
+                        checked={paymentMethod === "PAYPAL"}
+                        onChange={(e) => setPaymentMethod(e.target.value)}
+                      />
+
+                      <Form.Check
+                        type="radio"
+                        name="paymentMethod"
+                        id="bankTransfer"
+                        label="Bank Transfer"
+                        value="BANK_TRANSFER"
+                        checked={paymentMethod === "BANK_TRANSFER"}
+                        onChange={(e) => setPaymentMethod(e.target.value)}
+                      />
+                    </div>
+                  </Form.Group>
 
                   {error && <div className="checkout-error">{error}</div>}
 
