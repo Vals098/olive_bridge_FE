@@ -90,47 +90,99 @@ code {
 
 /* MY CSS */
 
-/* navbar */
-
+/* NAVBAR */
 .navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+
   padding: 20px 0;
+
   background-color: var(--background);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
+
+.navbar-visible {
+  transform: translateY(0);
+}
+
+.navbar-hidden {
+  transform: translateY(-100%);
+}
+
+
+/* BRAND */
 
 .navbar-brand {
   color: var(--primary);
   font-family: var(--heading);
   font-size: 28px;
   text-decoration: none;
+  white-space: nowrap;
 }
 
 .navbar-brand:hover {
   color: var(--secondary);
 }
 
+
+/* NAVIGATION */
+
+.navbar .navbar-nav {
+  align-items: center;
+}
+
 .navbar .nav-link {
   color: var(--primary);
   margin-left: 20px;
+  white-space: nowrap;
 }
 
 .navbar .nav-link:hover {
   color: var(--accent);
 }
 
+
+/*  CART & FAVOURITES */
+
+.navbar-cart-icon,
+.navbar-favourites-icon {
+  display: none;
+}
+
+.navbar-cart-text,
+.navbar-favourites-text {
+  display: inline;
+}
+
+
+/* WELCOME */
+
 .navbar-welcome {
   color: var(--primary);
   margin: 8px 20px;
+  white-space: nowrap;
 }
+
+
+/* LOGOUT */
 
 .navbar-button {
   background-color: var(--primary) !important;
   border-color: var(--primary) !important;
+  white-space: nowrap;
 }
 
 .navbar-button:hover {
   background-color: var(--secondary) !important;
   border-color: var(--secondary) !important;
 }
+
+
+/*  LANGUAGES */
 
 .navbar-languages {
   display: flex;
@@ -143,16 +195,175 @@ code {
   border: none;
   background: transparent;
   padding: 6px 5px;
+
   color: var(--primary);
+
   font-size: 13px;
   font-weight: 500;
   letter-spacing: 0.5px;
+
   cursor: pointer;
+
   transition: color 0.2s ease;
 }
 
 .navbar-languages button:hover {
   color: var(--accent);
+}
+
+
+/*  MOBILE TOGGLE */
+
+.navbar-toggle {
+  border: none !important;
+  padding: 6px 8px !important;
+}
+
+.navbar-toggle:focus {
+  box-shadow: none !important;
+}
+
+.navbar-toggle .navbar-toggler-icon {
+  width: 1.3em;
+  height: 1.3em;
+}
+
+
+/* TABLET
+   768px → 1199px */
+
+@media (min-width: 768px) and (max-width: 1199px) {
+
+  .navbar {
+    padding: 16px 0;
+  }
+
+  .navbar .nav-link {
+    margin-left: 12px;
+  }
+
+  /*
+     Tablet:
+     Cart → icon only
+     Favourites → heart only
+  */
+
+  .navbar-cart-text,
+  .navbar-favourites-text {
+    display: none;
+  }
+
+  .navbar-cart-icon,
+  .navbar-favourites-icon {
+    display: inline;
+    font-size: 18px;
+  }
+
+  .navbar-favourites-icon {
+    font-size: 20px;
+  }
+
+  .navbar-welcome {
+    display: none;
+  }
+
+  .navbar-languages {
+    margin-left: 12px;
+  }
+
+  .navbar-languages button {
+    padding: 5px 3px;
+    font-size: 11px;
+  }
+
+  .navbar-button {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+}
+
+
+/* MOBILE Under 768px */
+
+@media (max-width: 767px) {
+
+  .navbar {
+    padding: 14px 0;
+  }
+
+  .navbar .container {
+    align-items: center;
+  }
+
+  .navbar-brand {
+    font-size: 24px;
+  }
+
+  /*
+     The collapsed menu becomes vertical.
+  */
+
+  .navbar-collapse {
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #e4e0da;
+  }
+
+  .navbar .navbar-nav {
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .navbar .nav-link {
+    margin-left: 0;
+    padding: 0.7rem 0 !important;
+  }
+
+  /*
+     On mobile we show both icon and text.
+  */
+
+  .navbar-cart-icon,
+  .navbar-favourites-icon {
+    display: inline;
+    margin-right: 0.45rem;
+  }
+
+  .navbar-cart-text,
+  .navbar-favourites-text {
+    display: inline;
+  }
+
+  .navbar-welcome {
+    display: block;
+
+    margin: 0.75rem 0;
+
+    padding-top: 0.75rem;
+
+    border-top: 1px solid #e4e0da;
+
+    font-size: 0.85rem;
+  }
+
+  .navbar-button {
+    width: 100%;
+    margin-top: 0.25rem;
+  }
+
+  .navbar-languages {
+    justify-content: flex-start;
+
+    margin-left: 0;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+
+    border-top: 1px solid #e4e0da;
+  }
+
+  .navbar-languages button {
+    padding: 6px 8px;
+  }
 }
 
 /* footer */
