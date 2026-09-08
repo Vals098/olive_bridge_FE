@@ -85,7 +85,7 @@ function Navbar() {
         />
 
         <BootstrapNavbar.Collapse id="olivebridge-navbar">
-          <Nav>
+          <Nav className="ms-md-auto">
             <Nav.Link as={Link} to="/products">
               Products
             </Nav.Link>
