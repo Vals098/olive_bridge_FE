@@ -113,7 +113,6 @@ code {
   transform: translateY(-100%);
 }
 
-
 /* BRAND */
 
 .navbar-brand {
@@ -127,7 +126,6 @@ code {
 .navbar-brand:hover {
   color: var(--secondary);
 }
-
 
 /* NAVIGATION */
 
@@ -145,7 +143,6 @@ code {
   color: var(--accent);
 }
 
-
 /*  CART & FAVOURITES */
 
 .navbar-cart-icon,
@@ -158,7 +155,6 @@ code {
   display: inline;
 }
 
-
 /* WELCOME */
 
 .navbar-welcome {
@@ -166,7 +162,6 @@ code {
   margin: 8px 20px;
   white-space: nowrap;
 }
-
 
 /* LOGOUT */
 
@@ -180,7 +175,6 @@ code {
   background-color: var(--secondary) !important;
   border-color: var(--secondary) !important;
 }
-
 
 /*  LANGUAGES */
 
@@ -211,7 +205,6 @@ code {
   color: var(--accent);
 }
 
-
 /*  MOBILE TOGGLE */
 
 .navbar-toggle {
@@ -228,18 +221,26 @@ code {
   height: 1.3em;
 }
 
-
 /* TABLET
    768px → 1199px */
 
 @media (min-width: 768px) and (max-width: 1199px) {
-
   .navbar {
     padding: 16px 0;
   }
 
   .navbar .nav-link {
     margin-left: 12px;
+  }
+
+  .navbar-cart-count {
+    position: absolute;
+    top: -7px;
+    right: -9px;
+    min-width: 16px;
+    height: 16px;
+    margin-left: 0;
+    font-size: 0.6rem;
   }
 
   /*
@@ -282,11 +283,9 @@ code {
   }
 }
 
-
 /* MOBILE Under 768px */
 
 @media (max-width: 767px) {
-
   .navbar {
     padding: 14px 0;
   }
@@ -364,6 +363,34 @@ code {
   .navbar-languages button {
     padding: 6px 8px;
   }
+}
+
+/* navbar cart number */
+.navbar-cart-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.navbar-cart-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 18px;
+  height: 18px;
+
+  margin-left: 5px;
+  padding: 0 5px;
+
+  border-radius: 50%;
+
+  background-color: var(--accent);
+  color: white;
+
+  font-size: 0.65rem;
+  font-weight: 600;
+  line-height: 1;
 }
 
 /* footer */
@@ -4709,7 +4736,6 @@ code {
   line-height: 1.7;
 }
 
-
 /* PRODUCT */
 
 .admin-order-header h3 {
@@ -4721,7 +4747,6 @@ code {
   font-size: 1.05rem;
   font-weight: 600;
 }
-
 
 /* STATUS BUTTONS */
 
@@ -4749,7 +4774,6 @@ code {
   background: #f7f4f0 !important;
 }
 
-
 /* CURRENT STATUS */
 
 .admin-status-button.active,
@@ -4760,7 +4784,6 @@ code {
   opacity: 1 !important;
 }
 
-
 /* DISABLED FUTURE / INVALID STATUS */
 
 .admin-status-button:disabled:not(.active) {
@@ -4769,7 +4792,6 @@ code {
   color: #b1b4b1 !important;
   opacity: 0.65 !important;
 }
-
 
 /* ACTIONS */
 
@@ -4788,7 +4810,6 @@ code {
   font-size: 0.75rem;
 }
 
-
 /* REPLY BUTTON */
 
 .admin-reply-button {
@@ -4806,7 +4827,6 @@ code {
   background: var(--secondary) !important;
   color: white !important;
 }
-
 
 /* ADMIN MAIL REPLY MODAL */
 
@@ -4861,11 +4881,9 @@ code {
   border-color: var(--primary);
 }
 
-
 /* MOBILE */
 
 @media (max-width: 768px) {
-
   .admin-sample-request-status-buttons {
     gap: 0.4rem;
   }
@@ -4891,7 +4909,6 @@ code {
   color: #7b827e;
   font-size: 0.8rem;
 }
-
 
 .checkout-confirmation-email strong {
   display: block;
