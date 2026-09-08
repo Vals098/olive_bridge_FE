@@ -6,4 +6,6 @@ export interface RegisterRequest {
   email: string
   password: string
   accountType: AccountType
+  businessName: string | null
+  businessTaxId: string | null
 }

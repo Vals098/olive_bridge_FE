@@ -16,6 +16,8 @@ function Register() {
   const [password, setPassword] = useState("")
   const [accountType, setAccountType] =
     useState<AccountType>("INDIVIDUAL")
+  const [businessName, setBusinessName] = useState("")
+  const [businessTaxId, setBusinessTaxId] = useState("")
   const [error, setError] = useState("")
 
   const handleSubmit = async (e: SyntheticEvent) => {
@@ -29,6 +31,10 @@ function Register() {
         email,
         password,
         accountType,
+        businessName:
+          accountType === "BUSINESS" ? businessName : null,
+        businessTaxId:
+          accountType === "BUSINESS" ? businessTaxId : null,
       })
 
       navigate("/login")
@@ -166,6 +172,46 @@ function Register() {
                         </option>
                       </Form.Select>
                     </Form.Group>
+
+                    {accountType === "BUSINESS" && (
+                      <>
+                        <Form.Group
+                          className="mb-4"
+                          controlId="registerBusinessName"
+                        >
+                          <Form.Label>Business name</Form.Label>
+
+                          <Form.Control
+                            type="text"
+                            value={businessName}
+                            onChange={(e) =>
+                              setBusinessName(e.target.value)
+                            }
+                            placeholder="Enter your business name"
+                            required
+                          />
+                        </Form.Group>
+
+                        <Form.Group
+                          className="mb-4"
+                          controlId="registerBusinessTaxId"
+                        >
+                          <Form.Label>
+                            Business Tax ID / Registration Number
+                          </Form.Label>
+
+                          <Form.Control
+                            type="text"
+                            value={businessTaxId}
+                            onChange={(e) =>
+                              setBusinessTaxId(e.target.value)
+                            }
+                            placeholder="Enter your business tax ID"
+                            required
+                          />
+                        </Form.Group>
+                      </>
+                    )}
 
                     <Button
                       type="submit"
