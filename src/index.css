@@ -1299,6 +1299,56 @@ code {
   color: var(--primary);
 }
 
+.checkout-account-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1.25rem;
+}
+
+.checkout-account-info span {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #777;
+}
+
+.checkout-account-info strong {
+  font-weight: 500;
+}
+
+.checkout-business-info {
+  margin-top: 0.5rem;
+}
+
+.checkout-business-info h3 {
+  font-family: inherit;
+  font-size: 1.35rem;
+  font-weight: 350;
+  margin-bottom: 1rem;
+}
+
+.checkout-edit-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  font-size: 0.9rem;
+}
+
+.checkout-edit-profile span {
+  color: #777;
+}
+
+.checkout-edit-profile button {
+  border: none;
+  background: none;
+  padding: 0;
+  text-decoration: underline;
+  cursor: pointer;
+  font: inherit;
+}
+
 /* responsive */
 
 @media (max-width: 991px) {

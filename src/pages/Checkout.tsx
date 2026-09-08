@@ -145,7 +145,9 @@ function Checkout() {
     setError("")
 
     const orderData = {
-      customerName: currentUser ? currentUser.name : customerName,
+      customerName: currentUser
+        ? `${currentUser.name} ${currentUser.surname}`
+        : customerName,
       customerEmail: currentUser ? currentUser.email : customerEmail,
       shippingPostalCode,
       shippingPrefecture,
@@ -235,41 +237,112 @@ function Checkout() {
                 <h2>Customer information</h2>
 
                 <Form onSubmit={handleSubmit}>
-                  <Row>
-                    <Col md={6}>
-                      <Form.Group className="mb-4" controlId="customerName">
-                        <Form.Label>Name</Form.Label>
+                  {currentUser ? (
+                    <>
+                      <Row>
+                        <Col md={6}>
+                          <div className="checkout-account-info">
+                            <span>Name</span>
 
-                        <Form.Control
-                          type="text"
-                          placeholder="Enter your name"
-                          value={currentUser ? currentUser.name : customerName}
-                          onChange={(e) => setCustomerName(e.target.value)}
-                          readOnly={!!currentUser}
-                          required
-                        />
-                      </Form.Group>
-                    </Col>
+                            <strong>
+                              {currentUser.name} {currentUser.surname}
+                            </strong>
+                          </div>
+                        </Col>
 
-                    <Col md={6}>
-                      <Form.Group className="mb-4" controlId="customerEmail">
-                        <Form.Label>Email</Form.Label>
+                        <Col md={6}>
+                          <div className="checkout-account-info">
+                            <span>Email</span>
 
-                        <Form.Control
-                          type="email"
-                          placeholder="Enter your email"
-                          value={
-                            currentUser ? currentUser.email : customerEmail
-                          }
-                          onChange={(e) => setCustomerEmail(e.target.value)}
-                          readOnly={!!currentUser}
-                          required
-                        />
-                      </Form.Group>
-                    </Col>
-                  </Row>
+                            <strong>{currentUser.email}</strong>
+                          </div>
+                        </Col>
+                      </Row>
 
-                  <h2 className="checkout-section-title">Shipping address</h2>
+                      {currentUser.accountType === "BUSINESS" && (
+                        <div className="checkout-business-info">
+                          <h3>Business information</h3>
+
+                          <Row>
+                            <Col md={6}>
+                              <div className="checkout-account-info">
+                                <span>Business name</span>
+
+                                <strong>
+                                  {currentUser.businessName}
+                                </strong>
+                              </div>
+                            </Col>
+
+                            <Col md={6}>
+                              <div className="checkout-account-info">
+                                <span>Business Tax ID</span>
+
+                                <strong>
+                                  {currentUser.businessTaxId}
+                                </strong>
+                              </div>
+                            </Col>
+                          </Row>
+                        </div>
+                      )}
+
+                      <div className="checkout-edit-profile">
+                        <span>Are these details incorrect?</span>
+
+                        <button
+                          type="button"
+                          onClick={() => navigate("/profile")}
+                        >
+                          Edit your profile →
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <Row>
+                      <Col md={6}>
+                        <Form.Group
+                          className="mb-4"
+                          controlId="customerName"
+                        >
+                          <Form.Label>Name</Form.Label>
+
+                          <Form.Control
+                            type="text"
+                            placeholder="Enter your name"
+                            value={customerName}
+                            onChange={(e) =>
+                              setCustomerName(e.target.value)
+                            }
+                            required
+                          />
+                        </Form.Group>
+                      </Col>
+
+                      <Col md={6}>
+                        <Form.Group
+                          className="mb-4"
+                          controlId="customerEmail"
+                        >
+                          <Form.Label>Email</Form.Label>
+
+                          <Form.Control
+                            type="email"
+                            placeholder="Enter your email"
+                            value={customerEmail}
+                            onChange={(e) =>
+                              setCustomerEmail(e.target.value)
+                            }
+                            required
+                          />
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                  )}
+
+                  <h2 className="checkout-section-title">
+                    Shipping address
+                  </h2>
 
                   {currentUser && addresses.length > 0 && (
                     <div className="checkout-saved-addresses">
@@ -305,7 +378,9 @@ function Checkout() {
 
                                 <p>{address.street}</p>
 
-                                {address.building && <p>{address.building}</p>}
+                                {address.building && (
+                                  <p>{address.building}</p>
+                                )}
                               </Card.Body>
                             </Card>
                           </Col>
@@ -410,7 +485,9 @@ function Checkout() {
                           type="text"
                           placeholder="Enter your building (optional)"
                           value={shippingBuilding}
-                          onChange={(e) => setShippingBuilding(e.target.value)}
+                          onChange={(e) =>
+                            setShippingBuilding(e.target.value)
+                          }
                         />
                       </Form.Group>
                     </>
