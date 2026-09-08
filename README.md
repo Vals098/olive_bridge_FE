@@ -2,7 +2,7 @@
 
 🌿 **Live Demo:** https://olive-bridge.netlify.app
 
-OliveBridge is a multilingual frontend application designed to connect Italian extra virgin olive oil producers with the Japanese market.
+OliveBridge is a digital showcase and e-commerce platform for an Italian extra virgin olive oil producer from Puglia, with a focus on the Japanese market.
 
 The application presents Italian olive oil products, their characteristics and stories, while providing different experiences for individual customers, business users and administrators.
 
