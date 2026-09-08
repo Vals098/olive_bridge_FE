@@ -4473,3 +4473,203 @@ code {
     gap: 0.75rem;
   }
 }
+
+/* Admin SampleRequest PAGE */
+
+.admin-sample-request-section {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #eeeae5;
+}
+
+.admin-sample-request-section > span {
+  display: block;
+  margin-bottom: 0.55rem;
+  color: #7b827e;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.admin-sample-request-section > p {
+  margin: 0;
+  color: #4b524e;
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+
+
+/* PRODUCT */
+
+.admin-order-header h3 {
+  margin-top: 0.2rem;
+}
+
+.admin-order-header h3 {
+  color: var(--primary);
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+
+/* STATUS BUTTONS */
+
+.admin-sample-request-status-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.admin-status-button {
+  border: 1px solid #ddd8d1 !important;
+  border-radius: 6px !important;
+  background: white !important;
+  color: #737a76 !important;
+  padding: 0.45rem 0.75rem !important;
+  font-size: 0.7rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.02em;
+  transition: all 0.2s ease;
+}
+
+.admin-status-button:hover:not(:disabled) {
+  border-color: var(--primary) !important;
+  color: var(--primary) !important;
+  background: #f7f4f0 !important;
+}
+
+
+/* CURRENT STATUS */
+
+.admin-status-button.active,
+.admin-status-button.active:disabled {
+  background: var(--primary) !important;
+  border-color: var(--primary) !important;
+  color: white !important;
+  opacity: 1 !important;
+}
+
+
+/* DISABLED FUTURE / INVALID STATUS */
+
+.admin-status-button:disabled:not(.active) {
+  background: #f5f3f0 !important;
+  border-color: #e8e4df !important;
+  color: #b1b4b1 !important;
+  opacity: 0.65 !important;
+}
+
+
+/* ACTIONS */
+
+.admin-order-footer {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #eeeae5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.admin-order-footer > span {
+  color: #858b87;
+  font-size: 0.75rem;
+}
+
+
+/* REPLY BUTTON */
+
+.admin-reply-button {
+  border: none !important;
+  border-radius: 6px !important;
+  background: var(--primary) !important;
+  color: white !important;
+  padding: 0.55rem 1rem !important;
+  font-size: 0.75rem !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease;
+}
+
+.admin-reply-button:hover {
+  background: var(--secondary) !important;
+  color: white !important;
+}
+
+
+/* REPLY MODAL */
+
+.admin-reply-context {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border-radius: 7px;
+  background: #f7f4f0;
+}
+
+.admin-reply-context span {
+  color: #7b827e;
+  font-size: 0.65rem;
+  letter-spacing: 0.07em;
+}
+
+.admin-reply-context strong {
+  color: var(--primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.admin-reply-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #737a76;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.admin-reply-textarea {
+  width: 100%;
+  min-height: 140px;
+  padding: 0.8rem;
+  border: 1px solid #ddd8d1;
+  border-radius: 7px;
+  resize: vertical;
+  color: #414844;
+  background: white;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.admin-reply-textarea:focus {
+  border-color: var(--primary);
+}
+
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+  .admin-sample-request-status-buttons {
+    gap: 0.4rem;
+  }
+
+  .admin-status-button {
+    font-size: 0.65rem !important;
+    padding: 0.4rem 0.6rem !important;
+  }
+
+  .admin-order-footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .admin-reply-button {
+    width: 100%;
+  }
+}
