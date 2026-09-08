@@ -1,11 +1,22 @@
-import { Container, Card, Row, Col } from "react-bootstrap"
+import { useState } from "react"
+import { Container, Card, Button } from "react-bootstrap"
 import { useSelector } from "react-redux"
+
 import type { RootState } from "../redux/store"
+import ProfileInfo from "../components/ProfileInfo"
+import ProfileAddresses from "../components/ProfileAddresses"
+import ProfileOrders from "../components/ProfileOrders"
+
+type ProfileSection =
+  | "profile"
+  | "orders"
+  | "sample-requests"
+  | "business-inquiries"
 
 function Profile() {
-  const currentUser = useSelector(
-    (state: RootState) => state.user.currentUser,
-  )
+  const currentUser = useSelector((state: RootState) => state.user.currentUser)
+
+  const [activeSection, setActiveSection] = useState<ProfileSection>("profile")
 
   if (!currentUser) {
     return (
@@ -30,68 +41,98 @@ function Profile() {
           <p>Manage your personal information and account details.</p>
         </div>
 
-        <Card className="profile-card">
-          <Card.Body>
-            <div className="profile-welcome">
-              <div className="profile-avatar">
-                {currentUser.name.charAt(0).toUpperCase()}
-              </div>
+        <div className="profile-navigation">
+          <Button
+            className={
+              activeSection === "profile"
+                ? "profile-navigation-button active"
+                : "profile-navigation-button"
+            }
+            onClick={() => setActiveSection("profile")}
+          >
+            Profile
+          </Button>
 
-              <div>
-                <h2>
-                  {currentUser.name} {currentUser.surname}
-                </h2>
-                <p>{currentUser.email}</p>
-              </div>
-            </div>
+          <Button
+            className={
+              activeSection === "orders"
+                ? "profile-navigation-button active"
+                : "profile-navigation-button"
+            }
+            onClick={() => setActiveSection("orders")}
+          >
+            Orders
+          </Button>
 
-            <div className="profile-divider" />
+          <Button
+            className={
+              activeSection === "sample-requests"
+                ? "profile-navigation-button active"
+                : "profile-navigation-button"
+            }
+            onClick={() => setActiveSection("sample-requests")}
+          >
+            Sample Requests
+          </Button>
 
-            <Row className="g-4">
-              <Col md={6}>
-                <div className="profile-info">
-                  <span>Name</span>
-                  <strong>{currentUser.name}</strong>
+          <Button
+            className={
+              activeSection === "business-inquiries"
+                ? "profile-navigation-button active"
+                : "profile-navigation-button"
+            }
+            onClick={() => setActiveSection("business-inquiries")}
+          >
+            Business Inquiries
+          </Button>
+        </div>
+
+        {activeSection === "profile" && (
+          <>
+            <Card className="profile-card">
+              <Card.Body>
+                <div className="profile-welcome">
+                  <div className="profile-avatar">
+                    {currentUser.name.charAt(0).toUpperCase()}
+                  </div>
+
+                  <div>
+                    <h2>
+                      {currentUser.name} {currentUser.surname}
+                    </h2>
+                    <p>{currentUser.email}</p>
+                  </div>
                 </div>
-              </Col>
 
-              <Col md={6}>
-                <div className="profile-info">
-                  <span>Surname</span>
-                  <strong>{currentUser.surname}</strong>
-                </div>
-              </Col>
+                <div className="profile-divider" />
 
-              <Col md={12}>
-                <div className="profile-info">
-                  <span>Email</span>
-                  <strong>{currentUser.email}</strong>
-                </div>
-              </Col>
+                <ProfileInfo currentUser={currentUser} />
+              </Card.Body>
+            </Card>
 
-              <Col md={6}>
-                <div className="profile-info">
-                  <span>Account type</span>
-                  <strong>{currentUser.accountType}</strong>
-                </div>
-              </Col>
+            <ProfileAddresses />
+          </>
+        )}
 
-              <Col md={6}>
-                <div className="profile-info">
-                  <span>Role</span>
-                  <strong>{currentUser.role}</strong>
-                </div>
-              </Col>
+        {activeSection === "orders" && <ProfileOrders />}
 
-              <Col md={12}>
-                <div className="profile-info">
-                  <span>Account status</span>
-                  <strong>{currentUser.status}</strong>
-                </div>
-              </Col>
-            </Row>
-          </Card.Body>
-        </Card>
+        {activeSection === "sample-requests" && (
+          <Card className="profile-card">
+            <Card.Body>
+              <h2>My Sample Requests</h2>
+              <p>Sample requests will appear here.</p>
+            </Card.Body>
+          </Card>
+        )}
+
+        {activeSection === "business-inquiries" && (
+          <Card className="profile-card">
+            <Card.Body>
+              <h2>My Business Inquiries</h2>
+              <p>Business inquiries will appear here.</p>
+            </Card.Body>
+          </Card>
+        )}
       </Container>
     </main>
   )

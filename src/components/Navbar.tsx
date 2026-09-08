@@ -13,7 +13,9 @@ function Navbar() {
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
 
-  const currentUser = useSelector((state: RootState) => state.user.currentUser)
+  const currentUser = useSelector(
+    (state: RootState) => state.user.currentUser,
+  )
 
   const handleLogout = () => {
     dispatch(logoutAction())
@@ -42,11 +44,34 @@ function Navbar() {
                 ♥ Favourites
               </Nav.Link>
 
+              {currentUser.accountType === "BUSINESS" && (
+                <Nav.Link as={Link} to="/business">
+                  Business
+                </Nav.Link>
+              )}
+
+              <Nav.Link as={Link} to="/notifications">
+                Notifications
+              </Nav.Link>
+
+              <Nav.Link as={Link} to="/profile">
+                My Profile
+              </Nav.Link>
+
+              {currentUser.role === "ADMIN" && (
+                <Nav.Link as={Link} to="/admin">
+                  Admin
+                </Nav.Link>
+              )}
+
               <span className="navbar-welcome">
                 Welcome, {currentUser.name}!
               </span>
 
-              <Button className="navbar-button" onClick={handleLogout}>
+              <Button
+                className="navbar-button"
+                onClick={handleLogout}
+              >
                 Logout
               </Button>
             </>
@@ -61,6 +86,20 @@ function Navbar() {
               </Nav.Link>
             </>
           )}
+
+          <div className="navbar-languages">
+            <button type="button" title="Italian">
+              ITA
+            </button>
+
+            <button type="button" title="English">
+              ENG
+            </button>
+
+            <button type="button" title="Japanese">
+              JAP
+            </button>
+          </div>
         </Nav>
       </Container>
     </BootstrapNavbar>

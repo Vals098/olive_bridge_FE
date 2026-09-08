@@ -1,11 +1,7 @@
-export interface User {
-  userId: string
+export interface UpdateUserRequest {
   name: string
   surname: string
   email: string
-  role: string
-  accountType: string | null
   businessName: string | null
   businessTaxId: string | null
-  status: string
 }

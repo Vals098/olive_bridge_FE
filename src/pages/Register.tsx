@@ -1,22 +1,23 @@
 import { type SyntheticEvent, useState } from "react"
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap"
-import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 
-import type { AppDispatch } from "../redux/store"
+import type { AccountType } from "../types/AccountType"
 import { registerAction } from "../redux/actions/userAction/register"
 
 import AuthNavbar from "../components/AuthNavbar"
 
 function Register() {
-  const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
 
   const [name, setName] = useState("")
   const [surname, setSurname] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [accountType, setAccountType] = useState("INDIVIDUAL")
+  const [accountType, setAccountType] =
+    useState<AccountType>("INDIVIDUAL")
+  const [businessName, setBusinessName] = useState("")
+  const [businessTaxId, setBusinessTaxId] = useState("")
   const [error, setError] = useState("")
 
   const handleSubmit = async (e: SyntheticEvent) => {
@@ -24,15 +25,17 @@ function Register() {
     setError("")
 
     try {
-      await dispatch(
-        registerAction({
-          name,
-          surname,
-          email,
-          password,
-          accountType,
-        }),
-      )
+      await registerAction({
+        name,
+        surname,
+        email,
+        password,
+        accountType,
+        businessName:
+          accountType === "BUSINESS" ? businessName : null,
+        businessTaxId:
+          accountType === "BUSINESS" ? businessTaxId : null,
+      })
 
       navigate("/login")
     } catch {
@@ -56,8 +59,8 @@ function Register() {
                     <h1>Create your account</h1>
 
                     <p>
-                      Join OliveBridge and discover authentic Italian olive
-                      oil.
+                      Join OliveBridge and discover authentic Italian
+                      olive oil.
                     </p>
                   </div>
 
@@ -79,7 +82,9 @@ function Register() {
                           <Form.Control
                             type="text"
                             value={name}
-                            onChange={(e) => setName(e.target.value)}
+                            onChange={(e) =>
+                              setName(e.target.value)
+                            }
                             placeholder="Enter your name"
                             required
                           />
@@ -96,7 +101,9 @@ function Register() {
                           <Form.Control
                             type="text"
                             value={surname}
-                            onChange={(e) => setSurname(e.target.value)}
+                            onChange={(e) =>
+                              setSurname(e.target.value)
+                            }
                             placeholder="Enter your surname"
                             required
                           />
@@ -113,7 +120,9 @@ function Register() {
                       <Form.Control
                         type="email"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) =>
+                          setEmail(e.target.value)
+                        }
                         placeholder="Enter your email"
                         required
                       />
@@ -128,7 +137,9 @@ function Register() {
                       <Form.Control
                         type="password"
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={(e) =>
+                          setPassword(e.target.value)
+                        }
                         placeholder="Create a password"
                         required
                       />
@@ -146,7 +157,11 @@ function Register() {
 
                       <Form.Select
                         value={accountType}
-                        onChange={(e) => setAccountType(e.target.value)}
+                        onChange={(e) =>
+                          setAccountType(
+                            e.target.value as AccountType,
+                          )
+                        }
                       >
                         <option value="INDIVIDUAL">
                           Individual
@@ -157,6 +172,46 @@ function Register() {
                         </option>
                       </Form.Select>
                     </Form.Group>
+
+                    {accountType === "BUSINESS" && (
+                      <>
+                        <Form.Group
+                          className="mb-4"
+                          controlId="registerBusinessName"
+                        >
+                          <Form.Label>Business name</Form.Label>
+
+                          <Form.Control
+                            type="text"
+                            value={businessName}
+                            onChange={(e) =>
+                              setBusinessName(e.target.value)
+                            }
+                            placeholder="Enter your business name"
+                            required
+                          />
+                        </Form.Group>
+
+                        <Form.Group
+                          className="mb-4"
+                          controlId="registerBusinessTaxId"
+                        >
+                          <Form.Label>
+                            Business Tax ID / Registration Number
+                          </Form.Label>
+
+                          <Form.Control
+                            type="text"
+                            value={businessTaxId}
+                            onChange={(e) =>
+                              setBusinessTaxId(e.target.value)
+                            }
+                            placeholder="Enter your business tax ID"
+                            required
+                          />
+                        </Form.Group>
+                      </>
+                    )}
 
                     <Button
                       type="submit"

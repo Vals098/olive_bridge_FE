@@ -1,65 +1,63 @@
 import { useEffect, useState } from "react"
-import type { SyntheticEvent } from "react"
-import { Button, Container, Form } from "react-bootstrap"
+import { Button, Container, Row, Col } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import type { AppDispatch, RootState } from "../redux/store"
+
 import { getAddresses } from "../redux/actions/addressAction/getAddresses"
 import { createAddress } from "../redux/actions/addressAction/createAddress"
 import { deleteAddress } from "../redux/actions/addressAction/deleteAddress"
 import { updateAddress } from "../redux/actions/addressAction/updateAddress"
+
 import type { AddressRequest } from "../types/AddressRequest"
 import type { Address } from "../types/Address"
+
+import AddressCard from "../components/AddressCard"
+import AddressForm from "../components/AddressForm"
 
 function Addresses() {
   const dispatch = useDispatch<AppDispatch>()
 
-  const addresses = useSelector((state: RootState) => state.address.addresses)
+  const addresses = useSelector(
+    (state: RootState) => state.address.addresses,
+  )
 
   const [showForm, setShowForm] = useState(false)
   const [editingAddressId, setEditingAddressId] = useState<string | null>(null)
 
-  const [label, setLabel] = useState("")
-  const [recipientName, setRecipientName] = useState("")
-  const [postalCode, setPostalCode] = useState("")
-  const [prefecture, setPrefecture] = useState("")
-  const [city, setCity] = useState("")
-  const [area, setArea] = useState("")
-  const [street, setStreet] = useState("")
-  const [building, setBuilding] = useState("")
+  const [formData, setFormData] = useState<AddressRequest>({
+    label: "",
+    recipientName: "",
+    postalCode: "",
+    prefecture: "",
+    city: "",
+    area: "",
+    street: "",
+    building: "",
+  })
 
   useEffect(() => {
     dispatch(getAddresses())
   }, [dispatch])
 
-  const handleSubmit = async (e: SyntheticEvent) => {
-    e.preventDefault()
+  const emptyAddress: AddressRequest = {
+    label: "",
+    recipientName: "",
+    postalCode: "",
+    prefecture: "",
+    city: "",
+    area: "",
+    street: "",
+    building: "",
+  }
 
-    const addressData: AddressRequest = {
-      label,
-      recipientName,
-      postalCode,
-      prefecture,
-      city,
-      area,
-      street,
-      building,
-    }
-
+  const handleSubmit = async (data: AddressRequest) => {
     if (editingAddressId) {
-      await dispatch(updateAddress(editingAddressId, addressData))
+      await dispatch(updateAddress(editingAddressId, data))
     } else {
-      await dispatch(createAddress(addressData))
+      await dispatch(createAddress(data))
     }
 
-    setLabel("")
-    setRecipientName("")
-    setPostalCode("")
-    setPrefecture("")
-    setCity("")
-    setArea("")
-    setStreet("")
-    setBuilding("")
-
+    setFormData(emptyAddress)
     setEditingAddressId(null)
     setShowForm(false)
   }
@@ -67,148 +65,128 @@ function Addresses() {
   const handleEdit = (address: Address) => {
     setEditingAddressId(address.addressId)
 
-    setLabel(address.label)
-    setRecipientName(address.recipientName)
-    setPostalCode(address.postalCode)
-    setPrefecture(address.prefecture)
-    setCity(address.city)
-    setArea(address.area)
-    setStreet(address.street)
-    setBuilding(address.building ?? "")
+    setFormData({
+      label: address.label,
+      recipientName: address.recipientName,
+      postalCode: address.postalCode,
+      prefecture: address.prefecture,
+      city: address.city,
+      area: address.area,
+      street: address.street,
+      building: address.building ?? "",
+    })
 
     setShowForm(true)
   }
 
+  const handleAddAddress = () => {
+    setEditingAddressId(null)
+    setFormData(emptyAddress)
+    setShowForm(true)
+  }
+
+  const handleCancel = () => {
+    setEditingAddressId(null)
+    setFormData(emptyAddress)
+    setShowForm(false)
+  }
+
   return (
-    <Container className="py-5">
-      <h1>My Addresses</h1>
+    <main className="addresses-page">
+      <Container>
+        <div className="addresses-header">
+          <p className="addresses-label">OLIVEBRIDGE</p>
+          <h1>My Addresses</h1>
+          <p>
+            Manage your saved shipping addresses for a faster checkout.
+          </p>
+        </div>
 
-      {addresses.length === 0 ? (
-        <p>You don't have any saved addresses yet.</p>
-      ) : (
-        addresses.map((address) => (
-          <div key={address.addressId}>
-            <h3>{address.label}</h3>
+        {addresses.length === 0 && !showForm ? (
+          <div className="addresses-empty">
+            <div className="addresses-empty-icon">⌂</div>
 
-            <p>{address.recipientName}</p>
+            <h2>No saved addresses yet</h2>
 
             <p>
-              {address.postalCode} {address.city}
+              Add a shipping address to make your future orders quicker and
+              easier.
             </p>
-
-            <p>
-              {address.prefecture}, {address.area}
-            </p>
-
-            <p>{address.street}</p>
-
-            {address.building && <p>{address.building}</p>}
-
-            <Button variant="secondary" onClick={() => handleEdit(address)}>
-              Edit
-            </Button>
 
             <Button
-              variant="danger"
-              onClick={() => dispatch(deleteAddress(address.addressId))}
+              className="addresses-primary-button"
+              onClick={handleAddAddress}
             >
-              Delete
+              Add Address
             </Button>
           </div>
-        ))
-      )}
+        ) : (
+          <>
+            {addresses.length > 0 && (
+              <Row className="g-4">
+                {addresses.map((address) => (
+                  <Col key={address.addressId} md={6}>
+                    <AddressCard
+                      address={address}
+                      onEdit={() => handleEdit(address)}
+                      onDelete={() =>
+                        dispatch(deleteAddress(address.addressId))
+                      }
+                    />
+                  </Col>
+                ))}
+              </Row>
+            )}
 
-      <Button onClick={() => setShowForm(!showForm)}>
-        {showForm ? "Cancel" : "Add Address"}
-      </Button>
+            {!showForm && addresses.length > 0 && (
+              <div className="addresses-add-wrapper">
+                <Button
+                  className="addresses-primary-button"
+                  onClick={handleAddAddress}
+                >
+                  Add Address
+                </Button>
+              </div>
+            )}
+          </>
+        )}
 
-      {showForm && (
-        <Form onSubmit={handleSubmit} className="mt-4">
-          <Form.Group className="mb-3">
-            <Form.Label>Label</Form.Label>
-            <Form.Control
-              type="text"
-              value={label}
-              onChange={(e) => setLabel(e.target.value)}
-              required
+        {showForm && (
+          <div className="address-form-card">
+            <div className="address-form-header">
+              <p className="addresses-label">OLIVEBRIDGE</p>
+
+              <h2>
+                {editingAddressId ? "Edit Address" : "Add New Address"}
+              </h2>
+
+              <p>
+                {editingAddressId
+                  ? "Update your saved shipping address."
+                  : "Add a new shipping address to your account."}
+              </p>
+            </div>
+
+            <AddressForm
+              key={editingAddressId ?? "new"}
+              initialData={formData}
+              onSubmit={handleSubmit}
+              submitLabel={
+                editingAddressId ? "Save Changes" : "Save Address"
+              }
             />
-          </Form.Group>
 
-          <Form.Group className="mb-3">
-            <Form.Label>Recipient name</Form.Label>
-            <Form.Control
-              type="text"
-              value={recipientName}
-              onChange={(e) => setRecipientName(e.target.value)}
-              required
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>Postal code</Form.Label>
-            <Form.Control
-              type="text"
-              value={postalCode}
-              onChange={(e) => setPostalCode(e.target.value)}
-              required
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>Prefecture</Form.Label>
-            <Form.Control
-              type="text"
-              value={prefecture}
-              onChange={(e) => setPrefecture(e.target.value)}
-              required
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>City</Form.Label>
-            <Form.Control
-              type="text"
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
-              required
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>Area</Form.Label>
-            <Form.Control
-              type="text"
-              value={area}
-              onChange={(e) => setArea(e.target.value)}
-              required
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>Street</Form.Label>
-            <Form.Control
-              type="text"
-              value={street}
-              onChange={(e) => setStreet(e.target.value)}
-              required
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>Building</Form.Label>
-            <Form.Control
-              type="text"
-              value={building}
-              onChange={(e) => setBuilding(e.target.value)}
-            />
-          </Form.Group>
-
-          <Button type="submit">
-            {editingAddressId ? "Save Changes" : "Save Address"}
-          </Button>
-        </Form>
-      )}
-    </Container>
+            <Button
+              variant="outline-secondary"
+              className="address-form-cancel"
+              onClick={handleCancel}
+            >
+              Cancel
+            </Button>
+          </div>
+        )}
+      </Container>
+    </main>
   )
 }
 
