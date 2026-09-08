@@ -1576,6 +1576,189 @@ code {
   margin-bottom: 0;
 }
 
+.profile-orders-card {
+  overflow: hidden;
+}
+
+.profile-section-description {
+  margin-bottom: 2rem;
+  color: #6f7773;
+}
+
+.profile-orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.profile-order-item {
+  padding: 1.5rem;
+  border: 1px solid #e4e0da;
+  border-radius: 12px;
+  background: #faf9f7;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.profile-order-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.profile-order-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.profile-order-label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: #7b827e;
+}
+
+.profile-order-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #2f3431;
+}
+
+.profile-order-status {
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.status-pending {
+  background: #f3ead5;
+  color: #80652e;
+}
+
+.status-confirmed {
+  background: #e5eee5;
+  color: #4f6b52;
+}
+
+.status-shipped {
+  background: #e5edf2;
+  color: #506b78;
+}
+
+.status-delivered {
+  background: #e2eee4;
+  color: #48634d;
+}
+
+.status-cancelled {
+  background: #f1e4e2;
+  color: #89564e;
+}
+
+.profile-order-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid #e4e0da;
+}
+
+.profile-order-info div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.profile-order-info span {
+  font-size: 0.75rem;
+  color: #7b827e;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.profile-order-info strong {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #2f3431;
+}
+
+.profile-order-info div:last-child strong {
+  font-size: 1.15rem;
+}
+
+.profile-order-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1rem;
+}
+
+.profile-order-footer span {
+  max-width: 70%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.7rem;
+  color: #9a9e9b;
+}
+
+.profile-order-footer button {
+  padding: 0;
+  border: none;
+  background: none;
+  color: #3f5146;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.profile-order-footer button:hover {
+  text-decoration: underline;
+}
+
+.profile-empty-state {
+  padding: 2rem;
+  border: 1px dashed #d8d3cc;
+  border-radius: 10px;
+  text-align: center;
+  color: #777d79;
+}
+
+.profile-empty-state p {
+  margin: 0;
+}
+
+@media (max-width: 576px) {
+  .profile-order-item {
+    padding: 1.25rem;
+  }
+
+  .profile-order-header {
+    flex-direction: column;
+  }
+
+  .profile-order-info {
+    gap: 1rem;
+  }
+
+  .profile-order-footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .profile-order-footer span {
+    max-width: 100%;
+  }
+}
+
 @media (max-width: 575px) {
   .profile-page {
     padding: 40px 0 60px;
