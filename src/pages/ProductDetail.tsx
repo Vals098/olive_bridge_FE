@@ -15,9 +15,7 @@ function ProductDetail() {
   const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>()
 
-  const currentUser = useSelector(
-    (state: RootState) => state.user.currentUser,
-  )
+  const currentUser = useSelector((state: RootState) => state.user.currentUser)
 
   const variants = useSelector(
     (state: RootState) => state.productVariant.variants,
@@ -25,8 +23,9 @@ function ProductDetail() {
 
   const [product, setProduct] = useState<Product | null>(null)
 
-  const [selectedVariant, setSelectedVariant] =
-    useState<ProductVariant | null>(null)
+  const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(
+    null,
+  )
 
   const [variantError, setVariantError] = useState("")
 
@@ -53,7 +52,9 @@ function ProductDetail() {
   }
 
   const handleSampleRequest = () => {
-    navigate("/sample-requests")
+    if (!product) return
+
+    navigate(`/sample-requests?productId=${product.productId}`)
   }
 
   const handleContinueShopping = () => {
@@ -110,15 +111,11 @@ function ProductDetail() {
           </Col>
 
           <Col md={6} className="product-detail-info">
-            <p className="product-detail-category">
-              {product.category.name}
-            </p>
+            <p className="product-detail-category">{product.category.name}</p>
 
             <h1>{product.name}</h1>
 
-            <p className="product-detail-description">
-              {product.description}
-            </p>
+            <p className="product-detail-description">{product.description}</p>
 
             <div className="product-variants">
               <p>
@@ -147,9 +144,7 @@ function ProductDetail() {
               </div>
 
               {variantError && (
-                <p className="product-detail-variant-error">
-                  {variantError}
-                </p>
+                <p className="product-detail-variant-error">{variantError}</p>
               )}
             </div>
 
@@ -179,8 +174,7 @@ function ProductDetail() {
 
             <div className="technical-info">
               <p>
-                <strong>Acidity:</strong>{" "}
-                {product.technicalInformation.acidity}
+                <strong>Acidity:</strong> {product.technicalInformation.acidity}
               </p>
 
               <p>
@@ -207,9 +201,7 @@ function ProductDetail() {
               <div className="business-cta-content">
                 <p className="business-cta-label">FOR BUSINESS</p>
 
-                <h2>
-                  Are you a business interested in this product?
-                </h2>
+                <h2>Are you a business interested in this product?</h2>
 
                 <p>
                   Request a sample and discover this olive oil for your
@@ -262,10 +254,7 @@ function ProductDetail() {
             Continue shopping
           </Button>
 
-          <Button
-            className="cart-modal-cart-button"
-            onClick={handleGoToCart}
-          >
+          <Button className="cart-modal-cart-button" onClick={handleGoToCart}>
             Go to cart →
           </Button>
         </Modal.Footer>
