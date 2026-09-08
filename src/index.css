@@ -4382,3 +4382,94 @@ code {
   transform: translateY(-2px);
   box-shadow: 0 5px 16px rgba(0, 0, 0, 0.06);
 }
+
+/* dashboard under side */
+.admin-recent-orders-card {
+  margin-top: 2rem;
+  border: 1px solid #e4e0da;
+  border-radius: 10px;
+  background: white;
+  box-shadow: none;
+}
+
+.admin-recent-orders-card .card-body {
+  padding: 1.75rem;
+}
+
+.admin-dashboard-view-all {
+  color: var(--primary);
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.admin-dashboard-view-all:hover {
+  color: var(--secondary);
+}
+
+.admin-recent-orders-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-recent-order-item {
+  padding: 1.25rem 0;
+  border-top: 1px solid #eeeae5;
+}
+
+.admin-recent-order-item:first-child {
+  border-top: none;
+  padding-top: 0.5rem;
+}
+
+.admin-recent-order-item:last-child {
+  padding-bottom: 0.25rem;
+}
+
+.admin-recent-order-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.admin-recent-order-main h3 {
+  margin: 0;
+  color: var(--primary);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.admin-recent-order-details {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 0.9rem;
+}
+
+.admin-recent-order-details div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.admin-recent-order-details span {
+  color: #7b827e;
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.admin-recent-order-details strong {
+  color: #3f4642;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .admin-recent-order-details {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+}

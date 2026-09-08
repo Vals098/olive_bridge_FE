@@ -21,9 +21,13 @@ function AdminDashboard() {
     (state: RootState) => state.admin.businessInquiries,
   )
 
-  const orders = useSelector((state: RootState) => state.admin.orders)
+  const orders = useSelector(
+    (state: RootState) => state.admin.orders,
+  )
 
-  const products = useSelector((state: RootState) => state.product.products)
+  const products = useSelector(
+    (state: RootState) => state.product.products,
+  )
 
   useEffect(() => {
     dispatch(getAdminSampleRequests())
@@ -37,14 +41,15 @@ function AdminDashboard() {
     }
   }, [dispatch, products.length])
 
-  console.log("ADMIN PRODUCTS:", products)
-
   return (
     <main className="admin-dashboard-page">
       <Container>
+
         {/* HEADER */}
         <div className="admin-dashboard-header">
-          <p className="admin-dashboard-label">OLIVEBRIDGE</p>
+          <p className="admin-dashboard-label">
+            OLIVEBRIDGE
+          </p>
 
           <h1>Admin Dashboard</h1>
 
@@ -55,11 +60,17 @@ function AdminDashboard() {
 
         {/* OVERVIEW */}
         <Row className="g-4 admin-dashboard-overview">
+
           <Col md={6} lg={3}>
-            <Link to="/admin/orders" className="admin-overview-link">
+            <Link
+              to="/admin/orders"
+              className="admin-overview-link"
+            >
               <Card className="admin-overview-card h-100">
                 <Card.Body>
-                  <p className="admin-dashboard-card-label">ORDERS</p>
+                  <p className="admin-dashboard-card-label">
+                    ORDERS
+                  </p>
 
                   <h2>{orders.length}</h2>
 
@@ -70,10 +81,15 @@ function AdminDashboard() {
           </Col>
 
           <Col md={6} lg={3}>
-            <Link to="/admin/products" className="admin-overview-link">
+            <Link
+              to="/admin/products"
+              className="admin-overview-link"
+            >
               <Card className="admin-overview-card h-100">
                 <Card.Body>
-                  <p className="admin-dashboard-card-label">PRODUCTS</p>
+                  <p className="admin-dashboard-card-label">
+                    PRODUCTS
+                  </p>
 
                   <h2>{products.length}</h2>
 
@@ -84,10 +100,15 @@ function AdminDashboard() {
           </Col>
 
           <Col md={6} lg={3}>
-            <Link to="/admin/sample-requests" className="admin-overview-link">
+            <Link
+              to="/admin/sample-requests"
+              className="admin-overview-link"
+            >
               <Card className="admin-overview-card h-100">
                 <Card.Body>
-                  <p className="admin-dashboard-card-label">SAMPLE REQUESTS</p>
+                  <p className="admin-dashboard-card-label">
+                    SAMPLE REQUESTS
+                  </p>
 
                   <h2>{sampleRequests.length}</h2>
 
@@ -104,7 +125,9 @@ function AdminDashboard() {
             >
               <Card className="admin-overview-card h-100">
                 <Card.Body>
-                  <p className="admin-dashboard-card-label">INQUIRIES</p>
+                  <p className="admin-dashboard-card-label">
+                    INQUIRIES
+                  </p>
 
                   <h2>{businessInquiries.length}</h2>
 
@@ -113,117 +136,121 @@ function AdminDashboard() {
               </Card>
             </Link>
           </Col>
+
         </Row>
 
-        {/* SAMPLE REQUESTS + BUSINESS INQUIRIES */}
-        <Row className="g-4">
-          <Col md={6}>
-            <Card className="admin-dashboard-card h-100">
-              <Card.Body>
-                <div className="admin-dashboard-card-header">
-                  <div>
-                    <p className="admin-dashboard-card-label">BUSINESS</p>
+        {/* RECENT ORDERS */}
+        <Card className="admin-recent-orders-card">
+          <Card.Body>
 
-                    <h2>Sample Requests</h2>
-                  </div>
+            <div className="admin-dashboard-card-header">
+              <div>
+                <p className="admin-dashboard-card-label">
+                  ACTIVITY
+                </p>
 
-                  <span className="admin-dashboard-count">
-                    {sampleRequests.length}
-                  </span>
-                </div>
+                <h2>Recent Orders</h2>
+              </div>
 
-                {sampleRequests.length === 0 ? (
-                  <div className="admin-dashboard-empty">
-                    <p>No sample requests received.</p>
-                  </div>
-                ) : (
-                  <div className="admin-dashboard-list">
-                    {sampleRequests.map((sr) => (
-                      <div
-                        className="admin-dashboard-item"
-                        key={sr.sampleRequestId}
-                      >
-                        <div className="admin-dashboard-item-top">
+              <Link
+                to="/admin/orders"
+                className="admin-dashboard-view-all"
+              >
+                View all →
+              </Link>
+            </div>
+
+            {orders.length === 0 ? (
+              <div className="admin-dashboard-empty">
+                <p>No orders received yet.</p>
+              </div>
+            ) : (
+              <div className="admin-recent-orders-list">
+                {orders
+                  .slice()
+                  .sort(
+                    (a, b) =>
+                      new Date(b.orderDate).getTime() -
+                      new Date(a.orderDate).getTime(),
+                  )
+                  .slice(0, 3)
+                  .map((order) => (
+                    <div
+                      className="admin-recent-order-item"
+                      key={order.orderId}
+                    >
+
+                      <div className="admin-recent-order-main">
+                        <div>
+                          <span className="admin-order-label">
+                            ORDER
+                          </span>
+
                           <h3>
-                            {products.find((p) => p.productId === sr.productId)
-                              ?.name ?? "Product"}
+                            #{order.orderId.slice(0, 8)}
                           </h3>
-
-                          <span className="admin-dashboard-status">
-                            {sr.status}
-                          </span>
                         </div>
 
-                        <p className="admin-dashboard-message">{sr.message}</p>
-
-                        <p className="admin-dashboard-date">
-                          Requested on{" "}
-                          {new Date(sr.createdAt).toLocaleDateString()}
-                        </p>
+                        <span
+                          className={`admin-order-status status-${order.status.toLowerCase()}`}
+                        >
+                          {order.status}
+                        </span>
                       </div>
-                    ))}
-                  </div>
-                )}
-              </Card.Body>
-            </Card>
-          </Col>
 
-          <Col md={6}>
-            <Card className="admin-dashboard-card h-100">
-              <Card.Body>
-                <div className="admin-dashboard-card-header">
-                  <div>
-                    <p className="admin-dashboard-card-label">BUSINESS</p>
+                      <div className="admin-recent-order-details">
 
-                    <h2>Business Inquiries</h2>
-                  </div>
+                        <div>
+                          <span>Customer</span>
 
-                  <span className="admin-dashboard-count">
-                    {businessInquiries.length}
-                  </span>
-                </div>
-
-                {businessInquiries.length === 0 ? (
-                  <div className="admin-dashboard-empty">
-                    <p>No business inquiries received.</p>
-                  </div>
-                ) : (
-                  <div className="admin-dashboard-list">
-                    {businessInquiries.map((inquiry) => (
-                      <div
-                        className="admin-dashboard-item"
-                        key={inquiry.businessInquiryId}
-                      >
-                        <div className="admin-dashboard-item-top">
-                          <h3>{inquiry.subject}</h3>
-
-                          <span className="admin-dashboard-status">
-                            {inquiry.status}
-                          </span>
+                          <strong>
+                            {order.customerEmail}
+                          </strong>
                         </div>
 
-                        <p className="admin-dashboard-message">
-                          {inquiry.message}
-                        </p>
+                        <div>
+                          <span>Date</span>
 
-                        <p className="admin-dashboard-date">
-                          Received on{" "}
-                          {new Date(inquiry.createdAt).toLocaleDateString()}
-                        </p>
+                          <strong>
+                            {new Date(
+                              order.orderDate,
+                            ).toLocaleDateString(
+                              "en-GB",
+                              {
+                                day: "numeric",
+                                month: "short",
+                                year: "numeric",
+                              },
+                            )}
+                          </strong>
+                        </div>
+
+                        <div>
+                          <span>Total</span>
+
+                          <strong>
+                            €{Number(order.total).toFixed(2)}
+                          </strong>
+                        </div>
+
                       </div>
-                    ))}
-                  </div>
-                )}
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
+
+                    </div>
+                  ))}
+              </div>
+            )}
+
+          </Card.Body>
+        </Card>
 
         {/* PRODUCT MANAGEMENT */}
         <Card className="admin-products-card">
           <Card.Body>
+
             <div>
-              <p className="admin-dashboard-card-label">CATALOG</p>
+              <p className="admin-dashboard-card-label">
+                CATALOG
+              </p>
 
               <h2>Product Management</h2>
 
@@ -232,11 +259,16 @@ function AdminDashboard() {
               </p>
             </div>
 
-            <Link to="/admin/products" className="admin-products-link">
+            <Link
+              to="/admin/products"
+              className="admin-products-link"
+            >
               Manage Products →
             </Link>
+
           </Card.Body>
         </Card>
+
       </Container>
     </main>
   )
