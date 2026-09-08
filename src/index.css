@@ -2354,6 +2354,187 @@ code {
   }
 }
 
+/* PROFILE - BUSINESS INQUIRIES */
+
+.profile-business-inquiries-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.profile-business-inquiries-heading h2 {
+  margin-bottom: 0.5rem;
+}
+
+.profile-business-inquiry-button {
+  flex-shrink: 0;
+  padding: 0.65rem 1rem;
+  border: 1px solid var(--primary);
+  border-radius: 8px;
+  background: var(--primary);
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.profile-business-inquiry-button:hover {
+  background: var(--secondary);
+  border-color: var(--secondary);
+  transform: translateY(-2px);
+}
+
+.profile-business-inquiries-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.profile-business-inquiry-item {
+  padding: 1.5rem;
+  border: 1px solid #e4e0da;
+  border-radius: 12px;
+  background: #faf9f7;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.profile-business-inquiry-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.profile-business-inquiry-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.profile-business-inquiry-header h3 {
+  margin: 0;
+  color: #2f3431;
+  font-family: var(--heading);
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.profile-business-inquiry-status {
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.profile-business-inquiry-status.status-pending {
+  background: #f3ead5;
+  color: #80652e;
+}
+
+.profile-business-inquiry-status.status-in-progress {
+  background: #e5edf2;
+  color: #506b78;
+}
+
+.profile-business-inquiry-status.status-resolved {
+  background: #e2eee4;
+  color: #48634d;
+}
+
+.profile-business-inquiry-status.status-closed {
+  background: #eeeeec;
+  color: #686d69;
+}
+
+.profile-business-inquiry-message {
+  padding: 1rem 1.1rem;
+  margin-bottom: 1.25rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.profile-business-inquiry-message span,
+.profile-business-inquiry-footer span {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: #7b827e;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.profile-business-inquiry-message p {
+  margin: 0;
+  color: #454b48;
+  line-height: 1.6;
+}
+
+.profile-business-inquiry-footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e4e0da;
+}
+
+.profile-business-inquiry-footer div {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-business-inquiry-footer strong {
+  color: #2f3431;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.profile-business-inquiry-empty-button {
+  margin-top: 1rem;
+  padding: 0;
+  border: none;
+  background: none;
+  color: #3f5146;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.profile-business-inquiry-empty-button:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 576px) {
+  .profile-business-inquiries-heading {
+    flex-direction: column;
+  }
+
+  .profile-business-inquiry-button {
+    width: 100%;
+  }
+
+  .profile-business-inquiry-item {
+    padding: 1.25rem;
+  }
+
+  .profile-business-inquiry-header {
+    flex-direction: column;
+  }
+
+  .profile-business-inquiry-footer {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
 /* SAMPLE REQUESTS PAGE */
 
 .sample-requests-page {
@@ -2642,6 +2823,151 @@ code {
   }
 }
 
+/* PROFILE - SAMPLE REQUESTS */
+
+.profile-sample-requests-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.profile-sample-request-item {
+  padding: 1.5rem;
+  border: 1px solid #e4e0da;
+  border-radius: 12px;
+  background: #faf9f7;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.profile-sample-request-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.profile-sample-request-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.profile-sample-request-header h3 {
+  margin: 0;
+  color: #2f3431;
+  font-family: var(--heading);
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.profile-sample-request-status {
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.profile-sample-request-status.status-pending {
+  background: #f3ead5;
+  color: #80652e;
+}
+
+.profile-sample-request-status.status-approved {
+  background: #e5eee5;
+  color: #4f6b52;
+}
+
+.profile-sample-request-status.status-rejected {
+  background: #f1e4e2;
+  color: #89564e;
+}
+
+.profile-sample-request-status.status-completed {
+  background: #e2eee4;
+  color: #48634d;
+}
+
+.profile-sample-request-message {
+  padding: 1rem 1.1rem;
+  margin-bottom: 1.25rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.profile-sample-request-message span,
+.profile-sample-request-info span {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: #7b827e;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.profile-sample-request-message p {
+  margin: 0;
+  color: #454b48;
+  line-height: 1.6;
+}
+
+.profile-sample-request-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e4e0da;
+}
+
+.profile-sample-request-info div {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-sample-request-info strong {
+  color: #2f3431;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.profile-empty-icon {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--primary);
+  font-size: 1.3rem;
+}
+
+.profile-empty-state h3 {
+  margin-bottom: 0.5rem;
+  color: #2f3431;
+  font-family: var(--heading);
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+@media (max-width: 576px) {
+  .profile-sample-request-item {
+    padding: 1.25rem;
+  }
+
+  .profile-sample-request-header {
+    flex-direction: column;
+  }
+
+  .profile-sample-request-info {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
 /* ADMIN DASHBOARD */
 
 .admin-dashboard-page {
@@ -2723,6 +3049,57 @@ code {
   color: white;
   font-size: 14px;
   font-weight: 600;
+}
+
+.profile-navigation {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 2.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #e4e0da;
+}
+
+.profile-navigation-button {
+  padding: 0.7rem 1.1rem !important;
+  border: none !important;
+  border-radius: 7px !important;
+  background: transparent !important;
+  color: #737a76 !important;
+  font-size: 0.85rem !important;
+  font-weight: 500 !important;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.profile-navigation-button:hover {
+  background: #f5f2ee !important;
+  color: var(--primary) !important;
+}
+
+.profile-navigation-button.active {
+  background: var(--primary) !important;
+  color: white !important;
+}
+
+.profile-navigation-button.active:hover {
+  background: var(--secondary) !important;
+  color: white !important;
+}
+
+@media (max-width: 768px) {
+  .profile-navigation {
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 0.75rem;
+  }
+
+  .profile-navigation-button {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
 }
 
 /* Request lists */
