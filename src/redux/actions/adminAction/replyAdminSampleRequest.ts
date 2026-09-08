@@ -1,41 +1,36 @@
+import { API_URL } from "../../../api"
+
 export const replyAdminSampleRequest = (
-    sampleRequestId: string,
-    message: string,
+  sampleRequestId: string,
+  message: string,
 ) => {
-    return async () => {
+  return async () => {
+    const token = localStorage.getItem("token")
 
-        const token = localStorage.getItem("token")
+    if (!token) return
 
-        if (!token) return
+    try {
+      const response = await fetch(
+        `${API_URL}/admin/mail/sample-request/${sampleRequestId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            message,
+          }),
+        },
+      )
 
-        try {
-            const response = await fetch(
-                `http://localhost:8080/admin/mail/sample-request/${sampleRequestId}`,
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                    body: JSON.stringify({
-                        message,
-                    }),
-                },
-            )
+      if (!response.ok) {
+        throw new Error("Unable to send sample request reply")
+      }
+    } catch (error) {
+      console.error("Sample request reply error:", error)
 
-            if (!response.ok) {
-                throw new Error(
-                    "Unable to send sample request reply",
-                )
-            }
-
-        } catch (error) {
-            console.error(
-                "Sample request reply error:",
-                error,
-            )
-
-            throw error
-        }
+      throw error
     }
+  }
 }

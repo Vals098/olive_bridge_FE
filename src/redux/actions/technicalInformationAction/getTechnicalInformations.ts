@@ -1,48 +1,40 @@
 import type { AppDispatch } from "../../store"
 import type { TechnicalInformation } from "../../../types/TechnicalInformation"
+import { API_URL } from "../../../api"
 
-export const GET_TECHNICAL_INFORMATIONS =
-    "GET_TECHNICAL_INFORMATIONS"
+export const GET_TECHNICAL_INFORMATIONS = "GET_TECHNICAL_INFORMATIONS"
 
 export type GetTechnicalInformationsAction = {
-    type: typeof GET_TECHNICAL_INFORMATIONS
-    payload: TechnicalInformation[]
+  type: typeof GET_TECHNICAL_INFORMATIONS
+  payload: TechnicalInformation[]
 }
 
 export const getTechnicalInformations = () => {
-    return async (dispatch: AppDispatch) => {
-        const token = localStorage.getItem("token")
+  return async (dispatch: AppDispatch) => {
+    const token = localStorage.getItem("token")
 
-        if (!token) return
+    if (!token) return
 
-        try {
-            const response = await fetch(
-                "http://localhost:8080/admin/technical-information",
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                },
-            )
+    try {
+      const response = await fetch(`${API_URL}/admin/technical-information`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
 
-            if (!response.ok) {
-                throw new Error(
-                    "Unable to retrieve technical information",
-                )
-            }
+      if (!response.ok) {
+        throw new Error("Unable to retrieve technical information")
+      }
 
-            const technicalInformations: TechnicalInformation[] =
-                await response.json()
+      const technicalInformations: TechnicalInformation[] =
+        await response.json()
 
-            dispatch({
-                type: GET_TECHNICAL_INFORMATIONS,
-                payload: technicalInformations,
-            })
-        } catch (error) {
-            console.error(
-                "Technical information retrieval error:",
-                error,
-            )
-        }
+      dispatch({
+        type: GET_TECHNICAL_INFORMATIONS,
+        payload: technicalInformations,
+      })
+    } catch (error) {
+      console.error("Technical information retrieval error:", error)
     }
+  }
 }

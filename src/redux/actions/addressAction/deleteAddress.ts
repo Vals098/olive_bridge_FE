@@ -1,4 +1,5 @@
 import type { AppDispatch } from "../../store"
+import { API_URL } from "../../../api"
 
 export const DELETE_ADDRESS = "DELETE_ADDRESS"
 
@@ -16,15 +17,12 @@ export const deleteAddress = (addressId: string) => {
     }
 
     try {
-      const response = await fetch(
-        `http://localhost:8080/users/addresses/${addressId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
+      const response = await fetch(`${API_URL}/users/addresses/${addressId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
 
       if (!response.ok) {
         throw new Error("Unable to delete address")

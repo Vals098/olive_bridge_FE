@@ -1,5 +1,6 @@
 import type { AppDispatch } from "../../store"
 import type { Address } from "../../../types/Address"
+import { API_URL } from "../../../api"
 
 export const GET_ADDRESSES = "GET_ADDRESSES"
 
@@ -17,14 +18,11 @@ export const getAddresses = () => {
     }
 
     try {
-      const response = await fetch(
-        "http://localhost:8080/users/addresses",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
+      const response = await fetch(`${API_URL}/users/addresses`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
 
       if (!response.ok) {
         throw new Error("Unable to retrieve addresses")

@@ -1,5 +1,6 @@
 import type { AppDispatch } from "../../store"
 import type { Favourite } from "../../../types/Favourite"
+import { API_URL } from "../../../api"
 
 export const ADD_FAVOURITE = "ADD_FAVOURITE"
 
@@ -18,7 +19,7 @@ export const addFavourite = (productId: string) => {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/users/favourites/${productId}`,
+        `${API_URL}/users/favourites/${productId}`,
         {
           method: "POST",
           headers: {

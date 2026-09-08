@@ -1,5 +1,6 @@
 import type { AppDispatch } from "../../store"
 import type { BusinessInquiry } from "../../../types/BusinessInquiry"
+import { API_URL } from "../../../api"
 
 export const GET_BUSINESS_INQUIRIES = "GET_BUSINESS_INQUIRIES"
 
@@ -15,14 +16,11 @@ export const getBusinessInquiries = () => {
     if (!token) return
 
     try {
-      const response = await fetch(
-        "http://localhost:8080/users/business-inquiries",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      const response = await fetch(`${API_URL}/users/business-inquiries`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      )
+      })
 
       if (!response.ok) {
         throw new Error("Unable to retrieve business inquiries")

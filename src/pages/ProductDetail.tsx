@@ -9,6 +9,7 @@ import type { RootState, AppDispatch } from "../redux/store"
 
 import { getProductVariants } from "../redux/actions/productAction/getProductVariants"
 import { addToCartAction } from "../redux/actions/cartAction/addToCart"
+import { API_URL } from "../api"
 
 function ProductDetail() {
   const { productId } = useParams()
@@ -23,9 +24,8 @@ function ProductDetail() {
 
   const [product, setProduct] = useState<Product | null>(null)
 
-  const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(
-    null,
-  )
+  const [selectedVariant, setSelectedVariant] =
+    useState<ProductVariant | null>(null)
 
   const [variantError, setVariantError] = useState("")
 
@@ -70,7 +70,7 @@ function ProductDetail() {
     const getProduct = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/products/${productId}`,
+          `${API_URL}/products/${productId}`,
         )
 
         if (!response.ok) {
@@ -115,7 +115,9 @@ function ProductDetail() {
 
             <h1>{product.name}</h1>
 
-            <p className="product-detail-description">{product.description}</p>
+            <p className="product-detail-description">
+              {product.description}
+            </p>
 
             <div className="product-variants">
               <p>
@@ -144,7 +146,9 @@ function ProductDetail() {
               </div>
 
               {variantError && (
-                <p className="product-detail-variant-error">{variantError}</p>
+                <p className="product-detail-variant-error">
+                  {variantError}
+                </p>
               )}
             </div>
 
@@ -174,7 +178,8 @@ function ProductDetail() {
 
             <div className="technical-info">
               <p>
-                <strong>Acidity:</strong> {product.technicalInformation.acidity}
+                <strong>Acidity:</strong>{" "}
+                {product.technicalInformation.acidity}
               </p>
 
               <p>
@@ -254,7 +259,10 @@ function ProductDetail() {
             Continue shopping
           </Button>
 
-          <Button className="cart-modal-cart-button" onClick={handleGoToCart}>
+          <Button
+            className="cart-modal-cart-button"
+            onClick={handleGoToCart}
+          >
             Go to cart →
           </Button>
         </Modal.Footer>

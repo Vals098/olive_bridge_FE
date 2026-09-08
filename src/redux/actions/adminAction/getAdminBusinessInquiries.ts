@@ -1,8 +1,8 @@
 import type { AppDispatch } from "../../store"
 import type { BusinessInquiry } from "../../../types/BusinessInquiry"
+import { API_URL } from "../../../api"
 
-export const GET_ADMIN_BUSINESS_INQUIRIES =
-  "GET_ADMIN_BUSINESS_INQUIRIES"
+export const GET_ADMIN_BUSINESS_INQUIRIES = "GET_ADMIN_BUSINESS_INQUIRIES"
 
 export type GetAdminBusinessInquiriesAction = {
   type: typeof GET_ADMIN_BUSINESS_INQUIRIES
@@ -16,19 +16,14 @@ export const getAdminBusinessInquiries = () => {
     if (!token) return
 
     try {
-      const response = await fetch(
-        "http://localhost:8080/admin/business-inquiries",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      const response = await fetch(`${API_URL}/admin/business-inquiries`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      )
+      })
 
       if (!response.ok) {
-        throw new Error(
-          "Unable to retrieve admin business inquiries",
-        )
+        throw new Error("Unable to retrieve admin business inquiries")
       }
 
       const inquiries: BusinessInquiry[] = await response.json()
@@ -38,10 +33,7 @@ export const getAdminBusinessInquiries = () => {
         payload: inquiries,
       })
     } catch (error) {
-      console.error(
-        "Get admin business inquiries error:",
-        error,
-      )
+      console.error("Get admin business inquiries error:", error)
     }
   }
 }

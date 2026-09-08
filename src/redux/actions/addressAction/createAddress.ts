@@ -1,6 +1,7 @@
 import type { AppDispatch } from "../../store"
 import type { AddressRequest } from "../../../types/AddressRequest"
 import type { Address } from "../../../types/Address"
+import { API_URL } from "../../../api"
 
 export const CREATE_ADDRESS = "CREATE_ADDRESS"
 
@@ -18,17 +19,14 @@ export const createAddress = (data: AddressRequest) => {
     }
 
     try {
-      const response = await fetch(
-        "http://localhost:8080/users/addresses",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(data),
-        }
-      )
+      const response = await fetch(`${API_URL}/users/addresses`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
+      })
 
       if (!response.ok) {
         throw new Error("Unable to create address")

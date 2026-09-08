@@ -18,6 +18,7 @@ import type { OrderResponse } from "../types/OrderResponse"
 
 import { clearCartAction } from "../redux/actions/cartAction/clearCart"
 import { getAddresses } from "../redux/actions/addressAction/getAddresses"
+import { API_URL } from "../api"
 
 function Checkout() {
   const dispatch = useDispatch<AppDispatch>()
@@ -330,7 +331,7 @@ function Checkout() {
 
         const addressResponse =
           await fetch(
-            "http://localhost:8080/users/addresses",
+            `${API_URL}/users/addresses`,
             {
               method: "POST",
               headers: {
@@ -359,7 +360,7 @@ function Checkout() {
 
       // CREATE ORDER
       const response = await fetch(
-        "http://localhost:8080/orders/checkout",
+        `${API_URL}/orders/checkout`,
         {
           method: "POST",
 
@@ -427,7 +428,6 @@ function Checkout() {
 
         </div>
 
-
         {/* GUEST ACCOUNT OPTIONS */}
 
         {!currentUser && (
@@ -476,7 +476,6 @@ function Checkout() {
 
           </div>
         )}
-
 
         <Row className="g-5">
 
@@ -663,7 +662,6 @@ function Checkout() {
                     </Row>
                   )}
 
-
                   {/* SHIPPING */}
 
                   <h2 className="checkout-section-title">
@@ -771,7 +769,6 @@ function Checkout() {
 
                       </div>
                     )}
-
 
                   {/* NEW SHIPPING ADDRESS */}
 
@@ -951,7 +948,6 @@ function Checkout() {
                     </>
                   )}
 
-
                   {/* BILLING */}
 
                   <h2 className="checkout-section-title">
@@ -1130,7 +1126,6 @@ function Checkout() {
                     </>
                   )}
 
-
                   {/* PAYMENT */}
 
                   <h2 className="checkout-section-title">
@@ -1203,7 +1198,6 @@ function Checkout() {
 
                   </Form.Group>
 
-
                   {/* ERROR */}
 
                   {error && (
@@ -1211,7 +1205,6 @@ function Checkout() {
                       {error}
                     </div>
                   )}
-
 
                   {/* SUBMIT */}
 
@@ -1229,7 +1222,6 @@ function Checkout() {
             </Card>
 
           </Col>
-
 
           {/* ORDER SUMMARY */}
 

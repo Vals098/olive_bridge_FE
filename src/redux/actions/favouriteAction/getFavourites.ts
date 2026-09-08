@@ -1,5 +1,6 @@
 import type { AppDispatch } from "../../store"
 import type { Favourite } from "../../../types/Favourite"
+import { API_URL } from "../../../api"
 
 export const GET_FAVOURITES = "GET_FAVOURITES"
 
@@ -17,14 +18,11 @@ export const getFavourites = () => {
     }
 
     try {
-      const response = await fetch(
-        "http://localhost:8080/users/favourites",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      const response = await fetch(`${API_URL}/users/favourites`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      )
+      })
 
       if (!response.ok) {
         throw new Error("Unable to retrieve favourites")

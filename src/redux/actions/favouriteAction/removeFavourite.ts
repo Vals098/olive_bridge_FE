@@ -1,4 +1,5 @@
 import type { AppDispatch } from "../../store"
+import { API_URL } from "../../../api"
 
 export const REMOVE_FAVOURITE = "REMOVE_FAVOURITE"
 
@@ -17,7 +18,7 @@ export const removeFavourite = (productId: string) => {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/users/favourites/${productId}`,
+        `${API_URL}/users/favourites/${productId}`,
         {
           method: "DELETE",
           headers: {

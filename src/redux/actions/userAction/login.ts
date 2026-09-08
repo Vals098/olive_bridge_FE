@@ -3,6 +3,7 @@ import type { User } from "../../../types/User"
 import type { LoginRequest } from "../../../types/LoginRequest"
 import { loadCartAction } from "../cartAction/loadCart"
 import { getSavedCart, mergeCarts, saveCart } from "../../cartStorage"
+import { API_URL } from "../../../api"
 
 export const LOGIN = "LOGIN"
 
@@ -15,16 +16,13 @@ export const loginAction = (credentials: LoginRequest) => {
   return async (dispatch: AppDispatch) => {
     try {
       // 1. Login
-      const loginResponse = await fetch(
-        "http://localhost:8080/auth/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(credentials),
+      const loginResponse = await fetch(`${API_URL}/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      )
+        body: JSON.stringify(credentials),
+      })
 
       if (!loginResponse.ok) {
         throw new Error("Invalid credentials")
@@ -35,14 +33,11 @@ export const loginAction = (credentials: LoginRequest) => {
       localStorage.setItem("token", token)
 
       // 2. Get current user
-      const userResponse = await fetch(
-        "http://localhost:8080/users/me",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      const userResponse = await fetch(`${API_URL}/users/me`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      )
+      })
 
       if (!userResponse.ok) {
         throw new Error("Unable to retrieve user")

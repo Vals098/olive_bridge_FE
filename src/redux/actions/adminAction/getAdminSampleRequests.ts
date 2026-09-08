@@ -1,5 +1,6 @@
 import type { AppDispatch } from "../../store"
 import type { SampleRequest } from "../../../types/SampleRequest"
+import { API_URL } from "../../../api"
 
 export const GET_ADMIN_SAMPLE_REQUESTS = "GET_ADMIN_SAMPLE_REQUESTS"
 
@@ -15,14 +16,11 @@ export const getAdminSampleRequests = () => {
     if (!token) return
 
     try {
-      const response = await fetch(
-        "http://localhost:8080/admin/sample-requests",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      const response = await fetch(`${API_URL}/admin/sample-requests`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      )
+      })
 
       if (!response.ok) {
         throw new Error("Unable to retrieve admin sample requests")

@@ -1,5 +1,6 @@
 import type { AppDispatch } from "../../store"
 import type { Order } from "../../../types/Order"
+import { API_URL } from "../../../api"
 
 export const GET_ADMIN_ORDERS = "GET_ADMIN_ORDERS"
 
@@ -15,14 +16,11 @@ export const getAdminOrders = () => {
     if (!token) return
 
     try {
-      const response = await fetch(
-        "http://localhost:8080/admin/orders",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      const response = await fetch(`${API_URL}/admin/orders`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      )
+      })
 
       if (!response.ok) {
         throw new Error("Unable to retrieve admin orders")

@@ -1,6 +1,7 @@
 import type { AppDispatch } from "../../store"
 import type { AddressRequest } from "../../../types/AddressRequest"
 import type { Address } from "../../../types/Address"
+import { API_URL } from "../../../api"
 
 export const UPDATE_ADDRESS = "UPDATE_ADDRESS"
 
@@ -9,10 +10,7 @@ export type UpdateAddressAction = {
   payload: Address
 }
 
-export const updateAddress = (
-  addressId: string,
-  data: AddressRequest
-) => {
+export const updateAddress = (addressId: string, data: AddressRequest) => {
   return async (dispatch: AppDispatch) => {
     const token = localStorage.getItem("token")
 
@@ -21,17 +19,14 @@ export const updateAddress = (
     }
 
     try {
-      const response = await fetch(
-        `http://localhost:8080/users/addresses/${addressId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(data),
-        }
-      )
+      const response = await fetch(`${API_URL}/users/addresses/${addressId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
+      })
 
       if (!response.ok) {
         throw new Error("Unable to update address")

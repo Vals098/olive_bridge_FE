@@ -1,6 +1,7 @@
 import type { AppDispatch } from "../../store"
 import type { SampleRequest } from "../../../types/SampleRequest"
 import type { SampleRequestRequest } from "../../../types/SampleRequestRequest"
+import { API_URL } from "../../../api"
 
 export const CREATE_SAMPLE_REQUEST = "CREATE_SAMPLE_REQUEST"
 
@@ -16,17 +17,14 @@ export const createSampleRequest = (body: SampleRequestRequest) => {
     if (!token) return
 
     try {
-      const response = await fetch(
-        "http://localhost:8080/users/sample-requests",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(body),
+      const response = await fetch(`${API_URL}/users/sample-requests`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-      )
+        body: JSON.stringify(body),
+      })
 
       if (!response.ok) {
         throw new Error("Unable to create sample request")

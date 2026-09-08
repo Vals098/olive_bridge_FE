@@ -1,6 +1,7 @@
 import type { AppDispatch } from "../../store"
 import type { UpdateUserRequest } from "../../../types/UpdateUserRequest"
 import type { User } from "../../../types/User"
+import { API_URL } from "../../../api"
 
 export const UPDATE_CURRENT_USER = "UPDATE_CURRENT_USER"
 
@@ -17,7 +18,7 @@ export const updateCurrentUser = (data: UpdateUserRequest) => {
       throw new Error("User is not authenticated")
     }
 
-    const response = await fetch("http://localhost:8080/users/me", {
+    const response = await fetch(`${API_URL}/users/me`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

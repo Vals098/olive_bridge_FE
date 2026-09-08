@@ -1,42 +1,40 @@
 import type { AppDispatch } from "../../store"
 import type { Product } from "../../../types/Product"
+import { API_URL } from "../../../api"
 
 export const DELETE_ADMIN_PRODUCT = "DELETE_ADMIN_PRODUCT"
 
 export type DeleteAdminProductAction = {
-    type: typeof DELETE_ADMIN_PRODUCT
-    payload: Product
+  type: typeof DELETE_ADMIN_PRODUCT
+  payload: Product
 }
 
 export const deleteAdminProduct = (productId: string) => {
-    return async (dispatch: AppDispatch) => {
-        const token = localStorage.getItem("token")
+  return async (dispatch: AppDispatch) => {
+    const token = localStorage.getItem("token")
 
-        if (!token) return
+    if (!token) return
 
-        try {
-            const response = await fetch(
-                `http://localhost:8080/admin/products/${productId}`,
-                {
-                    method: "DELETE",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                },
-            )
+    try {
+      const response = await fetch(`${API_URL}/admin/products/${productId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
 
-            if (!response.ok) {
-                throw new Error("Unable to deactivate product")
-            }
+      if (!response.ok) {
+        throw new Error("Unable to deactivate product")
+      }
 
-            const product: Product = await response.json()
+      const product: Product = await response.json()
 
-            dispatch({
-                type: DELETE_ADMIN_PRODUCT,
-                payload: product,
-            })
-        } catch (error) {
-            console.error("Product deactivation error:", error)
-        }
+      dispatch({
+        type: DELETE_ADMIN_PRODUCT,
+        payload: product,
+      })
+    } catch (error) {
+      console.error("Product deactivation error:", error)
     }
+  }
 }

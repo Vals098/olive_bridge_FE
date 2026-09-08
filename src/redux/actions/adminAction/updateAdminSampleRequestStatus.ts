@@ -1,5 +1,6 @@
 import type { AppDispatch } from "../../store"
 import type { SampleRequest } from "../../../types/SampleRequest"
+import { API_URL } from "../../../api"
 
 export const UPDATE_ADMIN_SAMPLE_REQUEST_STATUS =
   "UPDATE_ADMIN_SAMPLE_REQUEST_STATUS"
@@ -20,7 +21,7 @@ export const updateAdminSampleRequestStatus = (
 
     try {
       const response = await fetch(
-        `http://localhost:8080/admin/sample-requests/${sampleRequestId}/status`,
+        `${API_URL}/admin/sample-requests/${sampleRequestId}/status`,
         {
           method: "PATCH",
           headers: {
@@ -34,23 +35,17 @@ export const updateAdminSampleRequestStatus = (
       )
 
       if (!response.ok) {
-        throw new Error(
-          "Unable to update sample request status",
-        )
+        throw new Error("Unable to update sample request status")
       }
 
-      const updatedRequest: SampleRequest =
-        await response.json()
+      const updatedRequest: SampleRequest = await response.json()
 
       dispatch({
         type: UPDATE_ADMIN_SAMPLE_REQUEST_STATUS,
         payload: updatedRequest,
       })
     } catch (error) {
-      console.error(
-        "Sample request status update error:",
-        error,
-      )
+      console.error("Sample request status update error:", error)
 
       throw error
     }
