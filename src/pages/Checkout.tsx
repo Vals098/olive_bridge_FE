@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
@@ -6,9 +6,11 @@ import type { SyntheticEvent } from "react"
 
 import type { RootState, AppDispatch } from "../redux/store"
 import type { CartItem } from "../types/CartItem"
+import type { Address } from "../types/Address"
+import type { OrderResponse } from "../types/OrderResponse"
 
 import { clearCartAction } from "../redux/actions/cartAction/clearCart"
-import type { OrderResponse } from "../types/OrderResponse"
+import { getAddresses } from "../redux/actions/addressAction/getAddresses"
 
 function Checkout() {
   const dispatch = useDispatch<AppDispatch>()
@@ -16,12 +18,34 @@ function Checkout() {
 
   const [customerName, setCustomerName] = useState("")
   const [customerEmail, setCustomerEmail] = useState("")
+
+  // SHIPPING ADDRESS
   const [shippingPostalCode, setShippingPostalCode] = useState("")
   const [shippingPrefecture, setShippingPrefecture] = useState("")
   const [shippingCity, setShippingCity] = useState("")
   const [shippingArea, setShippingArea] = useState("")
   const [shippingStreet, setShippingStreet] = useState("")
   const [shippingBuilding, setShippingBuilding] = useState("")
+
+  const [selectedAddressId, setSelectedAddressId] = useState<string | null>(
+    null,
+  )
+
+  // SAVE ADDRESS
+  const [saveAddress, setSaveAddress] = useState(false)
+
+  // BILLING ADDRESS
+  const [billingSameAsShipping, setBillingSameAsShipping] = useState(false)
+
+  const [billingPostalCode, setBillingPostalCode] = useState("")
+  const [billingPrefecture, setBillingPrefecture] = useState("")
+  const [billingCity, setBillingCity] = useState("")
+  const [billingArea, setBillingArea] = useState("")
+  const [billingStreet, setBillingStreet] = useState("")
+  const [billingBuilding, setBillingBuilding] = useState("")
+
+  // PAYMENT
+  const [paymentMethod, setPaymentMethod] = useState("")
 
   const [order, setOrder] = useState<OrderResponse | null>(null)
   const [error, setError] = useState("")
@@ -31,6 +55,58 @@ function Checkout() {
   )
 
   const currentUser = useSelector((state: RootState) => state.user.currentUser)
+
+  const addresses = useSelector((state: RootState) => state.address.addresses)
+
+  // Load saved addresses for logged-in users
+  useEffect(() => {
+    if (currentUser) {
+      dispatch(getAddresses())
+    }
+  }, [currentUser, dispatch])
+
+  const fillAddress = (address: Address) => {
+    setSelectedAddressId(address.addressId)
+
+    setCustomerName(currentUser?.name ?? address.recipientName)
+
+    setShippingPostalCode(address.postalCode)
+    setShippingPrefecture(address.prefecture)
+    setShippingCity(address.city)
+    setShippingArea(address.area)
+    setShippingStreet(address.street)
+    setShippingBuilding(address.building ?? "")
+
+    // Existing address is already saved
+    setSaveAddress(false)
+  }
+
+  const handleNewAddress = () => {
+    setSelectedAddressId(null)
+    setSaveAddress(false)
+
+    setShippingPostalCode("")
+    setShippingPrefecture("")
+    setShippingCity("")
+    setShippingArea("")
+    setShippingStreet("")
+    setShippingBuilding("")
+  }
+
+  const handleBillingSameAsShipping = () => {
+    const newValue = !billingSameAsShipping
+
+    setBillingSameAsShipping(newValue)
+
+    if (newValue) {
+      setBillingPostalCode(shippingPostalCode)
+      setBillingPrefecture(shippingPrefecture)
+      setBillingCity(shippingCity)
+      setBillingArea(shippingArea)
+      setBillingStreet(shippingStreet)
+      setBillingBuilding(shippingBuilding)
+    }
+  }
 
   if (order) {
     return (
@@ -102,18 +178,51 @@ function Checkout() {
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault()
-
     setError("")
 
+    // PAYMENT VALIDATION
+    if (!paymentMethod) {
+      setError("Please select a payment method.")
+      return
+    }
+
     const orderData = {
-      customerName,
-      customerEmail,
+      customerName: currentUser
+        ? `${currentUser.name} ${currentUser.surname}`
+        : customerName,
+
+      customerEmail: currentUser ? currentUser.email : customerEmail,
+
+      // SHIPPING
       shippingPostalCode,
       shippingPrefecture,
       shippingCity,
       shippingArea,
       shippingStreet,
       shippingBuilding,
+
+      // BILLING
+      billingPostalCode: billingSameAsShipping
+        ? shippingPostalCode
+        : billingPostalCode,
+
+      billingPrefecture: billingSameAsShipping
+        ? shippingPrefecture
+        : billingPrefecture,
+
+      billingCity: billingSameAsShipping ? shippingCity : billingCity,
+
+      billingArea: billingSameAsShipping ? shippingArea : billingArea,
+
+      billingStreet: billingSameAsShipping ? shippingStreet : billingStreet,
+
+      billingBuilding: billingSameAsShipping
+        ? shippingBuilding
+        : billingBuilding,
+
+      // PAYMENT
+      paymentMethod,
+
       items: cartItems.map((item) => ({
         productVariantId: item.variant.productVariantId,
         quantity: item.quantity,
@@ -121,10 +230,43 @@ function Checkout() {
     }
 
     try {
+      const token = localStorage.getItem("token")
+
+      // Save shipping address for logged-in users
+      if (currentUser && saveAddress && selectedAddressId === null) {
+        const addressData = {
+          label: "Checkout address",
+          recipientName: `${currentUser.name} ${currentUser.surname}`,
+          postalCode: shippingPostalCode,
+          prefecture: shippingPrefecture,
+          city: shippingCity,
+          area: shippingArea,
+          street: shippingStreet,
+          building: shippingBuilding,
+        }
+
+        const addressResponse = await fetch(
+          "http://localhost:8080/users/addresses",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            },
+            body: JSON.stringify(addressData),
+          },
+        )
+
+        if (!addressResponse.ok) {
+          throw new Error("Unable to save address")
+        }
+      }
+
       const response = await fetch("http://localhost:8080/orders/checkout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
         body: JSON.stringify(orderData),
       })
@@ -136,7 +278,6 @@ function Checkout() {
       const createdOrder: OrderResponse = await response.json()
 
       setOrder(createdOrder)
-
       dispatch(clearCartAction())
     } catch {
       setError("Unable to place order. Please try again.")
@@ -197,123 +338,393 @@ function Checkout() {
                 <h2>Customer information</h2>
 
                 <Form onSubmit={handleSubmit}>
-                  <Row>
-                    <Col md={6}>
-                      <Form.Group className="mb-4" controlId="customerName">
-                        <Form.Label>Name</Form.Label>
+                  {currentUser ? (
+                    <>
+                      <Row>
+                        <Col md={6}>
+                          <div className="checkout-account-info">
+                            <span>Name</span>
 
-                        <Form.Control
-                          type="text"
-                          placeholder="Enter your name"
-                          value={customerName}
-                          onChange={(e) => setCustomerName(e.target.value)}
-                          required
-                        />
-                      </Form.Group>
-                    </Col>
+                            <strong>
+                              {currentUser.name} {currentUser.surname}
+                            </strong>
+                          </div>
+                        </Col>
 
-                    <Col md={6}>
-                      <Form.Group className="mb-4" controlId="customerEmail">
-                        <Form.Label>Email</Form.Label>
+                        <Col md={6}>
+                          <div className="checkout-account-info">
+                            <span>Email</span>
 
-                        <Form.Control
-                          type="email"
-                          placeholder="Enter your email"
-                          value={customerEmail}
-                          onChange={(e) => setCustomerEmail(e.target.value)}
-                          required
-                        />
-                      </Form.Group>
-                    </Col>
-                  </Row>
+                            <strong>{currentUser.email}</strong>
+                          </div>
+                        </Col>
+                      </Row>
+
+                      {currentUser.accountType === "BUSINESS" && (
+                        <div className="checkout-business-info">
+                          <h3>Business information</h3>
+
+                          <Row>
+                            <Col md={6}>
+                              <div className="checkout-account-info">
+                                <span>Business name</span>
+
+                                <strong>{currentUser.businessName}</strong>
+                              </div>
+                            </Col>
+
+                            <Col md={6}>
+                              <div className="checkout-account-info">
+                                <span>Business Tax ID</span>
+
+                                <strong>{currentUser.businessTaxId}</strong>
+                              </div>
+                            </Col>
+                          </Row>
+                        </div>
+                      )}
+
+                      <div className="checkout-edit-profile">
+                        <span>Are these details incorrect?</span>
+
+                        <button
+                          type="button"
+                          onClick={() => navigate("/profile")}
+                        >
+                          Edit your profile →
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <Row>
+                      <Col md={6}>
+                        <Form.Group className="mb-4" controlId="customerName">
+                          <Form.Label>Name</Form.Label>
+
+                          <Form.Control
+                            type="text"
+                            placeholder="Enter your name"
+                            value={customerName}
+                            onChange={(e) => setCustomerName(e.target.value)}
+                            required
+                          />
+                        </Form.Group>
+                      </Col>
+
+                      <Col md={6}>
+                        <Form.Group className="mb-4" controlId="customerEmail">
+                          <Form.Label>Email</Form.Label>
+
+                          <Form.Control
+                            type="email"
+                            placeholder="Enter your email"
+                            value={customerEmail}
+                            onChange={(e) => setCustomerEmail(e.target.value)}
+                            required
+                          />
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                  )}
 
                   <h2 className="checkout-section-title">Shipping address</h2>
 
-                  <Row>
-                    <Col md={6}>
-                      <Form.Group
-                        className="mb-4"
-                        controlId="shippingPostalCode"
+                  {currentUser && addresses.length > 0 && (
+                    <div className="checkout-saved-addresses">
+                      <p className="checkout-address-label">
+                        Choose a saved address
+                      </p>
+
+                      <Row className="g-3">
+                        {addresses.map((address) => (
+                          <Col md={6} key={address.addressId}>
+                            <Card
+                              className={`checkout-address-card ${
+                                selectedAddressId === address.addressId
+                                  ? "selected"
+                                  : ""
+                              }`}
+                              onClick={() => fillAddress(address)}
+                            >
+                              <Card.Body>
+                                <span className="checkout-address-card-label">
+                                  {address.label}
+                                </span>
+
+                                <strong>{address.recipientName}</strong>
+
+                                <p>
+                                  {address.postalCode} {address.city}
+                                </p>
+
+                                <p>
+                                  {address.prefecture}, {address.area}
+                                </p>
+
+                                <p>{address.street}</p>
+
+                                {address.building && <p>{address.building}</p>}
+                              </Card.Body>
+                            </Card>
+                          </Col>
+                        ))}
+                      </Row>
+
+                      <Button
+                        type="button"
+                        variant="outline-secondary"
+                        className="checkout-new-address-button"
+                        onClick={handleNewAddress}
                       >
-                        <Form.Label>Postal code</Form.Label>
+                        + Enter a new address
+                      </Button>
+                    </div>
+                  )}
+
+                  {(!currentUser ||
+                    addresses.length === 0 ||
+                    selectedAddressId === null) && (
+                    <>
+                      <Row>
+                        <Col md={6}>
+                          <Form.Group
+                            className="mb-4"
+                            controlId="shippingPostalCode"
+                          >
+                            <Form.Label>Postal code</Form.Label>
+
+                            <Form.Control
+                              type="text"
+                              placeholder="Enter your postal code"
+                              value={shippingPostalCode}
+                              onChange={(e) =>
+                                setShippingPostalCode(e.target.value)
+                              }
+                              required
+                            />
+                          </Form.Group>
+                        </Col>
+
+                        <Col md={6}>
+                          <Form.Group
+                            className="mb-4"
+                            controlId="shippingPrefecture"
+                          >
+                            <Form.Label>Prefecture</Form.Label>
+
+                            <Form.Control
+                              type="text"
+                              placeholder="Enter your prefecture"
+                              value={shippingPrefecture}
+                              onChange={(e) =>
+                                setShippingPrefecture(e.target.value)
+                              }
+                              required
+                            />
+                          </Form.Group>
+                        </Col>
+                      </Row>
+
+                      <Form.Group className="mb-4" controlId="shippingCity">
+                        <Form.Label>City</Form.Label>
 
                         <Form.Control
                           type="text"
-                          placeholder="Enter your postal code"
-                          value={shippingPostalCode}
-                          onChange={(e) =>
-                            setShippingPostalCode(e.target.value)
-                          }
+                          placeholder="Enter your city"
+                          value={shippingCity}
+                          onChange={(e) => setShippingCity(e.target.value)}
                           required
                         />
                       </Form.Group>
-                    </Col>
 
-                    <Col md={6}>
-                      <Form.Group
-                        className="mb-4"
-                        controlId="shippingPrefecture"
-                      >
-                        <Form.Label>Prefecture</Form.Label>
+                      <Form.Group className="mb-4" controlId="shippingArea">
+                        <Form.Label>Area</Form.Label>
 
                         <Form.Control
                           type="text"
-                          placeholder="Enter your prefecture"
-                          value={shippingPrefecture}
-                          onChange={(e) =>
-                            setShippingPrefecture(e.target.value)
-                          }
+                          placeholder="Enter your area"
+                          value={shippingArea}
+                          onChange={(e) => setShippingArea(e.target.value)}
                           required
                         />
                       </Form.Group>
-                    </Col>
-                  </Row>
 
-                  <Form.Group className="mb-4" controlId="shippingCity">
-                    <Form.Label>City</Form.Label>
+                      <Form.Group className="mb-4" controlId="shippingStreet">
+                        <Form.Label>Street</Form.Label>
 
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter your city"
-                      value={shippingCity}
-                      onChange={(e) => setShippingCity(e.target.value)}
-                      required
-                    />
-                  </Form.Group>
+                        <Form.Control
+                          type="text"
+                          placeholder="Enter your street"
+                          value={shippingStreet}
+                          onChange={(e) => setShippingStreet(e.target.value)}
+                          required
+                        />
+                      </Form.Group>
 
-                  <Form.Group className="mb-4" controlId="shippingArea">
-                    <Form.Label>Area</Form.Label>
+                      <Form.Group className="mb-4" controlId="shippingBuilding">
+                        <Form.Label>Building</Form.Label>
 
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter your area"
-                      value={shippingArea}
-                      onChange={(e) => setShippingArea(e.target.value)}
-                      required
-                    />
-                  </Form.Group>
+                        <Form.Control
+                          type="text"
+                          placeholder="Enter your building (optional)"
+                          value={shippingBuilding}
+                          onChange={(e) => setShippingBuilding(e.target.value)}
+                        />
+                      </Form.Group>
 
-                  <Form.Group className="mb-4" controlId="shippingStreet">
-                    <Form.Label>Street</Form.Label>
+                      {currentUser && (
+                        <Form.Check
+                          type="checkbox"
+                          id="saveAddress"
+                          label="Save this address for future orders"
+                          checked={saveAddress}
+                          onChange={(e) =>
+                            setSaveAddress(e.target.checked)
+                          }
+                          className="mb-4"
+                        />
+                      )}
+                    </>
+                  )}
 
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter your street"
-                      value={shippingStreet}
-                      onChange={(e) => setShippingStreet(e.target.value)}
-                      required
-                    />
-                  </Form.Group>
+                  <h2 className="checkout-section-title">Billing address</h2>
 
-                  <Form.Group className="mb-4" controlId="shippingBuilding">
-                    <Form.Label>Building</Form.Label>
+                  <Form.Check
+                    type="checkbox"
+                    id="billingSameAsShipping"
+                    label="Billing address is the same as shipping address"
+                    checked={billingSameAsShipping}
+                    onChange={handleBillingSameAsShipping}
+                    className="mb-4"
+                  />
 
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter your building (optional)"
-                      value={shippingBuilding}
-                      onChange={(e) => setShippingBuilding(e.target.value)}
-                    />
+                  {!billingSameAsShipping && (
+                    <>
+                      <Row>
+                        <Col md={6}>
+                          <Form.Group
+                            className="mb-4"
+                            controlId="billingPostalCode"
+                          >
+                            <Form.Label>Postal code</Form.Label>
+
+                            <Form.Control
+                              type="text"
+                              placeholder="Enter your postal code"
+                              value={billingPostalCode}
+                              onChange={(e) =>
+                                setBillingPostalCode(e.target.value)
+                              }
+                              required
+                            />
+                          </Form.Group>
+                        </Col>
+
+                        <Col md={6}>
+                          <Form.Group
+                            className="mb-4"
+                            controlId="billingPrefecture"
+                          >
+                            <Form.Label>Prefecture</Form.Label>
+
+                            <Form.Control
+                              type="text"
+                              placeholder="Enter your prefecture"
+                              value={billingPrefecture}
+                              onChange={(e) =>
+                                setBillingPrefecture(e.target.value)
+                              }
+                              required
+                            />
+                          </Form.Group>
+                        </Col>
+                      </Row>
+
+                      <Form.Group className="mb-4" controlId="billingCity">
+                        <Form.Label>City</Form.Label>
+
+                        <Form.Control
+                          type="text"
+                          placeholder="Enter your city"
+                          value={billingCity}
+                          onChange={(e) => setBillingCity(e.target.value)}
+                          required
+                        />
+                      </Form.Group>
+
+                      <Form.Group className="mb-4" controlId="billingArea">
+                        <Form.Label>Area</Form.Label>
+
+                        <Form.Control
+                          type="text"
+                          placeholder="Enter your area"
+                          value={billingArea}
+                          onChange={(e) => setBillingArea(e.target.value)}
+                          required
+                        />
+                      </Form.Group>
+
+                      <Form.Group className="mb-4" controlId="billingStreet">
+                        <Form.Label>Street</Form.Label>
+
+                        <Form.Control
+                          type="text"
+                          placeholder="Enter your street"
+                          value={billingStreet}
+                          onChange={(e) => setBillingStreet(e.target.value)}
+                          required
+                        />
+                      </Form.Group>
+
+                      <Form.Group className="mb-4" controlId="billingBuilding">
+                        <Form.Label>Building</Form.Label>
+
+                        <Form.Control
+                          type="text"
+                          placeholder="Enter your building (optional)"
+                          value={billingBuilding}
+                          onChange={(e) => setBillingBuilding(e.target.value)}
+                        />
+                      </Form.Group>
+                    </>
+                  )}
+
+                  <h2 className="checkout-section-title">Payment method</h2>
+
+                  <Form.Group className="mb-4" controlId="paymentMethod">
+                    <Form.Label>Choose your payment method</Form.Label>
+
+                    <div>
+                      <Form.Check
+                        type="radio"
+                        name="paymentMethod"
+                        id="creditCard"
+                        label="Credit Card"
+                        value="CREDIT_CARD"
+                        checked={paymentMethod === "CREDIT_CARD"}
+                        onChange={(e) => setPaymentMethod(e.target.value)}
+                      />
+
+                      <Form.Check
+                        type="radio"
+                        name="paymentMethod"
+                        id="paypal"
+                        label="PayPal"
+                        value="PAYPAL"
+                        checked={paymentMethod === "PAYPAL"}
+                        onChange={(e) => setPaymentMethod(e.target.value)}
+                      />
+
+                      <Form.Check
+                        type="radio"
+                        name="paymentMethod"
+                        id="bankTransfer"
+                        label="Bank Transfer"
+                        value="BANK_TRANSFER"
+                        checked={paymentMethod === "BANK_TRANSFER"}
+                        onChange={(e) => setPaymentMethod(e.target.value)}
+                      />
+                    </div>
                   </Form.Group>
 
                   {error && <div className="checkout-error">{error}</div>}
