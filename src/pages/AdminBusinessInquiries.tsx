@@ -16,6 +16,12 @@ function AdminBusinessInquiries() {
     dispatch(getAdminBusinessInquiries())
   }, [dispatch])
 
+  const sortedBusinessInquiries = [...businessInquiries].sort(
+    (a, b) =>
+      new Date(b.createdAt).getTime() -
+      new Date(a.createdAt).getTime(),
+  )
+
   return (
     <main className="admin-orders-page">
       <Container>
@@ -53,7 +59,7 @@ function AdminBusinessInquiries() {
               </div>
             ) : (
               <div className="admin-orders-list">
-                {businessInquiries.map((inquiry) => (
+                {sortedBusinessInquiries.map((inquiry) => (
                   <div
                     className="admin-order-item"
                     key={inquiry.businessInquiryId}

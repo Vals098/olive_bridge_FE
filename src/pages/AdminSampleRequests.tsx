@@ -116,6 +116,12 @@ function AdminSampleRequests() {
     (request) => request.sampleRequestId === selectedRequestId,
   )
 
+  const sortedSampleRequests = [...sampleRequests].sort(
+    (a, b) =>
+      new Date(b.createdAt).getTime() -
+      new Date(a.createdAt).getTime(),
+  )
+
   return (
     <main className="admin-orders-page">
       <Container>
@@ -155,7 +161,7 @@ function AdminSampleRequests() {
               /* REQUEST LIST */
 
               <div className="admin-orders-list">
-                {sampleRequests.map((request) => {
+                {sortedSampleRequests.map((request) => {
                   const availableStatuses = getAvailableStatuses(request.status)
 
                   return (
